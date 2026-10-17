@@ -48,6 +48,14 @@ jobs:
       - name: Install Linux packaging prerequisites
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y musl-tools
+      - name: Cache Rust dependencies and build output
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: rust-1.95-${{ matrix.os }}-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
       - name: Install frontend dependencies
         working-directory: ui
         run: npm ci
@@ -56,6 +64,8 @@ jobs:
         run: npm run build
       - name: Check Rust formatting
         run: cargo fmt --check
+      - name: Check documentation
+        run: python tools/check-docs.py
       - name: Test Rust
         run: cargo test --locked --target ${{ matrix.target }}
       - name: Build executable

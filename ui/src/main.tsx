@@ -87,6 +87,15 @@ function App() {
         setError(String(e.message)); }); const timer = setInterval(() => refresh().catch(() => { }), 1500); return () => { alive = false; clearInterval(timer); }; }, []);
     useEffect(() => { if (!notice)
         return; const t = setTimeout(() => setNotice(''), 4500); return () => clearTimeout(t); }, [notice]);
+    // Drawer 2.2.1 does not expose a close-label prop. Adapt its fixed label
+    // after React commits the panel, including a language change while open.
+    useEffect(() => {
+        for (const button of Array.from(document.querySelectorAll('[role="dialog"] button[aria-label]'))) {
+            if (['关闭', 'Close', '閉じる'].includes(button.getAttribute('aria-label') || '')) {
+                button.setAttribute('aria-label', tr('关闭'));
+            }
+        }
+    }, [language, edit]);
     const locked = busy || s.job.running;
     const tracksByKey = new Map(s.tracks.map(t => [t.key, t]));
     const source = page === 'device' ? s.device_tracks : page === 'queue' ? s.queue.map(k => tracksByKey.get(k)).filter((t): t is Track => !!t) : s.tracks;

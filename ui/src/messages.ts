@@ -1,6 +1,7 @@
 // Source keys preserve the original wording; values are [English, Japanese].
 // Track metadata and filesystem paths are never translated.
 export const messages: Record<string, readonly [string, string]> = {
+"关闭":["Close","閉じる"],
 "Language":["Language","表示言語"],
 "准备好，把音乐带出门。":["Ready to take your music with you.","音楽を持ち出す準備ができました。"],
 "所有歌曲":["All songs","すべての曲"],
@@ -45,7 +46,7 @@ export const messages: Record<string, readonly [string, string]> = {
 "本版直接导入 MP3。FLAC、WAV 等格式请先转成 MP3。此版本不会移除设备中的已有歌曲。":["This version imports MP3. Convert FLAC or WAV before importing. Existing device songs are retained. Devices with playlists are protected from unsupported index rebuilding.","この版は MP3 の取り込みに対応します。FLAC や WAV は事前に変換してください。既存の曲は保持され、プレイリストがある機器では未対応の索引再構築を停止します。"],
 "封面兼容性":["Artwork compatibility","ジャケットの互換性"],
 "封面显示已通过 A918 实机验证":["Artwork probe verified on an A918","A918 実機でジャケット表示を確認"],
-"优先使用 ID3 的正面封面，支持 JPEG、PNG、WebP。可手动替换封面，原始文件不变。已通过 Sony 固件与 SonicStage 的 REA 分析定位封面索引规则，实机补丁已显示封面。完整新版传输仍在验证。":["Prefers front-cover ID3 artwork and supports JPEG, PNG and WebP. Replacements leave source files intact. Firmware and SonicStage analysis identified the artwork tree; a controlled probe displayed correctly. Full native transfer validation remains incomplete.","ID3 の表ジャケットを優先し、JPEG・PNG・WebP に対応します。画像を変更しても元ファイルは変わりません。固件と SonicStage の解析で索引規則を確認し、実機テストで表示できました。新転送処理全体は検証中です。"],
+"优先使用 ID3 的正面封面，支持 JPEG、PNG、WebP。可手动替换封面，原始文件不变。已通过 Sony 固件与 SonicStage 的 REA 分析定位封面索引规则，实机补丁已显示封面。完整新版传输仍在验证。":["Prefers front-cover ID3 artwork and supports JPEG, PNG and WebP. Replacements leave source files intact. Firmware and SonicStage analysis identified the artwork tree; a controlled probe displayed correctly. Full native transfer validation remains incomplete.","ID3 の表ジャケットを優先し、JPEG・PNG・WebP に対応します。画像を変更しても元ファイルは変わりません。ファームウェアと SonicStage の解析で索引規則を確認し、実機テストで表示できました。新転送処理全体は検証中です。"],
 "传输专辑封面":["Transfer album artwork","アルバムジャケットを転送"],
 "关于唱片小岛 · 0.1.0":["About Island Walkman · 0.1.0","Island Walkman について · 0.1.0"],
 "Rust 音频与传输核心 · React + Animal Island UI。面向 Windows 与 Linux；已通过 Debian 12 本地运行与曲库生成验证，USB 实机传输仍在验证。初版 OMGAUDIO 实现参考 JSymphonic（GPL-3.0-or-later）；正在使用 REA 对 Sony 二进制独立验证协议，尚不能保证完整兼容。运行时不需要 Java。":["Rust core with React and Animal Island UI. Targets Windows, Debian and macOS. Debian 12 local preparation is verified; USB transfers remain under investigation. Initial OMGAUDIO layouts referenced JSymphonic (GPL-3.0-or-later), with independent Sony binary analysis through REA. No Java runtime is required.","Rust コア、React と Animal Island UI を使用。Windows・Debian・macOS を対象とします。Debian 12 でローカル生成を確認済みですが、USB 転送は調査中です。初期形式は JSymphonic（GPL-3.0-or-later）を参照し、REA で Sony バイナリを独立解析しています。Java は不要です。"],
