@@ -13,6 +13,7 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 - Per-user data directories, macOS player detection and browser launching.
 - Recovery journals, per-file flushing and destination paths in copy errors.
 - Preflight protection for existing or malformed device playlists.
+- Full staged-transfer and append tests using a virtual player, with copy interruption, external modification, commit failure and rollback failure scenarios.
 
 ### Changed
 
@@ -26,6 +27,7 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 - Albums can use a cover supplied by a later song.
 - OMA readback preserves track totals and disc numbers/totals.
 - Full Unicode OMA tags round-trip without changing source or audio bytes.
+- Commit failures now report failed rollback explicitly and retain recovery locations in the journal instead of discarding restoration errors.
 
 ### Known issues
 

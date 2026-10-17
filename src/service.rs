@@ -204,6 +204,18 @@ fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
     let root = PathBuf::from(&state.device_root).canonicalize()?;
     protocol::validate_device(&root)?;
     protocol::validate_rebuild_supported(&root)?;
+    transfer_staged(app, covers, &root, state, copy_tree)
+}
+
+// The public operation enforces policy above; this private core accepts an I/O
+// seam so tests can reproduce interrupted copying on a temporary filesystem.
+fn transfer_staged(
+    app: &Arc<App>,
+    covers: bool,
+    root: &Path,
+    state: State,
+    copy_to_device: impl FnOnce(&Path, &Path) -> Result<()>,
+) -> Result<()> {
     let _lock = OpenOptions::new()
         .create(true)
         .truncate(false)
@@ -344,7 +356,7 @@ fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
     };
     transaction("copying; original library unchanged")?;
     log(app, 76, "Copying and verifying the new device library");
-    copy_tree(&stage, &incoming)?;
+    copy_to_device(&stage, &incoming)?;
     ensure!(
         manifest(&incoming)? == generated,
         "New device library verification failed"
@@ -354,15 +366,20 @@ fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
         "Original library changed during copying; not committed"
     );
     transaction("verified; ready to commit")?;
-    if device_dir.exists() {
-        fs::rename(&device_dir, &old)
-            .context("Cannot retain the old library; new data remains staged")?;
-    }
-    if let Err(e) = fs::rename(&incoming, &device_dir) {
-        if old.exists() {
-            let _ = fs::rename(&old, &device_dir);
+    if let Err(error) = commit_library(&device_dir, &incoming, &old, |from, to| {
+        fs::rename(from, to)
+    }) {
+        let phase = if device_dir.exists() {
+            "commit failed; original library available"
+        } else if old.exists() {
+            "commit and rollback failed; original library in device_backup"
+        } else {
+            "commit failed; inspect incoming and host_backup"
+        };
+        if let Err(journal_error) = transaction(phase) {
+            return Err(error).context(format!("Recovery journal update failed: {journal_error}"));
         }
-        return Err(e.into());
+        return Err(error);
     }
     transaction("committed; old library retained")?;
     log(
@@ -377,6 +394,33 @@ fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
     let mut s = app.state.lock().unwrap();
     s.device_tracks = protocol::read_device(&root)?;
     s.queue.clear();
+    Ok(())
+}
+
+fn commit_library(
+    original: &Path,
+    incoming: &Path,
+    backup: &Path,
+    mut rename: impl FnMut(&Path, &Path) -> std::io::Result<()>,
+) -> Result<()> {
+    if original.exists() {
+        rename(original, backup)
+            .context("Cannot retain the old library; new data remains staged")?;
+    }
+    if let Err(commit_error) = rename(incoming, original) {
+        if backup.exists() {
+            if let Err(rollback_error) = rename(backup, original) {
+                bail!(
+                    "Commit and rollback failed; original library retained at {}: commit: {}; rollback: {}",
+                    backup.display(),
+                    commit_error,
+                    rollback_error
+                );
+            }
+            return Err(commit_error).context("Commit failed; original library restored");
+        }
+        return Err(commit_error).context("Commit failed; new library remains staged");
+    }
     Ok(())
 }
 fn prepare(app: &Arc<App>) -> Result<()> {
@@ -936,6 +980,198 @@ fn handle(mut req: Request, app: &Arc<App>) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn failed_commit_restores_the_original_library() {
+        let temp = tempfile::tempdir().unwrap();
+        let original = temp.path().join("OMGAUDIO");
+        let incoming = temp.path().join("incoming");
+        let backup = temp.path().join("backup");
+        fs::create_dir(&original).unwrap();
+        fs::create_dir(&incoming).unwrap();
+        fs::write(original.join("track.oma"), b"original audio").unwrap();
+        let mut operations = 0;
+        let error = commit_library(&original, &incoming, &backup, |from, to| {
+            operations += 1;
+            if operations == 2 {
+                return Err(std::io::Error::other("Injected commit I/O failure"));
+            }
+            fs::rename(from, to)
+        })
+        .unwrap_err();
+        assert!(error.to_string().contains("original library restored"));
+        assert_eq!(
+            fs::read(original.join("track.oma")).unwrap(),
+            b"original audio"
+        );
+        assert!(incoming.is_dir());
+        assert!(!backup.exists());
+    }
+
+    #[test]
+    fn failed_rollback_reports_the_actual_original_library_location() {
+        let temp = tempfile::tempdir().unwrap();
+        let original = temp.path().join("OMGAUDIO");
+        let incoming = temp.path().join("incoming");
+        let backup = temp.path().join("backup");
+        fs::create_dir(&original).unwrap();
+        fs::create_dir(&incoming).unwrap();
+        fs::write(original.join("track.oma"), b"original audio").unwrap();
+        let mut operations = 0;
+        let error = commit_library(&original, &incoming, &backup, |from, to| {
+            operations += 1;
+            if operations > 1 {
+                return Err(std::io::Error::other("Injected persistent I/O failure"));
+            }
+            fs::rename(from, to)
+        })
+        .unwrap_err();
+        assert!(error.to_string().contains("Commit and rollback failed"));
+        assert!(error.to_string().contains(backup.to_str().unwrap()));
+        assert_eq!(
+            fs::read(backup.join("track.oma")).unwrap(),
+            b"original audio"
+        );
+        assert!(!original.exists());
+        assert!(incoming.is_dir());
+    }
+    fn virtual_player() -> (tempfile::TempDir, Arc<App>, PathBuf, PathBuf) {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().join("player");
+        fs::create_dir_all(root.join("OMGAUDIO")).unwrap();
+        protocol::write_database(&root.join("OMGAUDIO"), &[], false).unwrap();
+        fs::write(
+            root.join("OMGAUDIO/opaque.bin"),
+            b"preserve unknown device data",
+        )
+        .unwrap();
+        let data = temp.path().join("app");
+        fs::create_dir(&data).unwrap();
+        let source = temp.path().join("generated.mp3");
+        let frame = [vec![0xff, 0xfb, 0x90, 0], vec![0; 413]].concat();
+        fs::write(&source, frame.repeat(100)).unwrap();
+        let image = temp.path().join("artwork.jpg");
+        image::RgbImage::from_pixel(60, 40, image::Rgb([220, 90, 30]))
+            .save(&image)
+            .unwrap();
+        let app = Arc::new(App {
+            state: Mutex::new(State::default()),
+            persist: Mutex::new(()),
+            requests: Mutex::new(()),
+            data,
+            ui: temp.path().into(),
+            token: "test".into(),
+            allow_device_write: true,
+        });
+        import(&app, vec![source.to_string_lossy().into_owned()]).unwrap();
+        {
+            let mut state = app.state.lock().unwrap();
+            let track = &mut state.tracks[0];
+            track.title = "試験曲名 🎵 ".repeat(15);
+            track.artist = "艺术家".into();
+            track.album = "テストアルバム".into();
+            track.track = 9;
+            track.track_total = 20;
+            track.disc = 2;
+            track.disc_total = 3;
+            track.cover = Some(image.to_string_lossy().into_owned());
+            state.queue = vec![track.key.clone()];
+            state.device_root = root.to_string_lossy().into_owned();
+        }
+        (temp, app, root, source)
+    }
+
+    #[test]
+    fn complete_staged_transfer_and_append_preserve_existing_audio_and_artwork() {
+        let (_temp, app, root, source) = virtual_player();
+        let source_hash = metadata::hash_file(&source).unwrap();
+        for expected_count in 1..=2 {
+            let snapshot = app.state.lock().unwrap().clone();
+            let title = snapshot.tracks[0].title.clone();
+            transfer_staged(&app, true, &root, snapshot, copy_tree).unwrap();
+            assert_eq!(metadata::hash_file(&source).unwrap(), source_hash);
+            assert_eq!(
+                fs::read(root.join("OMGAUDIO/opaque.bin")).unwrap(),
+                b"preserve unknown device data"
+            );
+            let tracks = protocol::read_device(&root).unwrap();
+            assert_eq!(tracks.len(), expected_count);
+            for track in tracks {
+                assert_eq!(track.title, title);
+                assert_eq!(
+                    (track.track, track.track_total, track.disc, track.disc_total),
+                    (9, 20, 2, 3)
+                );
+                assert!(Path::new(track.cover.as_ref().unwrap()).is_file());
+            }
+            let state = app.state.lock().unwrap();
+            let run = Path::new(state.job.backup.as_ref().unwrap());
+            let journal: Value =
+                serde_json::from_slice(&fs::read(run.join("transaction.json")).unwrap()).unwrap();
+            assert_eq!(journal["phase"], "committed; old library retained");
+            let backup = Path::new(journal["device_backup"].as_str().unwrap());
+            assert!(backup.join("opaque.bin").is_file());
+            if expected_count == 2 {
+                let old = backup.join(protocol::oma_name(1));
+                assert_eq!(
+                    metadata::hash_file(&old).unwrap(),
+                    metadata::hash_file(&root.join("OMGAUDIO").join(protocol::oma_name(1)))
+                        .unwrap()
+                );
+            }
+            assert!(state.queue.is_empty());
+            let key = state.tracks[0].key.clone();
+            drop(state);
+            app.state.lock().unwrap().queue = vec![key];
+        }
+    }
+
+    #[test]
+    fn interrupted_device_copy_preserves_original_and_records_recovery_paths() {
+        let (_temp, app, root, _source) = virtual_player();
+        let before = manifest(&root.join("OMGAUDIO")).unwrap();
+        let snapshot = app.state.lock().unwrap().clone();
+        let error = transfer_staged(&app, true, &root, snapshot, |_, incoming| {
+            fs::create_dir(incoming)?;
+            fs::write(incoming.join("partial.tmp"), b"incomplete")?;
+            bail!("Injected device I/O interruption")
+        })
+        .unwrap_err();
+        assert!(error.to_string().contains("Injected device I/O"));
+        assert_eq!(manifest(&root.join("OMGAUDIO")).unwrap(), before);
+        let state = app.state.lock().unwrap();
+        assert_eq!(state.queue.len(), 1);
+        let run = Path::new(state.job.backup.as_ref().unwrap());
+        assert_eq!(manifest(&run.join("before/OMGAUDIO")).unwrap(), before);
+        let journal: Value =
+            serde_json::from_slice(&fs::read(run.join("transaction.json")).unwrap()).unwrap();
+        assert_eq!(journal["phase"], "copying; original library unchanged");
+        assert!(
+            Path::new(journal["incoming"].as_str().unwrap())
+                .join("partial.tmp")
+                .is_file()
+        );
+        assert!(!Path::new(journal["device_backup"].as_str().unwrap()).exists());
+    }
+
+    #[test]
+    fn external_device_changes_during_copy_prevent_commit() {
+        let (_temp, app, root, _source) = virtual_player();
+        let snapshot = app.state.lock().unwrap().clone();
+        let error = transfer_staged(&app, true, &root, snapshot, |source, incoming| {
+            copy_tree(source, incoming)?;
+            fs::write(
+                root.join("OMGAUDIO/external-change.bin"),
+                b"another application",
+            )?;
+            Ok(())
+        })
+        .unwrap_err();
+        assert!(error.to_string().contains("Original library changed"));
+        assert!(root.join("OMGAUDIO/external-change.bin").is_file());
+        assert!(protocol::read_device(&root).unwrap().is_empty());
+        assert_eq!(app.state.lock().unwrap().queue.len(), 1);
+    }
+
     #[test]
     fn device_write_gate_is_checked_before_any_device_access() {
         let d = tempfile::tempdir().unwrap();

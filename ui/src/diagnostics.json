@@ -603,5 +603,25 @@
     "Hierarchy conversion changed existing text",
     "階層変換で既存の文字列が変わりました",
     "层次树转换改变了原有文本"
+  ],
+  [
+    "Commit failed; original library restored",
+    "確定に失敗しました。旧曲庫は復元されました",
+    "提交失败；原曲库已恢复"
+  ],
+  [
+    "Commit failed; new library remains staged",
+    "確定に失敗しました。新しい曲庫は一時保存されたままです",
+    "提交失败；新曲库仍在暂存目录"
+  ],
+  [
+    "Commit and rollback failed; original library retained at {}: commit: {}; rollback: {}",
+    "確定と復元に失敗しました。旧曲庫の保存先：{}。確定：{}。復元：{}",
+    "提交和回滚均失败；原曲库保留在 {}：提交错误：{}；回滚错误：{}"
+  ],
+  [
+    "Recovery journal update failed: {journal_error}",
+    "復旧記録を更新できません：{journal_error}",
+    "恢复日志更新失败：{journal_error}"
   ]
 ]
