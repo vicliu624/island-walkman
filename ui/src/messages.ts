@@ -1,6 +1,6 @@
 // Source keys preserve the original wording; values are [English, Japanese].
 // Track metadata and filesystem paths are never translated.
-export const messages: Record<string, readonly [string, string]> = {
+export const messages: Record<string, readonly [string, string, string?]> = {
 "关闭":["Close","閉じる"],
 "Language":["Language","表示言語"],
 "准备好，把音乐带出门。":["Ready to take your music with you.","音楽を持ち出す準備ができました。"],
@@ -42,7 +42,7 @@ export const messages: Record<string, readonly [string, string]> = {
 "传输与备份":["Transfers & backups","転送とバックアップ"],
 "先准备，独立验证后再开放写入":["Prepare locally before device validation","ローカルで準備してから実機で検証"],
 "设备写入默认关闭；Sony 格式独立验证完成前，仅在显式启用实验模式时允许测试传输。":["Device writes are disabled by default. Experimental transfers require an explicit startup flag until full device validation is complete.","機器への書き込みは初期状態で無効です。実機検証が完了するまでは、起動時の明示的なオプションが必要です。"],
-"本地生成音频与数据库，回读验证、备份旧曲库、逐文件校验，再提交到设备。本地保存校验备份，设备上的 ISLAND-BACKUP-* 目录保留原曲库，暂不自动清理。":["Audio and indexes are staged locally, read back and checked. The old library is backed up before commit. Host backups and ISLAND-BACKUP-* directories are retained for recovery.","音声と索引をローカルで生成し、再読込と検証を行います。確定前に旧曲庫をバックアップします。PC側と ISLAND-BACKUP-* は復旧用に保持されます。"],
+"本地生成音频与数据库，回读验证、备份旧曲库、逐文件校验，再提交到设备。本地保存校验备份，设备上的 ISLAND-BACKUP-* 目录保留原曲库，暂不自动清理。":["A complete backup is kept on the computer. When player space is low, only changed files are copied and unchanged files are moved during commit. In that mode ISLAND-BACKUP-* is partial; use the complete computer backup for recovery.","完全なバックアップはパソコンに保持します。機器の空き容量が少ない場合は変更ファイルのみコピーし、確定時に未変更ファイルを移動します。この場合 ISLAND-BACKUP-* は部分的なため、復旧にはパソコン側の完全なバックアップを使用してください。","电脑端始终保留完整备份。播放器空间不足时，仅复制变化文件，未变文件在提交时同盘移动；此模式下 ISLAND-BACKUP-* 只是部分备份，恢复时应使用电脑端完整备份。"],
 "本版直接导入 MP3。FLAC、WAV 等格式请先转成 MP3。此版本不会移除设备中的已有歌曲。":["This version imports MP3. Convert FLAC or WAV before importing. Existing device songs are retained. Devices with playlists are protected from unsupported index rebuilding.","この版は MP3 の取り込みに対応します。FLAC や WAV は事前に変換してください。既存の曲は保持され、プレイリストがある機器では未対応の索引再構築を停止します。"],
 "封面兼容性":["Artwork compatibility","ジャケットの互換性"],
 "封面显示已通过 A918 实机验证":["Artwork probe verified on an A918","A918 実機でジャケット表示を確認"],

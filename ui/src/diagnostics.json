@@ -673,5 +673,55 @@
     "Ambiguous artwork track mapping",
     "曲とジャケットの対応が一意ではありません",
     "歌曲与封面映射不明确"
+  ],
+  [
+    "Staging size overflow",
+    "一時保存サイズが上限を超えています",
+    "暂存大小溢出"
+  ],
+  [
+    "Low-space staging; complete backup retained on computer",
+    "省容量で一時保存中。完全なバックアップはパソコンにあります",
+    "低空间暂存；完整备份保留在电脑上"
+  ],
+  [
+    "Low-space commit requires an existing library",
+    "省容量の確定には既存の曲庫が必要です",
+    "低空间提交需要已有曲库"
+  ],
+  [
+    "Cannot reuse device file: {name}",
+    "機器のファイルを再利用できません：{name}",
+    "无法复用设备文件：{name}"
+  ],
+  [
+    "Cannot commit the reused library",
+    "再利用した曲庫を確定できません",
+    "无法提交复用后的曲库"
+  ],
+  [
+    "Low-space commit failed; original library restored",
+    "省容量の確定に失敗しました。旧曲庫は復元されました",
+    "低空间提交失败；原曲库已恢复"
+  ],
+  [
+    "Low-space commit and rollback failed; use the complete host backup. Device data is in {} and {}: {}; {}",
+    "省容量の確定と復元に失敗しました。パソコン側の完全なバックアップを使用してください。機器の保存先：{} と {}：{}；{}",
+    "低空间提交和回滚均失败；请使用电脑端完整备份。设备数据保留在 {} 和 {}：{}；{}"
+  ],
+  [
+    "Interrupted transfer detected; restore the library before starting another transfer",
+    "中断された転送を検出しました。次の転送前に曲庫を復元してください",
+    "检测到中断的传输；请先恢复曲库再开始新传输"
+  ],
+  [
+    "Cannot read transfer recovery journal: {}",
+    "転送の復旧記録を読み取れません：{}",
+    "无法读取传输恢复日志：{}"
+  ],
+  [
+    "Unfinished commit requires recovery; complete host backup: {}",
+    "未完了の確定を復旧する必要があります。パソコン側の完全なバックアップ：{}",
+    "未完成的提交需要恢复；电脑端完整备份：{}"
   ]
 ]

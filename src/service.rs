@@ -216,6 +216,19 @@ fn transfer_staged(
     state: State,
     copy_to_device: impl FnOnce(&Path, &Path) -> Result<()>,
 ) -> Result<()> {
+    transfer_with_capacity(app, covers, root, state, copy_to_device, || {
+        fs2::available_space(root).map_err(Into::into)
+    })
+}
+fn transfer_with_capacity(
+    app: &Arc<App>,
+    covers: bool,
+    root: &Path,
+    state: State,
+    copy_to_device: impl FnOnce(&Path, &Path) -> Result<()>,
+    available_space: impl FnOnce() -> Result<u64>,
+) -> Result<()> {
+    ensure_recovery_safe(&app.data, root)?;
     let _lock = OpenOptions::new()
         .create(true)
         .truncate(false)
@@ -321,14 +334,17 @@ fn transfer_staged(
         "New database readback count mismatch"
     );
     let generated = manifest(&stage)?;
-    let needed: u64 = walkdir::WalkDir::new(&stage)
-        .into_iter()
-        .filter_map(|e| e.ok())
-        .filter(|e| e.file_type().is_file())
-        .map(|e| e.metadata().map(|m| m.len()).unwrap_or(0))
-        .sum();
+    let full_required = crate::space::required_bytes(&stage, &generated)?;
+    let free = available_space()?;
+    let reuse_mode = free < full_required;
+    let plan = crate::space::plan(&stage, &original, &generated)?;
+    let needed = if reuse_mode {
+        plan.required_bytes
+    } else {
+        full_required
+    };
     ensure!(
-        fs2::available_space(&root)? > needed + 1024 * 1024,
+        free >= needed,
         "Not enough space to stage the new library safely"
     );
     ensure!(
@@ -349,16 +365,42 @@ fn transfer_staged(
             serde_json::to_vec_pretty(&json!({
                 "phase":phase,"original_library":device_dir,"incoming":incoming,
                 "device_backup":old,"host_backup":run.join("before/OMGAUDIO"),
-                "source_manifest":original,"expected_manifest":generated
+                "source_manifest":original,"expected_manifest":generated,
+                "mode":if reuse_mode {"reuse_unchanged"}else{"full_directory"},
+                "reused_paths":if reuse_mode {plan.reused.clone()}else{vec![]},
+                "device_staging_bytes":needed
             }))?,
         )?;
         Ok(())
     };
     transaction("copying; original library unchanged")?;
     log(app, 76, "Copying and verifying the new device library");
-    copy_to_device(&stage, &incoming)?;
+    let delta = run.join("delta/OMGAUDIO");
+    if reuse_mode {
+        log(
+            app,
+            76,
+            "Low-space staging; complete backup retained on computer",
+        );
+        fs::create_dir_all(&delta)?;
+        for name in plan.changed.keys() {
+            let target = delta.join(name);
+            fs::create_dir_all(target.parent().unwrap())?;
+            fs::copy(stage.join(name), target)?;
+        }
+        ensure!(
+            manifest(&delta)? == plan.changed,
+            "New device library verification failed"
+        );
+    }
+    copy_to_device(if reuse_mode { &delta } else { &stage }, &incoming)?;
     ensure!(
-        manifest(&incoming)? == generated,
+        manifest(&incoming)?
+            == if reuse_mode {
+                plan.changed.clone()
+            } else {
+                generated.clone()
+            },
         "New device library verification failed"
     );
     ensure!(
@@ -366,11 +408,31 @@ fn transfer_staged(
         "Original library changed during copying; not committed"
     );
     transaction("verified; ready to commit")?;
-    if let Err(error) = commit_library(&device_dir, &incoming, &old, |from, to| {
-        fs::rename(from, to)
-    }) {
-        let phase = if device_dir.exists() {
+    let commit_result = if reuse_mode {
+        crate::space::commit(
+            &device_dir,
+            &incoming,
+            &old,
+            &plan.reused,
+            |from, to| fs::rename(from, to),
+            |path| {
+                ensure!(
+                    manifest(path)? == generated,
+                    "New device library verification failed"
+                );
+                Ok(())
+            },
+        )
+    } else {
+        commit_library(&device_dir, &incoming, &old, |from, to| {
+            fs::rename(from, to)
+        })
+    };
+    if let Err(error) = commit_result {
+        let phase = if manifest(&device_dir).is_ok_and(|current| current == original) {
             "commit failed; original library available"
+        } else if reuse_mode {
+            "commit failed; device data may be split; host_backup is complete"
         } else if old.exists() {
             "commit and rollback failed; original library in device_backup"
         } else {
@@ -394,6 +456,51 @@ fn transfer_staged(
     let mut s = app.state.lock().unwrap();
     s.device_tracks = protocol::read_device(&root)?;
     s.queue.clear();
+    Ok(())
+}
+
+fn ensure_recovery_safe(data: &Path, root: &Path) -> Result<()> {
+    let library = root.join("OMGAUDIO");
+    if !library.is_dir()
+        && fs::read_dir(root)?.any(|entry| {
+            entry.is_ok_and(|entry| {
+                entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("ISLAND-BACKUP-")
+            })
+        })
+    {
+        bail!(
+            "Interrupted transfer detected; restore the library before starting another transfer"
+        );
+    }
+    let backups = data.join("backups");
+    if !backups.is_dir() {
+        return Ok(());
+    }
+    for entry in fs::read_dir(backups)? {
+        let path = entry?.path().join("transaction.json");
+        if !path.is_file() {
+            continue;
+        }
+        let journal: Value = serde_json::from_slice(&fs::read(&path)?).with_context(|| {
+            format!("Cannot read transfer recovery journal: {}", path.display())
+        })?;
+        if journal["original_library"].as_str().map(Path::new) != Some(library.as_path()) {
+            continue;
+        }
+        let phase = journal["phase"].as_str().unwrap_or("");
+        if phase.starts_with("committed;") || phase.starts_with("copying;") {
+            continue;
+        }
+        let expected: BTree = serde_json::from_value(journal["source_manifest"].clone())?;
+        ensure!(
+            manifest(&library)? == expected,
+            "Unfinished commit requires recovery; complete host backup: {}",
+            journal["host_backup"].as_str().unwrap_or("unknown")
+        );
+    }
     Ok(())
 }
 
@@ -981,6 +1088,50 @@ fn handle(mut req: Request, app: &Arc<App>) {
 mod tests {
     use super::*;
     #[test]
+    fn missing_current_library_with_a_device_backup_blocks_a_new_transfer() {
+        let (_temp, app, root, _source) = virtual_player();
+        fs::rename(
+            root.join("OMGAUDIO"),
+            root.join("ISLAND-BACKUP-interrupted"),
+        )
+        .unwrap();
+        let state = app.state.lock().unwrap().clone();
+        let error = transfer_staged(&app, true, &root, state, copy_tree).unwrap_err();
+        assert!(error.to_string().contains("Interrupted transfer"));
+        assert!(!root.join("OMGAUDIO").exists());
+        assert!(!root.join(".island-walkman.lock").exists());
+        assert!(root.join("ISLAND-BACKUP-interrupted/opaque.bin").is_file());
+    }
+    #[test]
+    fn an_unfinished_commit_is_not_silently_retried_after_restart() {
+        let (_temp, app, root, _source) = virtual_player();
+        let before = manifest(&root.join("OMGAUDIO")).unwrap();
+        let run = app.data.join("backups/interrupted");
+        fs::create_dir_all(&run).unwrap();
+        fs::write(
+            run.join("transaction.json"),
+            serde_json::to_vec(&json!({
+                "phase":"verified; ready to commit","original_library":root.join("OMGAUDIO"),
+                "source_manifest":before,"host_backup":run.join("before/OMGAUDIO")
+            }))
+            .unwrap(),
+        )
+        .unwrap();
+        ensure_recovery_safe(&app.data, &root).unwrap();
+        fs::write(
+            root.join("OMGAUDIO/new-committed-file.bin"),
+            b"commit happened but journal did not finish",
+        )
+        .unwrap();
+        let error = ensure_recovery_safe(&app.data, &root).unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("Unfinished commit requires recovery")
+        );
+        assert!(root.join("OMGAUDIO/new-committed-file.bin").is_file());
+    }
+    #[test]
     fn failed_commit_restores_the_original_library() {
         let temp = tempfile::tempdir().unwrap();
         let original = temp.path().join("OMGAUDIO");
@@ -1123,6 +1274,59 @@ mod tests {
             drop(state);
             app.state.lock().unwrap().queue = vec![key];
         }
+    }
+
+    #[test]
+    fn near_full_player_appends_without_copying_unchanged_files_twice() {
+        let (_temp, app, root, source) = virtual_player();
+        let large = root.join("OMGAUDIO/large-unchanged.bin");
+        fs::File::create(&large)
+            .unwrap()
+            .set_len(8 * 1024 * 1024)
+            .unwrap();
+        let original_hash = metadata::hash_file(&large).unwrap();
+        let source_hash = metadata::hash_file(&source).unwrap();
+        let snapshot = app.state.lock().unwrap().clone();
+        transfer_with_capacity(
+            &app,
+            true,
+            &root,
+            snapshot,
+            |delta, incoming| {
+                assert!(!delta.join("large-unchanged.bin").exists());
+                copy_tree(delta, incoming)
+            },
+            || Ok(4 * 1024 * 1024),
+        )
+        .unwrap();
+        assert_eq!(metadata::hash_file(&large).unwrap(), original_hash);
+        assert_eq!(metadata::hash_file(&source).unwrap(), source_hash);
+        let tracks = protocol::read_device(&root).unwrap();
+        assert_eq!(tracks.len(), 1);
+        assert!(tracks[0].cover.is_some());
+        let state = app.state.lock().unwrap();
+        let run = Path::new(state.job.backup.as_ref().unwrap());
+        assert_eq!(
+            metadata::hash_file(&run.join("before/OMGAUDIO/large-unchanged.bin")).unwrap(),
+            original_hash
+        );
+        let journal: Value =
+            serde_json::from_slice(&fs::read(run.join("transaction.json")).unwrap()).unwrap();
+        assert_eq!(journal["mode"], "reuse_unchanged");
+        assert!(journal["device_staging_bytes"].as_u64().unwrap() < 4 * 1024 * 1024);
+        assert!(
+            journal["reused_paths"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|path| path == "large-unchanged.bin")
+        );
+        assert!(
+            !Path::new(journal["device_backup"].as_str().unwrap())
+                .join("large-unchanged.bin")
+                .exists()
+        );
+        assert!(state.queue.is_empty());
     }
 
     #[test]

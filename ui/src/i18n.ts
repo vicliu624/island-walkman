@@ -23,7 +23,7 @@ function setLanguage(value: Language) {
 }
 export function translate(locale: Language, key: string, ...values: unknown[]): string {
     const entry = messages[key];
-    const text = locale === 'zh-CN' ? (key === 'Language' ? '界面语言' : key) : entry?.[locale === 'ja' ? 1 : 0] ?? key;
+    const text = locale === 'zh-CN' ? (key === 'Language' ? '界面语言' : entry?.[2] ?? key) : entry?.[locale === 'ja' ? 1 : 0] ?? key;
     return text.replace(/\{(\d+)\}/g, (_, index: string) => String(values[Number(index)] ?? ''));
 }
 export function tr(key: string, ...values: unknown[]): string { return translate(language, key, ...values); }

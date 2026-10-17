@@ -66,7 +66,11 @@ Connect the A918 in USB storage mode. Typical roots are `F:/`, `/media/user/WALK
 
 Experimental writes require `--allow-experimental-device-write`. This development gate is not a compatibility guarantee. The available player currently produces lower-level I/O errors during full transfers. Passing unit tests and the separate successful artwork probe do not establish full native transfer support.
 
-Before commit the program stages and hashes new files, verifies the original library and retains a host backup. A host `transaction.json` records paths, manifests and commit phase. After success, `ISLAND-BACKUP-*` retains the previous device library. An incomplete `ISLAND-NEW-*` folder does not mean a transfer committed.
+Before commit the program stages and hashes new files, verifies the original library and retains a complete host backup. A host `transaction.json` records paths, manifests and commit phase. An incomplete `ISLAND-NEW-*` folder does not mean a transfer committed.
+
+When enough space is available, the player receives a complete staged library and `ISLAND-BACKUP-*` retains the previous library. With less free space, only new/changed files are copied; unchanged files are moved on the same volume during commit. The journal records `mode: reuse_unchanged` and the reuse paths. In this mode the device backup is **partial**, and the verified computer backup is the complete recovery source. An interruption can leave files split between incoming and backup directories; do not delete either until recovery is resolved. Unfinished commits block a new transfer instead of being silently retried.
+
+Space estimates reserve up to 64 KiB per copied file and destination directory, plus a 1 MiB margin. Reused files still require destination directory entries. Host backups contain the full library, so the computer also needs sufficient disk space. Low-space commit and rollback are covered by simulated filesystem tests; physical disconnect and FAT32 power-loss behavior remain unverified.
 
 Safely eject the player and check playback after a successful transfer. On I/O errors, stop writing and inspect the connection and filesystem. Automatic filesystem repair, formatting and firmware changes are outside the application.
 

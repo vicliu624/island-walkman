@@ -9,10 +9,11 @@ const {messages}=await import('data:text/javascript;base64,'+Buffer.from(module)
 const slots=text=>[...text.matchAll(/\{\d+\}/g)].map(match=>match[0]).sort();
 let count=0;
 for(const [key,values] of Object.entries(messages)) {
-    assert.equal(values.length,2,key);
+    assert(values.length===2||values.length===3,key);
     assert(values.every(value=>typeof value==='string'&&value.trim()),key);
     assert.deepEqual(slots(values[0]),slots(key),`English placeholders: ${key}`);
     assert.deepEqual(slots(values[1]),slots(key),`Japanese placeholders: ${key}`);
+    if(values[2]) assert.deepEqual(slots(values[2]),slots(key),`Chinese placeholders: ${key}`);
     assert(!/\p{Script=Han}/u.test(values[0]),`Chinese text in English value: ${key}`);
     count++;
 }
@@ -38,4 +39,5 @@ assert.equal(translateDiagnostic('ja','Completed'),'完了');
 assert.equal(translateDiagnostic('zh-CN','Cannot copy file: F:/Music/test.mp3'),'复制文件失败：F:/Music/test.mp3');
 assert.equal(translateDiagnostic('en','已完成'),'Completed');
 assert.equal(translateDiagnostic('ja','Operation failed: Transfer queue is empty'),'操作に失敗しました：転送キューは空です');
+assert.equal(translateDiagnostic('ja','Low-space commit failed; original library restored: injected I/O error'),'省容量の確定に失敗しました。旧曲庫は復元されました: injected I/O error');
 console.log(`Translation checks passed: ${count} complete English/Chinese/Japanese messages.`);

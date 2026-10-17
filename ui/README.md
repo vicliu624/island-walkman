@@ -14,7 +14,7 @@ The build validates translation coverage and interpolation placeholders, checks 
 
 English is the initial language. A top-bar picker offers English, Simplified Chinese and Japanese. Its browser storage key is `island-walkman.language`. Invalid or unavailable storage falls back to English. The document language and title follow the selected locale. Music metadata, filesystem paths and raw OS error details are not translated.
 
-`src/messages.ts` contains UI messages. Keys preserve original wording, with English/Japanese translations and Chinese source text. `src/i18n.ts` handles interpolation, storage and reactive changes. `tools/check-ui.mjs` checks coverage and rejects untranslated Chinese JSX except language-picker endonyms.
+`src/messages.ts` contains UI messages. Keys preserve original wording, with English/Japanese translations and Chinese source text. An optional third value overrides Chinese wording when help text changes without changing a source key. `src/i18n.ts` handles interpolation, storage and reactive changes. `tools/check-ui.mjs` checks coverage and rejects untranslated Chinese JSX except language-picker endonyms.
 
 ## Behavior and verification
 

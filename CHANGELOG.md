@@ -14,6 +14,7 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 - Recovery journals, per-file flushing and destination paths in copy errors.
 - Preflight protection for existing or malformed device playlists.
 - Full staged-transfer and append tests using a virtual player, with copy interruption, external modification, commit failure and rollback failure scenarios.
+- Low-space staging copies only changed files and reuses unchanged files by same-volume moves, with a complete computer backup and interrupted-commit checks.
 
 ### Changed
 
