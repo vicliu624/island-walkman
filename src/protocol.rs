@@ -3,7 +3,6 @@ pub use crate::database::write_database;
 use crate::metadata::{self, Track};
 use anyhow::{Context, Result, ensure};
 use std::{
-    collections::BTreeMap,
     fs::{self, File},
     io::{Read, Seek, SeekFrom, Write},
     path::{Path, PathBuf},
@@ -287,6 +286,7 @@ pub fn validate_rebuild_supported(root: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::collections::BTreeMap;
     #[test]
     fn rebuild_refuses_existing_playlists_and_malformed_sections() {
         let d = tempfile::tempdir().unwrap();

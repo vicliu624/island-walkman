@@ -21,6 +21,15 @@ def copy(source, target):
         shutil.copy2(source, target)
 
 
+def write_zip(stage, archive):
+    # Dependency license files can retain registry timestamps before 1980.
+    # ZIP cannot represent those dates; clamp them without omitting notices.
+    with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED, strict_timestamps=False) as output:
+        for file in sorted(stage.rglob('*')):
+            if file.is_file():
+                output.write(file, file.relative_to(stage.parent))
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--platform', required=True, choices=['windows', 'debian', 'macos'])
@@ -87,10 +96,7 @@ def main():
     artifacts = []
     if args.platform == 'windows':
         archive = dist/(name+'.zip')
-        with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as output:
-            for file in sorted(stage.rglob('*')):
-                if file.is_file():
-                    output.write(file, file.relative_to(stage.parent))
+        write_zip(stage,archive)
         artifacts.append(archive)
     else:
         archive = dist/(name+'.tar.gz')

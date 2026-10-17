@@ -66,6 +66,8 @@ jobs:
         run: cargo fmt --check
       - name: Check documentation
         run: python tools/check-docs.py
+      - name: Test archive packaging
+        run: python -m unittest discover -s tools -p test_package.py
       - name: Test Rust
         run: cargo test --locked --target ${{ matrix.target }}
       - name: Build executable
