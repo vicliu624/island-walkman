@@ -70,7 +70,7 @@ def main():
         copy(ROOT/file, stage/file)
     # Preserve licenses supplied with bundled UI dependencies, including fonts.
     notices = stage/'third-party-licenses'
-    copy(ROOT/'licenses',notices/'fonts')
+    copy(ROOT/'licenses',notices/'bundled')
     lock=json.loads((ROOT/'ui/package-lock.json').read_text())
     for location,metadata in lock['packages'].items():
         if not location or metadata.get('dev'):
