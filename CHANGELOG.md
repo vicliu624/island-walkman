@@ -28,6 +28,7 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 - OMA readback preserves track totals and disc numbers/totals.
 - Full Unicode OMA tags round-trip without changing source or audio bytes.
 - Artwork readback follows stable track/group IDs from the selected thumbnail tree, preserving covers when artist or album display labels exceed the index text limit.
+- Global SYSB serialization uses the accepted A918 profile word and derives its compact span from the actual row data; undocumented flag semantics remain explicitly unclaimed.
 - Commit failures now report failed rollback explicitly and retain recovery locations in the journal instead of discarding restoration errors.
 
 ### Known issues

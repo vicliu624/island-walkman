@@ -181,8 +181,9 @@ fn catalog_tree_descriptors() -> Vec<u8> {
         })
         .collect();
     let mut system = Section::rows("SYSB", 0x50, vec![vec![0; 0x50]]);
-    system.flags = [0xd0000000, 0];
-    system.minimum_size = 0x70;
+    // Match the observed A918 system profile. The flag word is retained as
+    // opaque profile data; its individual bits have not been established.
+    system.flags = [0xd1010100, 0];
     let mut trees = Section::rows("GTLB", 0x50, rows);
     trees.flags = [6, 0x04000000];
     document("GTLT", vec![system, trees])
@@ -349,4 +350,23 @@ pub fn write_database(root: &Path, tracks: &[Track], artwork: bool) -> Result<()
         group_file(records, if artwork { 0x210 } else { 0x110 }),
     )?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn global_system_header_matches_the_accepted_a918_profile() {
+        // First 64 bytes of the accepted, firmware-normalized global table.
+        // Only protocol header bytes are used; no Sony executable is included.
+        let observed = "47544c540101000002000000000000005359534200000030000000600000000047544c420000009000000e20000000005359534200010050d101010000000000";
+        let expected: Vec<u8> = observed
+            .as_bytes()
+            .chunks_exact(2)
+            .map(|pair| u8::from_str_radix(std::str::from_utf8(pair).unwrap(), 16).unwrap())
+            .collect();
+        let actual = catalog_tree_descriptors();
+        assert_eq!(&actual[..expected.len()], expected);
+        assert_eq!(actual.len(), 3760);
+    }
 }
