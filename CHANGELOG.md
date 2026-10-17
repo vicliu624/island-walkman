@@ -27,6 +27,7 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 - Albums can use a cover supplied by a later song.
 - OMA readback preserves track totals and disc numbers/totals.
 - Full Unicode OMA tags round-trip without changing source or audio bytes.
+- Artwork readback follows stable track/group IDs from the selected thumbnail tree, preserving covers when artist or album display labels exceed the index text limit.
 - Commit failures now report failed rollback explicitly and retain recovery locations in the journal instead of discarding restoration errors.
 
 ### Known issues

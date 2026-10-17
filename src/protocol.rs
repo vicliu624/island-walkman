@@ -121,7 +121,8 @@ pub fn read_device(root: &Path) -> Result<Vec<Track>> {
     if !dir.exists() {
         return Ok(vec![]);
     }
-    let covers = crate::sony_artwork::existing_album_covers(&dir)?;
+    let track_covers = crate::sony_artwork::existing_track_covers(&dir)?;
+    let mut album_covers = None;
     let b = fs::read(dir.join("04CNTINF.DAT")).context("Cannot read the device music database")?;
     ensure!(
         b.len() >= 48 && &b[..4] == b"CNIF",
@@ -216,9 +217,17 @@ pub fn read_device(root: &Path) -> Result<Vec<Track>> {
                 pos += 10 + len;
             }
         }
-        t.cover = covers
-            .get(&(t.album_artist_or_artist().to_owned(), t.album.clone()))
-            .cloned();
+        t.cover = track_covers.get(&id).cloned();
+        if t.cover.is_none() {
+            if album_covers.is_none() {
+                album_covers = Some(crate::sony_artwork::existing_album_covers(&dir)?);
+            }
+            t.cover = album_covers
+                .as_ref()
+                .unwrap()
+                .get(&(t.album_artist_or_artist().to_owned(), t.album.clone()))
+                .cloned();
+        }
         out.push(t);
     }
     Ok(out)

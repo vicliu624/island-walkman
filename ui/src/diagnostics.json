@@ -623,5 +623,55 @@
     "Recovery journal update failed: {journal_error}",
     "復旧記録を更新できません：{journal_error}",
     "恢复日志更新失败：{journal_error}"
+  ],
+  [
+    "Invalid artwork index header",
+    "ジャケット索引のヘッダーが無効です",
+    "封面索引头无效"
+  ],
+  [
+    "Truncated artwork index directory",
+    "ジャケット索引のディレクトリが不完全です",
+    "封面索引目录已截断"
+  ],
+  [
+    "Duplicate artwork index section",
+    "ジャケット索引のセクションが重複しています",
+    "封面索引存在重复区段"
+  ],
+  [
+    "Artwork index section out of bounds",
+    "ジャケット索引のセクションが範囲外です",
+    "封面索引区段越界"
+  ],
+  [
+    "Artwork index section identifier mismatch",
+    "ジャケット索引の識別子が一致しません",
+    "封面索引区段标识不一致"
+  ],
+  [
+    "Invalid artwork index record size",
+    "ジャケット索引のレコード長が無効です",
+    "封面索引记录尺寸无效"
+  ],
+  [
+    "Missing artwork index section",
+    "ジャケット索引に必要なセクションがありません",
+    "缺少封面索引区段"
+  ],
+  [
+    "Duplicate artwork tree marker",
+    "ジャケットツリーのマーカーが重複しています",
+    "封面树标记重复"
+  ],
+  [
+    "Artwork track mapping out of bounds",
+    "曲とジャケットの対応が範囲外です",
+    "歌曲与封面映射越界"
+  ],
+  [
+    "Ambiguous artwork track mapping",
+    "曲とジャケットの対応が一意ではありません",
+    "歌曲与封面映射不明确"
   ]
 ]

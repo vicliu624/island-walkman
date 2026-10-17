@@ -7,6 +7,185 @@ use std::{
     path::Path,
 };
 
+fn binary_rows<'a>(bytes: &'a [u8], signature: &[u8; 4], tag: &[u8; 4]) -> Result<Vec<&'a [u8]>> {
+    ensure!(
+        bytes.len() >= 16 && &bytes[..4] == signature,
+        "Invalid artwork index header"
+    );
+    let sections = bytes[8] as usize;
+    ensure!(
+        sections > 0 && 16 + sections * 16 <= bytes.len(),
+        "Truncated artwork index directory"
+    );
+    let mut result = None;
+    for directory in bytes[16..16 + sections * 16].chunks_exact(16) {
+        if &directory[..4] != tag {
+            continue;
+        }
+        ensure!(result.is_none(), "Duplicate artwork index section");
+        let start = u32::from_be_bytes(directory[4..8].try_into().unwrap()) as usize;
+        let length = u32::from_be_bytes(directory[8..12].try_into().unwrap()) as usize;
+        ensure!(
+            start >= 16 + sections * 16
+                && length >= 16
+                && start
+                    .checked_add(length)
+                    .is_some_and(|end| end <= bytes.len()),
+            "Artwork index section out of bounds"
+        );
+        ensure!(
+            &bytes[start..start + 4] == tag,
+            "Artwork index section identifier mismatch"
+        );
+        let count = u16::from_be_bytes(bytes[start + 4..start + 6].try_into().unwrap()) as usize;
+        let width = u16::from_be_bytes(bytes[start + 6..start + 8].try_into().unwrap()) as usize;
+        ensure!(
+            width > 0 && 16 + count * width <= length,
+            "Invalid artwork index record size"
+        );
+        result = Some(
+            bytes[start + 16..start + 16 + count * width]
+                .chunks_exact(width)
+                .collect(),
+        );
+    }
+    result.ok_or_else(|| anyhow::anyhow!("Missing artwork index section"))
+}
+fn picture_file(root: &Path, canonical_root: &Path, descriptor: &str) -> Result<Option<String>> {
+    let Some((_, relative)) = descriptor.split_once(';') else {
+        return Ok(None);
+    };
+    let relative = relative.replace('\\', "/");
+    ensure!(
+        !relative.is_empty()
+            && !relative.contains(':')
+            && relative
+                .split('/')
+                .all(|part| !part.is_empty() && part != "." && part != ".."),
+        "Invalid device artwork path"
+    );
+    let path = root.join(relative);
+    if !path.is_file() {
+        return Ok(None);
+    }
+    let resolved = path.canonicalize()?;
+    ensure!(
+        resolved.starts_with(canonical_root),
+        "Device artwork path escapes the library"
+    );
+    Ok(Some(resolved.to_string_lossy().into_owned()))
+}
+
+/// Follow the firmware's selected thumbnail tree and stable numeric track IDs.
+/// This avoids matching full OMA text against truncated GPIF display labels.
+pub fn existing_track_covers(root: &Path) -> Result<std::collections::BTreeMap<u16, String>> {
+    let mut result = std::collections::BTreeMap::new();
+    let path = root.join("02TREINF.DAT");
+    if !path.exists() {
+        return Ok(result);
+    }
+    let info = fs::read(path)?;
+    let mut tree_number = None;
+    for (index, row) in binary_rows(&info, b"GTIF", b"GTFB")?
+        .into_iter()
+        .enumerate()
+    {
+        if row.len() < 16 {
+            continue;
+        }
+        let fields = u16::from_be_bytes(row[12..14].try_into().unwrap()) as usize;
+        let width = u16::from_be_bytes(row[14..16].try_into().unwrap()) as usize;
+        if fields == 0 {
+            continue;
+        }
+        ensure!(
+            width == 128 && 16 + fields * width <= row.len(),
+            "Invalid artwork index record size"
+        );
+        for field in row[16..16 + fields * width].chunks_exact(width) {
+            if &field[..6] != b"TIT2\x00\x02" {
+                continue;
+            }
+            let units: Vec<u16> = field[6..]
+                .chunks_exact(2)
+                .map(|b| u16::from_be_bytes([b[0], b[1]]))
+                .take_while(|u| *u != 0)
+                .collect();
+            if String::from_utf16(&units)? == "STD_TPE1_THUMBNAIL" {
+                ensure!(
+                    tree_number.replace(index + 1).is_none(),
+                    "Duplicate artwork tree marker"
+                );
+            }
+        }
+    }
+    let Some(number) = tree_number else {
+        return Ok(result);
+    };
+    let tree = fs::read(root.join(format!("01TREE{number:02X}.DAT")))?;
+    let groups = binary_rows(&tree, b"TREE", b"GPLB")?;
+    let tracks = binary_rows(&tree, b"TREE", b"TPLB")?;
+    let metadata = fs::read(root.join(format!("03GINF{number:02X}.DAT")))?;
+    let records = album_records(&metadata)?;
+    let canonical_root = root.canonicalize()?;
+    let mut ranges = vec![];
+    for group in groups {
+        ensure!(group.len() >= 8, "Invalid artwork index record size");
+        let id = u16::from_be_bytes(group[..2].try_into().unwrap()) as usize;
+        let start = u16::from_be_bytes(group[4..6].try_into().unwrap()) as usize;
+        if start == 0 {
+            continue;
+        }
+        ensure!(
+            id > 0 && id <= records.len() && start <= tracks.len(),
+            "Artwork track mapping out of bounds"
+        );
+        ensure!(
+            ranges.last().is_none_or(|&(_, previous)| start > previous),
+            "Ambiguous artwork track mapping"
+        );
+        ranges.push((id, start));
+    }
+    for (index, &(id, start)) in ranges.iter().enumerate() {
+        let end = ranges
+            .get(index + 1)
+            .map(|&(_, next)| next - 1)
+            .unwrap_or(tracks.len());
+        let record = &records[id - 1];
+        let mut picture = None;
+        for tag in [b"PICP", b"PIC0"] {
+            if !record.fields.contains_key(tag) {
+                continue;
+            }
+            for descriptor in record
+                .text(&metadata, tag)?
+                .split('|')
+                .filter(|value| !value.is_empty())
+            {
+                if let Some(file) = picture_file(root, &canonical_root, descriptor)? {
+                    picture = Some(file);
+                    break;
+                }
+            }
+            if picture.is_some() {
+                break;
+            }
+        }
+        let Some(picture) = picture else {
+            continue;
+        };
+        for track in &tracks[start - 1..end] {
+            ensure!(track.len() >= 2, "Invalid artwork index record size");
+            let id = u16::from_be_bytes(track[..2].try_into().unwrap());
+            ensure!(id > 0, "Artwork track mapping out of bounds");
+            if let Some(previous) = result.insert(id, picture.clone()) {
+                ensure!(previous == picture, "Ambiguous artwork track mapping");
+            }
+        }
+    }
+    Ok(result)
+}
+
 /// Recover cover sources for existing songs before rebuilding indexes. Reject
 /// absolute paths and traversal rather than trusting device metadata as a path.
 pub fn existing_album_covers(
@@ -26,28 +205,9 @@ pub fn existing_album_covers(
             continue;
         }
         let descriptor = record.text(&bytes, b"PICP")?;
-        let Some((_, relative)) = descriptor.split_once(';') else {
+        let Some(path) = picture_file(root, &canonical_root, &descriptor)? else {
             continue;
         };
-        let normalized = relative.replace('\\', "/");
-        ensure!(
-            !normalized.is_empty()
-                && !normalized.contains(':')
-                && normalized
-                    .split('/')
-                    .all(|c| !c.is_empty() && c != "." && c != ".."),
-            "Invalid device artwork path"
-        );
-        let cover = root.join(normalized);
-        if !cover.is_file() {
-            continue;
-        }
-        let resolved = cover.canonicalize()?;
-        ensure!(
-            resolved.starts_with(&canonical_root),
-            "Device artwork path escapes the library"
-        );
-        let path = resolved.to_string_lossy().into_owned();
         // Legacy JSymphonic prepends artist/ to album group titles. Keep both
         // aliases so rebuilding a library does not discard its existing art.
         if let Some(album) = name.strip_prefix(&format!("{artist}/")) {
@@ -376,6 +536,30 @@ pub fn patch_hierarchical_album_cover(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn selected_artwork_tree_rejects_truncated_or_out_of_bounds_sections() {
+        let temp = tempfile::tempdir().unwrap();
+        crate::protocol::write_database(temp.path(), &[], true).unwrap();
+        assert!(existing_track_covers(temp.path()).unwrap().is_empty());
+        let path = temp.path().join("01TREE2D.DAT");
+        let original = fs::read(&path).unwrap();
+        let mut bad = original.clone();
+        bad[20..24].copy_from_slice(&u32::MAX.to_be_bytes());
+        fs::write(&path, bad).unwrap();
+        assert!(
+            existing_track_covers(temp.path())
+                .unwrap_err()
+                .to_string()
+                .contains("out of bounds")
+        );
+        fs::write(&path, &original[..20]).unwrap();
+        assert!(
+            existing_track_covers(temp.path())
+                .unwrap_err()
+                .to_string()
+                .contains("Truncated")
+        );
+    }
     #[test]
     fn sony_recovered_naming() {
         assert_eq!(relative_path(1, 1, 0).unwrap(), "20P01\\1G0001P0.JPG");

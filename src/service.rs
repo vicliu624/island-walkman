@@ -1126,6 +1126,27 @@ mod tests {
     }
 
     #[test]
+    fn long_artist_and_album_tags_keep_artwork_after_device_readback() {
+        let (_temp, app, root, _source) = virtual_player();
+        let artist = "艺术家 🎸 ".repeat(15);
+        let album = "長いアルバム名 🎵 ".repeat(15);
+        {
+            let mut state = app.state.lock().unwrap();
+            state.tracks[0].artist = artist.clone();
+            state.tracks[0].album = album.clone();
+        }
+        let snapshot = app.state.lock().unwrap().clone();
+        transfer_staged(&app, true, &root, snapshot, copy_tree).unwrap();
+        let track = protocol::read_device(&root).unwrap().remove(0);
+        assert_eq!(track.artist, artist);
+        assert_eq!(track.album, album);
+        assert!(
+            track.cover.is_some(),
+            "Artwork association must not depend on truncated index labels"
+        );
+    }
+
+    #[test]
     fn interrupted_device_copy_preserves_original_and_records_recovery_paths() {
         let (_temp, app, root, _source) = virtual_player();
         let before = manifest(&root.join("OMGAUDIO")).unwrap();
