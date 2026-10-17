@@ -64,6 +64,8 @@ Preparation writes to `<data>/preparations/<run>/`. It does not write to a playe
 
 Connect the A918 in USB storage mode. Typical roots are `F:/`, `/media/user/WALKMAN` and `/Volumes/WALKMAN`. Detect a mounted player or enter its root manually. The process needs filesystem write permission; no custom USB driver is installed.
 
+Device roots are resolved before validation. Windows targets must use a local drive letter and cannot be on the current system drive, including verbatim path forms. Unix filesystem-root aliases are rejected. These checks apply to player targets; source music and application data can remain on the system drive.
+
 Experimental writes require `--allow-experimental-device-write`. This development gate is not a compatibility guarantee. The available player currently produces lower-level I/O errors during full transfers. Passing unit tests and the separate successful artwork probe do not establish full native transfer support.
 
 Before commit the program stages and hashes new files, verifies the original library and retains a complete host backup. A host `transaction.json` records paths, manifests and commit phase. An incomplete `ISLAND-NEW-*` folder does not mean a transfer committed.

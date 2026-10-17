@@ -723,5 +723,10 @@
     "Unfinished commit requires recovery; complete host backup: {}",
     "未完了の確定を復旧する必要があります。パソコン側の完全なバックアップ：{}",
     "未完成的提交需要恢复；电脑端完整备份：{}"
+  ],
+  [
+    "Windows target must use a local drive letter",
+    "Windows の転送先にはローカルのドライブ文字を使用してください",
+    "Windows 传输目标必须使用本地盘符"
   ]
 ]

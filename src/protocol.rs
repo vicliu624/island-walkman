@@ -234,19 +234,47 @@ pub fn read_device(root: &Path) -> Result<Vec<Track>> {
 }
 pub fn validate_device(root: &Path) -> Result<()> {
     ensure!(root.is_dir(), "Device directory does not exist");
-    ensure!(
-        root.join("DCIM").is_dir() && root.join("VIDEO").is_dir() && root.join("PICTURE").is_dir(),
-        "Not an expected A918 root directory"
-    );
+    let canonical = root.canonicalize()?;
     #[cfg(windows)]
-    ensure!(
-        !root.to_string_lossy().to_uppercase().starts_with("C:"),
-        "Refusing to write to the system drive"
-    );
+    {
+        let system = std::env::var_os("SystemDrive")
+            .and_then(|value| windows_drive(Path::new(&value)))
+            .unwrap_or(b'C');
+        validate_windows_drive(&canonical, system)?;
+    }
     #[cfg(unix)]
     ensure!(
-        root != Path::new("/"),
+        canonical != Path::new("/"),
         "Refusing to write to the filesystem root"
+    );
+    ensure!(
+        canonical.join("DCIM").is_dir()
+            && canonical.join("VIDEO").is_dir()
+            && canonical.join("PICTURE").is_dir(),
+        "Not an expected A918 root directory"
+    );
+    Ok(())
+}
+
+#[cfg(windows)]
+fn windows_drive(path: &Path) -> Option<u8> {
+    use std::path::{Component, Prefix};
+    match path.components().next()? {
+        Component::Prefix(prefix) => match prefix.kind() {
+            Prefix::Disk(letter) | Prefix::VerbatimDisk(letter) => {
+                Some(letter.to_ascii_uppercase())
+            }
+            _ => None,
+        },
+        _ => None,
+    }
+}
+#[cfg(windows)]
+fn validate_windows_drive(path: &Path, system: u8) -> Result<()> {
+    let drive = windows_drive(path).context("Windows target must use a local drive letter")?;
+    ensure!(
+        drive != system.to_ascii_uppercase(),
+        "Refusing to write to the system drive"
     );
     Ok(())
 }
@@ -296,6 +324,66 @@ pub fn validate_rebuild_supported(root: &Path) -> Result<()> {
 mod tests {
     use super::*;
     use std::collections::BTreeMap;
+    #[cfg(windows)]
+    #[test]
+    fn windows_drive_policy_handles_verbatim_prefixes_and_alternate_system_drives() {
+        for path in [r"C:\WALKMAN", r"\\?\C:\WALKMAN", r"c:\WALKMAN"] {
+            assert!(validate_windows_drive(Path::new(path), b'C').is_err());
+        }
+        assert!(validate_windows_drive(Path::new(r"\\?\D:\WALKMAN"), b'D').is_err());
+        for path in [r"F:\", r"\\?\F:\"] {
+            validate_windows_drive(Path::new(path), b'C').unwrap();
+        }
+        for path in [
+            r"\\server\share\WALKMAN",
+            r"\\?\Volume{not-a-drive-letter}\",
+        ] {
+            assert!(validate_windows_drive(Path::new(path), b'C').is_err());
+        }
+    }
+    #[cfg(unix)]
+    #[test]
+    fn root_aliases_are_rejected_before_device_signature_checks() {
+        for path in [Path::new("/"), Path::new("/./")] {
+            assert!(
+                validate_device(path)
+                    .unwrap_err()
+                    .to_string()
+                    .contains("filesystem root")
+            );
+        }
+        let temp = tempfile::tempdir().unwrap();
+        let alias = temp.path().join("root-alias");
+        std::os::unix::fs::symlink("/", &alias).unwrap();
+        assert!(
+            validate_device(&alias)
+                .unwrap_err()
+                .to_string()
+                .contains("filesystem root")
+        );
+    }
+    #[cfg(windows)]
+    #[test]
+    fn device_validation_keeps_system_drive_checks_after_canonicalization() {
+        use std::path::{Component, Prefix};
+        let temp = tempfile::tempdir().unwrap();
+        for name in ["DCIM", "VIDEO", "PICTURE"] {
+            fs::create_dir(temp.path().join(name)).unwrap();
+        }
+        let canonical = temp.path().canonicalize().unwrap();
+        let drive = match canonical.components().next().unwrap() {
+            Component::Prefix(prefix) => match prefix.kind() {
+                Prefix::Disk(d) | Prefix::VerbatimDisk(d) => d.to_ascii_uppercase(),
+                _ => panic!("Expected local temporary drive"),
+            },
+            _ => panic!("Expected Windows drive prefix"),
+        };
+        let system_drive = std::env::var("SystemDrive")
+            .unwrap_or_else(|_| "C:".into())
+            .as_bytes()[0]
+            .to_ascii_uppercase();
+        assert_eq!(validate_device(&canonical).is_err(), drive == system_drive);
+    }
     #[test]
     fn rebuild_refuses_existing_playlists_and_malformed_sections() {
         let d = tempfile::tempdir().unwrap();
