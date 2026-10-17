@@ -1,0 +1,607 @@
+[
+  [
+    "Incomplete ID3 read: {e}; correct tags in the editor",
+    "ID3 の読み取りが不完全です：{e}。タグ編集で修正できます",
+    "ID3 未完整读取：{e}；可在标签面板修正"
+  ],
+  [
+    "Artwork read failed: {e}",
+    "ジャケットの読み取りに失敗しました：{e}",
+    "封面读取失败：{e}"
+  ],
+  [
+    "Non-ASCII ID3v1 text uses ISO-8859-1. Correct garbled text in the editor; GBK and Shift-JIS are not guessed automatically.",
+    "非 ASCII の ID3v1 は ISO-8859-1 として読み取ります。文字化けはタグ編集で修正してください。GBK や Shift-JIS は自動推測しません。",
+    "ID3v1 非 ASCII 文本按 ISO-8859-1 读取；若显示乱码，请在标签面板手动修正，不自动猜测 GBK 或 Shift-JIS"
+  ],
+  [
+    "MP3 sample rate changes within the file; direct wrapping is unsupported",
+    "MP3 内でサンプルレートが変わるため直接変換できません",
+    "MP3 采样率在文件中变化，不支持直接包装"
+  ],
+  [
+    "No valid MP3 audio frame: {}",
+    "有効な MP3 フレームがありません：{}",
+    "找不到有效 MP3 音频帧：{}"
+  ],
+  [
+    "Audio is too long",
+    "音声が長すぎます",
+    "音频过长"
+  ],
+  [
+    "Title",
+    "曲名",
+    "曲名"
+  ],
+  [
+    "Artist",
+    "アーティスト",
+    "艺术家"
+  ],
+  [
+    "Album",
+    "アルバム",
+    "专辑"
+  ],
+  [
+    "Genre",
+    "ジャンル",
+    "流派"
+  ],
+  [
+    "{name} exceeds 60 UTF-16 code units; full text is retained locally and in OMA tags",
+    "{name} は60 UTF-16単位を超えます。全文はローカルと OMA タグに保持されます",
+    "{name}超过设备列表的 60 个 UTF-16 单位；完整文本保留在本地和 OMA 中"
+  ],
+  [
+    "Invalid artwork cache key",
+    "ジャケットのキャッシュキーが無効です",
+    "无效的封面缓存键"
+  ],
+  [
+    "Too many device groups (maximum 2048)",
+    "機器の分類数が上限2048を超えています",
+    "设备分类超过 2048 个，停止写入"
+  ],
+  [
+    "OMA tags are too large",
+    "OMA タグが大きすぎます",
+    "OMA 标签过大"
+  ],
+  [
+    "Track count exceeds device index limits",
+    "曲数が機器の索引上限を超えています",
+    "歌曲超过设备索引范围"
+  ],
+  [
+    "Duplicate device track ID",
+    "機器の曲 ID が重複しています",
+    "重复设备歌曲 ID"
+  ],
+  [
+    "Cannot read the device music database",
+    "機器の曲データベースを読み取れません",
+    "读取设备歌曲数据库失败"
+  ],
+  [
+    "Unrecognized device database",
+    "機器のデータベースを認識できません",
+    "无法识别设备数据库"
+  ],
+  [
+    "Database header is out of bounds",
+    "データベースのヘッダーが範囲外です",
+    "数据库头部越界"
+  ],
+  [
+    "Invalid database record size",
+    "データベースのレコード長が無効です",
+    "数据库记录尺寸无效"
+  ],
+  [
+    "Database is truncated",
+    "データベースが途中で切れています",
+    "数据库已截断"
+  ],
+  [
+    "OMA file missing for track {id}",
+    "曲 {id} の OMA ファイルがありません",
+    "歌曲 {id} 的 OMA 文件缺失"
+  ],
+  [
+    "OMA tags exceed size limits",
+    "OMA タグが上限を超えています",
+    "OMA 标签超限"
+  ],
+  [
+    "Device directory does not exist",
+    "機器のディレクトリがありません",
+    "设备目录不存在"
+  ],
+  [
+    "Not an expected A918 root directory",
+    "A918 のルートディレクトリではありません",
+    "不是预期的 A918 根目录"
+  ],
+  [
+    "Refusing to write to the system drive",
+    "システムドライブへの書き込みを拒否しました",
+    "拒绝写入系统盘"
+  ],
+  [
+    "Refusing to write to the filesystem root",
+    "システムのルートへの書き込みを拒否しました",
+    "拒绝写入系统根目录"
+  ],
+  [
+    "Cannot read playlists: {}",
+    "プレイリストを読み取れません：{}",
+    "读取播放列表失败：{}"
+  ],
+  [
+    "Truncated playlist header: {name}",
+    "プレイリストのヘッダーが不完全です：{name}",
+    "播放列表文件头已截断：{name}"
+  ],
+  [
+    "Invalid playlist directory: {name}",
+    "プレイリストのディレクトリが無効です：{name}",
+    "播放列表目录无效：{name}"
+  ],
+  [
+    "Playlist section out of bounds: {name}",
+    "プレイリストのセクションが範囲外です：{name}",
+    "播放列表 section 越界：{name}"
+  ],
+  [
+    "Playlist section identifier mismatch: {name}",
+    "プレイリストの識別子が一致しません：{name}",
+    "播放列表 section 标识不一致：{name}"
+  ],
+  [
+    "Existing device playlists are not yet supported; transfer stopped without changing the library",
+    "既存のプレイリストは未対応です。曲庫を変更せず転送を停止しました",
+    "设备已有播放列表，当前版本尚不能保留其索引；已停止传输，未改动曲库"
+  ],
+  [
+    "A task is running; try again later",
+    "処理中です。しばらくしてからお試しください",
+    "正在处理任务，请稍后再试"
+  ],
+  [
+    "Another task is already running",
+    "別のタスクが実行中です",
+    "已有任务正在运行"
+  ],
+  [
+    "Completed",
+    "完了",
+    "已完成"
+  ],
+  [
+    "Operation failed: {e:#}",
+    "操作に失敗しました：{e:#}",
+    "操作失败：{e:#}"
+  ],
+  [
+    "This version imports MP3 only; convert other formats first",
+    "この版は MP3 のみ取り込めます。他の形式は先に変換してください",
+    "此版本仅直接导入 MP3；其他格式请先转为 MP3"
+  ],
+  [
+    "No MP3 files found",
+    "MP3 ファイルがありません",
+    "没有找到 MP3 文件"
+  ],
+  [
+    "Reading {}",
+    "読み取り中：{}",
+    "读取 {}"
+  ],
+  [
+    "Some files could not be imported: {}",
+    "一部のファイルを取り込めませんでした：{}",
+    "部分文件导入失败：{}"
+  ],
+  [
+    "Device library contains a symbolic link; copy stopped",
+    "機器の曲庫にシンボリックリンクがあるためコピーを停止しました",
+    "设备曲库包含符号链接，停止复制"
+  ],
+  [
+    "Cannot create directory: {}",
+    "ディレクトリを作成できません：{}",
+    "创建目录失败：{}"
+  ],
+  [
+    "Cannot read file: {}",
+    "ファイルを読み取れません：{}",
+    "读取文件失败：{}"
+  ],
+  [
+    "Cannot create file: {}",
+    "ファイルを作成できません：{}",
+    "创建文件失败：{}"
+  ],
+  [
+    "Cannot copy file: {}",
+    "ファイルをコピーできません：{}",
+    "复制文件失败：{}"
+  ],
+  [
+    "Cannot flush device file: {}",
+    "機器のファイルをフラッシュできません：{}",
+    "刷新设备文件失败：{}"
+  ],
+  [
+    "Copy verification failed: {}",
+    "コピー後の検証に失敗しました：{}",
+    "复制后校验失败：{}"
+  ],
+  [
+    "Device writes are disabled pending independent format validation. Library, tags and artwork previews remain available.",
+    "形式の独立検証中のため機器への書き込みは無効です。曲庫・タグ・ジャケットの表示は利用できます。",
+    "设备写入暂未开放：Sony 数据库格式正在通过 REA 独立验证。曲库、标签与封面预览可正常使用。"
+  ],
+  [
+    "Transfer queue is empty",
+    "転送キューは空です",
+    "传输队列为空"
+  ],
+  [
+    "Another transfer is using the device",
+    "別の転送が機器を使用しています",
+    "设备正由另一个传输操作使用"
+  ],
+  [
+    "A queued track was removed from the library",
+    "キューの曲が曲庫から削除されました",
+    "队列歌曲已从本地曲库移除"
+  ],
+  [
+    "Backing up and verifying the device library",
+    "機器の曲庫をバックアップして検証中",
+    "备份并校验当前设备曲库"
+  ],
+  [
+    "Source changed after import; import it again: {}",
+    "取り込み後に元ファイルが変わりました。再取り込みしてください：{}",
+    "源文件已在导入后更改，请重新导入：{}"
+  ],
+  [
+    "Device track IDs are exhausted",
+    "機器の曲 ID に空きがありません",
+    "设备 ID 已满"
+  ],
+  [
+    "Wrapping audio: {}",
+    "音声を生成中：{}",
+    "包装音频：{}"
+  ],
+  [
+    "Source changed during wrapping; commit stopped: {}",
+    "生成中に元ファイルが変わったため確定を停止しました：{}",
+    "源文件在包装过程中发生变化，停止提交：{}"
+  ],
+  [
+    "Generating device database and indexes",
+    "機器のデータベースと索引を生成中",
+    "生成设备数据库与分类索引"
+  ],
+  [
+    "New database readback count mismatch",
+    "新データベースの再読込件数が一致しません",
+    "新数据库回读数量不一致"
+  ],
+  [
+    "Not enough space to stage the new library safely",
+    "新しい曲庫を安全に一時保存する空き容量がありません",
+    "空间不足以安全暂存新曲库"
+  ],
+  [
+    "Device changed during preparation; not committed",
+    "準備中に機器の内容が変わりました。未確定です",
+    "准备期间设备内容发生变化，未提交"
+  ],
+  [
+    "Copying and verifying the new device library",
+    "新しい曲庫を機器にコピーして検証中",
+    "复制新曲库到设备并校验"
+  ],
+  [
+    "New device library verification failed",
+    "機器の新しい曲庫の検証に失敗しました",
+    "设备新曲库校验失败"
+  ],
+  [
+    "Original library changed during copying; not committed",
+    "コピー中に旧曲庫が変わりました。未確定です",
+    "复制期间原曲库发生变化，未提交"
+  ],
+  [
+    "Cannot retain the old library; new data remains staged",
+    "旧曲庫を保持できません。新データは一時ディレクトリにあります",
+    "保留旧曲库失败；新数据仍在暂存目录"
+  ],
+  [
+    "Write complete; old library retained. Safely eject and verify playback.",
+    "書き込み完了。旧曲庫は保持されています。安全に取り外して再生を確認してください。",
+    "写入完成；旧曲库已保留，请安全弹出后验证播放"
+  ],
+  [
+    "Queued track does not exist",
+    "キューの曲がありません",
+    "队列歌曲不存在"
+  ],
+  [
+    "Source file changed; import it again",
+    "元ファイルが変わりました。再取り込みしてください",
+    "源文件已更改，请重新导入"
+  ],
+  [
+    "Track ID exceeds limits",
+    "曲 ID が上限を超えています",
+    "歌曲 ID 超限"
+  ],
+  [
+    "Source file changed during preparation",
+    "準備中に元ファイルが変わりました",
+    "准备期间源文件改变"
+  ],
+  [
+    "Generating local OMA files",
+    "ローカル OMA ファイルを生成中",
+    "生成本地 OMA 文件"
+  ],
+  [
+    "Generated library readback count mismatch",
+    "生成した曲庫の再読込件数が一致しません",
+    "生成后回读数量不一致"
+  ],
+  [
+    "Local preparation complete; player not accessed: {}",
+    "ローカル生成が完了しました。機器へのアクセスはありません：{}",
+    "本地预演已完成，未访问播放器：{}"
+  ],
+  [
+    "Import a test MP3 with artwork first",
+    "先にジャケット付きのテスト MP3 を取り込んでください",
+    "先导入一首带封面的测试 MP3"
+  ],
+  [
+    "Test track has no usable artwork",
+    "テスト曲に利用できるジャケットがありません",
+    "测试歌曲没有可用封面"
+  ],
+  [
+    "Source has no OMGAUDIO directory",
+    "元データに OMGAUDIO がありません",
+    "来源没有 OMGAUDIO"
+  ],
+  [
+    "Artwork probe changed files outside its album table: {changed:?}",
+    "ジャケットテストが対象外のファイルを変更しました：{changed:?}",
+    "封面探针改动超出专辑表：{changed:?}"
+  ],
+  [
+    "Unexpected artwork probe image count",
+    "ジャケットテストの画像数が一致しません",
+    "封面探针图片数量不符"
+  ],
+  [
+    "Artwork probe prepared locally; one table and three images, no device writes: {}",
+    "テストをローカルで生成しました。1つの表と3枚の画像のみで、機器への書き込みはありません：{}",
+    "封面探针已生成，仅修改一张专辑表的 PICP/PIC0，并增加三张图片；未写设备：{}"
+  ],
+  [
+    "Library contains a symbolic link",
+    "曲庫にシンボリックリンクがあります",
+    "曲库包含符号链接"
+  ],
+  [
+    "Island Walkman {url}",
+    "Island Walkman {url}",
+    "唱片小岛 {url}"
+  ],
+  [
+    "Invalid Host header",
+    "Host ヘッダーが無効です",
+    "非法 Host"
+  ],
+  [
+    "Track does not exist",
+    "曲がありません",
+    "歌曲不存在"
+  ],
+  [
+    "No artwork",
+    "ジャケットがありません",
+    "没有封面"
+  ],
+  [
+    "Invalid resource path",
+    "リソースのパスが無効です",
+    "非法资源路径"
+  ],
+  [
+    "Only GET and POST are supported",
+    "GET と POST のみ対応しています",
+    "只支持 GET/POST"
+  ],
+  [
+    "Request validation failed; refresh the interface",
+    "リクエストの検証に失敗しました。画面を更新してください",
+    "请求校验失败，请刷新界面"
+  ],
+  [
+    "Request is too large",
+    "リクエストが大きすぎます",
+    "请求过大"
+  ],
+  [
+    "Importing",
+    "取り込み中",
+    "正在导入"
+  ],
+  [
+    "Missing device path",
+    "機器のパスがありません",
+    "缺少设备路径"
+  ],
+  [
+    "Missing track key",
+    "曲のキーがありません",
+    "缺少 key"
+  ],
+  [
+    "Missing image path",
+    "画像のパスがありません",
+    "缺少图片路径"
+  ],
+  [
+    "Preparing transfer",
+    "転送を準備中",
+    "准备传输"
+  ],
+  [
+    "Preparing local library",
+    "ローカル生成を準備中",
+    "准备本地预演"
+  ],
+  [
+    "Unknown endpoint",
+    "不明な API です",
+    "未知接口"
+  ],
+  [
+    "Invalid device artwork path",
+    "機器のジャケットパスが無効です",
+    "设备封面路径无效"
+  ],
+  [
+    "Device artwork path escapes the library",
+    "ジャケットのパスが曲庫の範囲外です",
+    "设备封面路径越界"
+  ],
+  [
+    "Picture object ID must be in 1..65535",
+    "画像のオブジェクト ID は1～65535で指定してください",
+    "图片对象编号必须在 1..65535 内"
+  ],
+  [
+    "Picture naming parameters are outside supported limits",
+    "画像名のパラメーターが対応範囲外です",
+    "图片命名参数超出已实现范围"
+  ],
+  [
+    "Image dimensions exceed Sony field limits",
+    "画像の寸法が Sony フィールドの上限を超えています",
+    "图片尺寸超出 Sony 字段范围"
+  ],
+  [
+    "Invalid relative picture path",
+    "画像の相対パスが無効です",
+    "图片相对路径无效"
+  ],
+  [
+    "Album match is not unique; artwork probe stopped",
+    "アルバムを一意に特定できないためテストを停止しました",
+    "无法唯一匹配专辑；停止生成封面探针"
+  ],
+  [
+    "No artwork file IDs are available",
+    "ジャケットファイルの ID に空きがありません",
+    "没有空闲的封面文件编号"
+  ],
+  [
+    "Album record is missing field {}",
+    "アルバムのレコードにフィールド {} がありません",
+    "专辑记录缺少字段 {}"
+  ],
+  [
+    "Unsupported album text encoding",
+    "未対応のアルバム文字コードです",
+    "不支持的专辑文本编码"
+  ],
+  [
+    "Unsupported album table identifier",
+    "未対応のアルバム表識別子です",
+    "不支持的专辑表标识"
+  ],
+  [
+    "Album table directory is truncated",
+    "アルバム表のディレクトリが不完全です",
+    "专辑表目录已截断"
+  ],
+  [
+    "Album table has multiple GPFB sections",
+    "アルバム表に複数の GPFB があります",
+    "专辑表 GPFB section 不唯一"
+  ],
+  [
+    "Album table has no GPFB section",
+    "アルバム表に GPFB がありません",
+    "专辑表缺少 GPFB section"
+  ],
+  [
+    "Album table section is out of bounds",
+    "アルバム表のセクションが範囲外です",
+    "专辑表 section 越界"
+  ],
+  [
+    "Album table section type mismatch",
+    "アルバム表のセクション型が一致しません",
+    "专辑表 section 类型不一致"
+  ],
+  [
+    "Invalid album table record size",
+    "アルバム表のレコード長が無効です",
+    "专辑表记录尺寸无效"
+  ],
+  [
+    "Invalid album field size",
+    "アルバムのフィールド長が無効です",
+    "专辑字段尺寸无效"
+  ],
+  [
+    "Duplicate album record field",
+    "アルバムのフィールドが重複しています",
+    "专辑记录存在重复字段"
+  ],
+  [
+    "Hierarchy conversion requires one GPFB section",
+    "階層変換には単一の GPFB が必要です",
+    "层次树转换只支持单 GPFB section"
+  ],
+  [
+    "Not a recognized two-field hierarchy",
+    "対応する2フィールド階層ではありません",
+    "不是已知的两字段层次树"
+  ],
+  [
+    "Two-field record has unknown reserved data; conversion refused",
+    "2フィールドのレコードに不明な予約領域があるため変換できません",
+    "两字段记录包含未知保留区，拒绝转换"
+  ],
+  [
+    "Hierarchy conversion changed the record count",
+    "階層変換でレコード数が変わりました",
+    "层次树转换后记录数量改变"
+  ],
+  [
+    "Cannot uniquely match the hierarchy album",
+    "階層内のアルバムを一意に特定できません",
+    "无法唯一匹配层次树中的专辑"
+  ],
+  [
+    "Candidate artwork already exists; overwrite refused",
+    "候補のジャケットが存在するため上書きしません",
+    "候选封面文件已存在，拒绝覆盖"
+  ],
+  [
+    "Hierarchy conversion changed existing text",
+    "階層変換で既存の文字列が変わりました",
+    "层次树转换改变了原有文本"
+  ]
+]

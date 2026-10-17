@@ -1,0 +1,78 @@
+name: Build and package
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: ${{ matrix.platform }} / ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: windows-2022, platform: windows, arch: x86_64, target: x86_64-pc-windows-msvc, suffix: '.exe'}
+          - {os: ubuntu-24.04, platform: debian, arch: x86_64, target: x86_64-unknown-linux-musl, suffix: ''}
+          - {os: macos-14, platform: macos, arch: aarch64, target: aarch64-apple-darwin, suffix: ''}
+          - {os: macos-15-intel, platform: macos, arch: x86_64, target: x86_64-apple-darwin, suffix: ''}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install Rust toolchain
+        shell: bash
+        run: |
+          rustup toolchain install 1.95.0 --profile minimal --component rustfmt
+          rustup default 1.95.0
+          rustup target add '${{ matrix.target }}'
+      - name: Install Linux packaging prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+      - name: Install frontend dependencies
+        working-directory: ui
+        run: npm ci
+      - name: Validate translations and build UI
+        working-directory: ui
+        run: npm run build
+      - name: Check Rust formatting
+        run: cargo fmt --check
+      - name: Test Rust
+        run: cargo test --locked --target ${{ matrix.target }}
+      - name: Build executable
+        run: cargo build --release --locked --target ${{ matrix.target }}
+      - name: Create packages
+        run: python tools/package.py --platform ${{ matrix.platform }} --arch ${{ matrix.arch }} --binary target/${{ matrix.target }}/release/island-walkman${{ matrix.suffix }}
+      - name: Test packaged application
+        shell: bash
+        run: |
+          python -c "import glob,json,subprocess; p=json.load(open(glob.glob('dist/*.json')[0])); subprocess.run(['python','tools/smoke.py','--executable',p['executable']],check=True)"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: island-walkman-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
+            dist/*.deb
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14

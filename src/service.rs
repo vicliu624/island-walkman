@@ -1,0 +1,955 @@
+use crate::{
+    metadata::{self, Track},
+    protocol,
+};
+use anyhow::{Context, Result, bail, ensure};
+use serde::{Deserialize, Serialize};
+use serde_json::{Value, json};
+use std::{
+    fs::{self, File, OpenOptions},
+    io::{Read, Write},
+    path::{Path, PathBuf},
+    sync::{Arc, Mutex},
+    time::{SystemTime, UNIX_EPOCH},
+};
+use tiny_http::{Header, Request, Response, Server, StatusCode};
+
+#[derive(Clone, Default, Serialize, Deserialize)]
+struct Job {
+    running: bool,
+    percent: u8,
+    message: String,
+    logs: Vec<String>,
+    backup: Option<String>,
+}
+#[derive(Clone, Default, Serialize, Deserialize)]
+struct State {
+    tracks: Vec<Track>,
+    queue: Vec<String>,
+    device_root: String,
+    device_tracks: Vec<Track>,
+    job: Job,
+}
+struct App {
+    state: Mutex<State>,
+    persist: Mutex<()>,
+    requests: Mutex<()>,
+    data: PathBuf,
+    ui: PathBuf,
+    token: String,
+    allow_device_write: bool,
+}
+fn stamp() -> String {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos()
+        .to_string()
+}
+fn save(app: &App) -> Result<()> {
+    let _persist = app.persist.lock().unwrap();
+    let s = app.state.lock().unwrap();
+    let temp = app.data.join("catalog.tmp");
+    let mut f = File::create(&temp)?;
+    f.write_all(&serde_json::to_vec_pretty(&*s)?)?;
+    f.sync_all()?;
+    let dest = app.data.join("catalog.json");
+    if dest.exists() {
+        fs::copy(&dest, app.data.join("catalog.previous.json"))?;
+    }
+    fs::rename(&temp, &dest)?;
+    Ok(())
+}
+fn log(app: &App, percent: u8, text: &str) {
+    let mut s = app.state.lock().unwrap();
+    s.job.percent = percent;
+    s.job.message = text.into();
+    s.job.logs.push(text.into());
+    if s.job.logs.len() > 200 {
+        s.job.logs.remove(0);
+    }
+}
+fn ensure_idle(app: &App) -> Result<()> {
+    ensure!(
+        !app.state.lock().unwrap().job.running,
+        "A task is running; try again later"
+    );
+    Ok(())
+}
+fn launch(
+    app: Arc<App>,
+    name: &str,
+    work: impl FnOnce(&Arc<App>) -> Result<()> + Send + 'static,
+) -> Result<()> {
+    {
+        let mut s = app.state.lock().unwrap();
+        ensure!(!s.job.running, "Another task is already running");
+        s.job = Job {
+            running: true,
+            message: name.into(),
+            ..Default::default()
+        };
+    }
+    std::thread::spawn(move || {
+        let result = work(&app);
+        let mut s = app.state.lock().unwrap();
+        s.job.running = false;
+        match result {
+            Ok(()) => {
+                s.job.percent = 100;
+                s.job.message = "Completed".into();
+            }
+            Err(e) => {
+                s.job.message = format!("Operation failed: {e:#}");
+                let msg = s.job.message.clone();
+                s.job.logs.push(msg);
+            }
+        }
+        drop(s);
+        let _ = save(&app);
+    });
+    Ok(())
+}
+fn import(app: &Arc<App>, paths: Vec<String>) -> Result<()> {
+    let mut files = vec![];
+    for input in paths {
+        let p = PathBuf::from(input);
+        if p.is_dir() {
+            for entry in walkdir::WalkDir::new(&p).follow_links(false) {
+                let e = entry?;
+                if e.file_type().is_file()
+                    && e.path()
+                        .extension()
+                        .is_some_and(|e| e.eq_ignore_ascii_case("mp3"))
+                {
+                    files.push(e.path().to_path_buf());
+                }
+            }
+        } else {
+            ensure!(
+                p.extension().is_some_and(|e| e.eq_ignore_ascii_case("mp3")),
+                "This version imports MP3 only; convert other formats first"
+            );
+            files.push(p);
+        }
+    }
+    ensure!(!files.is_empty(), "No MP3 files found");
+    let n = files.len();
+    let mut failures = vec![];
+    for (i, p) in files.iter().enumerate() {
+        log(
+            app,
+            (i * 100 / n) as u8,
+            &format!(
+                "Reading {}",
+                p.file_name().unwrap_or_default().to_string_lossy()
+            ),
+        );
+        match metadata::read_mp3(p, &app.data.join("covers")) {
+            Ok(t) => {
+                let mut s = app.state.lock().unwrap();
+                if !s.tracks.iter().any(|x| x.key == t.key) {
+                    s.tracks.push(t);
+                }
+            }
+            Err(e) => failures.push(format!("{}：{e:#}", p.display())),
+        }
+    }
+    if !failures.is_empty() {
+        bail!("Some files could not be imported: {}", failures.join("；"))
+    }
+    Ok(())
+}
+fn copy_tree(src: &Path, dst: &Path) -> Result<()> {
+    fs::create_dir_all(dst)?;
+    for e in walkdir::WalkDir::new(src).follow_links(false).min_depth(1) {
+        let e = e?;
+        ensure!(
+            !e.file_type().is_symlink(),
+            "Device library contains a symbolic link; copy stopped"
+        );
+        let to = dst.join(e.path().strip_prefix(src)?);
+        if e.file_type().is_dir() {
+            fs::create_dir_all(&to)
+                .with_context(|| format!("Cannot create directory: {}", to.display()))?;
+        } else if e.file_type().is_file() {
+            // Flush each completed file before verifying and before directory
+            // commit. Include the path in errors from removable media.
+            let mut source = fs::File::open(e.path())
+                .with_context(|| format!("Cannot read file: {}", e.path().display()))?;
+            let mut target = fs::File::create(&to)
+                .with_context(|| format!("Cannot create file: {}", to.display()))?;
+            std::io::copy(&mut source, &mut target)
+                .with_context(|| format!("Cannot copy file: {}", to.display()))?;
+            target
+                .sync_all()
+                .with_context(|| format!("Cannot flush device file: {}", to.display()))?;
+            drop(target);
+            ensure!(
+                metadata::hash_file(e.path())? == metadata::hash_file(&to)?,
+                "Copy verification failed: {}",
+                to.display()
+            );
+        }
+    }
+    Ok(())
+}
+fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
+    ensure!(
+        app.allow_device_write,
+        "Device writes are disabled pending independent format validation. Library, tags and artwork previews remain available."
+    );
+    let state = app.state.lock().unwrap().clone();
+    ensure!(!state.queue.is_empty(), "Transfer queue is empty");
+    let root = PathBuf::from(&state.device_root).canonicalize()?;
+    protocol::validate_device(&root)?;
+    protocol::validate_rebuild_supported(&root)?;
+    let _lock = OpenOptions::new()
+        .create(true)
+        .truncate(false)
+        .write(true)
+        .open(root.join(".island-walkman.lock"))?;
+    fs2::FileExt::try_lock_exclusive(&_lock).context("Another transfer is using the device")?;
+    let current = protocol::read_device(&root)?;
+    let mut tracks = current.clone();
+    let mut max = tracks.iter().filter_map(|t| t.device_id).max().unwrap_or(0);
+    let selected: Vec<Track> = state
+        .queue
+        .iter()
+        .map(|key| {
+            state
+                .tracks
+                .iter()
+                .find(|t| &t.key == key)
+                .cloned()
+                .context("A queued track was removed from the library")
+        })
+        .collect::<Result<_>>()?;
+    // Snapshot current file hashes before preparing output. Reject external changes at commit.
+    let device_dir = root.join("OMGAUDIO");
+    let original = manifest(&device_dir)?;
+    let run = app.data.join("backups").join(stamp());
+    fs::create_dir_all(&run)?;
+    if device_dir.exists() {
+        log(app, 2, "Backing up and verifying the device library");
+        copy_tree(&device_dir, &run.join("before/OMGAUDIO"))?;
+    }
+    app.state.lock().unwrap().job.backup = Some(run.to_string_lossy().into());
+    let stage = run.join("stage/OMGAUDIO");
+    fs::create_dir_all(&stage)?;
+    // Stage a complete replacement on the host. Retain unknown device files unchanged.
+    if device_dir.exists() {
+        copy_tree(&device_dir, &stage)?;
+    }
+    for (i, mut t) in selected.into_iter().enumerate() {
+        ensure!(
+            metadata::hash_file(Path::new(&t.path))? == t.key,
+            "Source changed after import; import it again: {}",
+            t.title
+        );
+        // Display metadata is not audio identity. Never replace another recording implicitly.
+        max = max
+            .checked_add(1)
+            .context("Device track IDs are exhausted")?;
+        t.device_id = Some(max);
+        let id = max;
+        let dest = stage.join(protocol::oma_name(id));
+        fs::create_dir_all(dest.parent().unwrap())?;
+        log(
+            app,
+            10 + (i * 55 / state.queue.len()) as u8,
+            &format!("Wrapping audio: {}", t.title),
+        );
+        // APIC/EA3 cover handling has not been validated against Sony output.
+        let mut device_track = t.clone();
+        device_track.cover = None;
+        protocol::write_oma(&device_track, &dest)?;
+        ensure!(
+            metadata::hash_file(Path::new(&t.path))? == t.key,
+            "Source changed during wrapping; commit stopped: {}",
+            t.title
+        );
+        tracks.push(t);
+    }
+    log(app, 68, "Generating device database and indexes");
+    // Remove known writer tables from the host stage so Windows FAT never retains lowercase LFN entries.
+    for e in fs::read_dir(&stage)? {
+        let e = e?;
+        let name = e.file_name().to_string_lossy().to_uppercase();
+        if e.file_type()?.is_file()
+            && [
+                "01TREE01.DAT",
+                "01TREE02.DAT",
+                "01TREE03.DAT",
+                "01TREE04.DAT",
+                "01TREE22.DAT",
+                "01TREE2D.DAT",
+                "03GINF01.DAT",
+                "03GINF02.DAT",
+                "03GINF03.DAT",
+                "03GINF04.DAT",
+                "03GINF22.DAT",
+                "03GINF2D.DAT",
+                "00GTRLST.DAT",
+                "02TREINF.DAT",
+                "04CNTINF.DAT",
+                "04PATLST.DAT",
+                "05CIDLST.DAT",
+            ]
+            .contains(&name.as_str())
+        {
+            fs::remove_file(e.path())?;
+        }
+    }
+    protocol::write_database(&stage, &tracks, covers)?;
+    let staged_root = run.join("stage");
+    let parsed = protocol::read_device(&staged_root)?;
+    ensure!(
+        parsed.len() == tracks.len(),
+        "New database readback count mismatch"
+    );
+    let generated = manifest(&stage)?;
+    let needed: u64 = walkdir::WalkDir::new(&stage)
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| e.file_type().is_file())
+        .map(|e| e.metadata().map(|m| m.len()).unwrap_or(0))
+        .sum();
+    ensure!(
+        fs2::available_space(&root)? > needed + 1024 * 1024,
+        "Not enough space to stage the new library safely"
+    );
+    ensure!(
+        manifest(&device_dir)? == original,
+        "Device changed during preparation; not committed"
+    );
+    let incoming = root.join(format!("ISLAND-NEW-{}", stamp()));
+    let old = root.join(format!("ISLAND-BACKUP-{}", stamp()));
+    // Retain recovery coordinates and expected hashes even when copying fails.
+    fs::write(
+        run.join("manifest.json"),
+        serde_json::to_vec_pretty(&generated)?,
+    )?;
+    let journal = run.join("transaction.json");
+    let transaction = |phase: &str| -> Result<()> {
+        fs::write(
+            &journal,
+            serde_json::to_vec_pretty(&json!({
+                "phase":phase,"original_library":device_dir,"incoming":incoming,
+                "device_backup":old,"host_backup":run.join("before/OMGAUDIO"),
+                "source_manifest":original,"expected_manifest":generated
+            }))?,
+        )?;
+        Ok(())
+    };
+    transaction("copying; original library unchanged")?;
+    log(app, 76, "Copying and verifying the new device library");
+    copy_tree(&stage, &incoming)?;
+    ensure!(
+        manifest(&incoming)? == generated,
+        "New device library verification failed"
+    );
+    ensure!(
+        manifest(&device_dir)? == original,
+        "Original library changed during copying; not committed"
+    );
+    transaction("verified; ready to commit")?;
+    if device_dir.exists() {
+        fs::rename(&device_dir, &old)
+            .context("Cannot retain the old library; new data remains staged")?;
+    }
+    if let Err(e) = fs::rename(&incoming, &device_dir) {
+        if old.exists() {
+            let _ = fs::rename(&old, &device_dir);
+        }
+        return Err(e.into());
+    }
+    transaction("committed; old library retained")?;
+    log(
+        app,
+        98,
+        "Write complete; old library retained. Safely eject and verify playback.",
+    );
+    fs::write(
+        run.join("manifest.json"),
+        serde_json::to_vec_pretty(&generated)?,
+    )?;
+    let mut s = app.state.lock().unwrap();
+    s.device_tracks = protocol::read_device(&root)?;
+    s.queue.clear();
+    Ok(())
+}
+fn prepare(app: &Arc<App>) -> Result<()> {
+    let state = app.state.lock().unwrap().clone();
+    let chosen: Vec<_> = state
+        .queue
+        .iter()
+        .map(|key| {
+            state
+                .tracks
+                .iter()
+                .find(|t| &t.key == key)
+                .cloned()
+                .context("Queued track does not exist")
+        })
+        .collect::<Result<_>>()?;
+    ensure!(!chosen.is_empty(), "Transfer queue is empty");
+    let root = app.data.join("preparations").join(stamp());
+    let dir = root.join("OMGAUDIO");
+    fs::create_dir_all(&dir)?;
+    let mut tracks = vec![];
+    for (i, mut t) in chosen.into_iter().enumerate() {
+        ensure!(
+            metadata::hash_file(Path::new(&t.path))? == t.key,
+            "Source file changed; import it again"
+        );
+        t.device_id = Some((i + 1).try_into().context("Track ID exceeds limits")?);
+        let p = dir.join(protocol::oma_name(t.device_id.unwrap()));
+        fs::create_dir_all(p.parent().unwrap())?;
+        let mut audio = t.clone();
+        audio.cover = None;
+        protocol::write_oma(&audio, &p)?;
+        ensure!(
+            metadata::hash_file(Path::new(&t.path))? == t.key,
+            "Source file changed during preparation"
+        );
+        tracks.push(t);
+        log(
+            app,
+            ((i + 1) * 80 / state.queue.len()) as u8,
+            "Generating local OMA files",
+        );
+    }
+    protocol::write_database(&dir, &tracks, true)?;
+    let read = protocol::read_device(&root)?;
+    ensure!(
+        read.len() == tracks.len(),
+        "Generated library readback count mismatch"
+    );
+    fs::write(
+        root.join("manifest.json"),
+        serde_json::to_vec_pretty(&manifest(&dir)?)?,
+    )?;
+    app.state.lock().unwrap().job.backup = Some(root.to_string_lossy().into());
+    log(
+        app,
+        100,
+        &format!(
+            "Local preparation complete; player not accessed: {}",
+            root.display()
+        ),
+    );
+    Ok(())
+}
+fn prepare_cover_probe(app: &Arc<App>, source: &Path, hierarchy: bool) -> Result<()> {
+    let track = app
+        .state
+        .lock()
+        .unwrap()
+        .tracks
+        .first()
+        .cloned()
+        .context("Import a test MP3 with artwork first")?;
+    let picture = track
+        .cover
+        .as_ref()
+        .context("Test track has no usable artwork")?;
+    let source = source.join("OMGAUDIO");
+    ensure!(source.is_dir(), "Source has no OMGAUDIO directory");
+    let root = app.data.join("cover-probes").join(stamp());
+    let target = root.join("OMGAUDIO");
+    copy_tree(&source, &target)?;
+    for e in fs::read_dir(&target)? {
+        let e = e?;
+        let name = e.file_name().to_string_lossy().into_owned();
+        if e.file_type()?.is_file()
+            && name.to_lowercase().ends_with(".dat")
+            && name != name.to_uppercase()
+        {
+            let tmp = target.join(format!("{name}.case-tmp"));
+            fs::rename(e.path(), &tmp)?;
+            fs::rename(tmp, target.join(name.to_uppercase()))?;
+        }
+    }
+    let before = manifest(&target)?;
+    let group = if hierarchy {
+        crate::sony_artwork::patch_hierarchical_album_cover(
+            &target,
+            Path::new(picture),
+            &track.album,
+            0x2d,
+        )?
+    } else {
+        crate::sony_artwork::patch_album_cover(
+            &target,
+            Path::new(picture),
+            &track.album,
+            &track.artist,
+        )?
+    };
+    let after = manifest(&target)?;
+    let changed: Vec<_> = before
+        .iter()
+        .filter(|(path, hash)| after.get(*path) != Some(*hash))
+        .map(|(path, _)| path.clone())
+        .collect();
+    ensure!(
+        changed
+            == vec![if hierarchy {
+                "03GINF2D.DAT"
+            } else {
+                "03GINF01.DAT"
+            }],
+        "Artwork probe changed files outside its album table: {changed:?}"
+    );
+    let new_files: Vec<_> = after
+        .keys()
+        .filter(|path| !before.contains_key(*path))
+        .cloned()
+        .collect();
+    ensure!(new_files.len() == 3, "Unexpected artwork probe image count");
+    fs::write(
+        root.join("probe.json"),
+        serde_json::to_vec_pretty(
+            &json!({"source":source,"group":group,"changed":changed,"new_files":new_files,"before":before,"after":after,"device_written":false,"experiment":if hierarchy {"hierarchical-cover"}else{"album-cover"}}),
+        )?,
+    )?;
+    println!(
+        "Artwork probe prepared locally; one table and three images, no device writes: {}",
+        root.display()
+    );
+    Ok(())
+}
+fn manifest(root: &Path) -> Result<BTree> {
+    let mut m = BTree::new();
+    if !root.exists() {
+        return Ok(m);
+    }
+    for e in walkdir::WalkDir::new(root).follow_links(false).min_depth(1) {
+        let e = e?;
+        ensure!(
+            !e.file_type().is_symlink(),
+            "Library contains a symbolic link"
+        );
+        if e.file_type().is_file() {
+            m.insert(
+                e.path()
+                    .strip_prefix(root)?
+                    .to_string_lossy()
+                    .replace('\\', "/"),
+                metadata::hash_file(e.path())?,
+            );
+        }
+    }
+    Ok(m)
+}
+type BTree = std::collections::BTreeMap<String, String>;
+fn detect() -> Vec<String> {
+    let mut roots = vec![];
+    #[cfg(windows)]
+    for c in b'D'..=b'Z' {
+        let p = PathBuf::from(format!("{}:/", c as char));
+        if protocol::validate_device(&p).is_ok() {
+            roots.push(p.to_string_lossy().into())
+        }
+    }
+    #[cfg(unix)]
+    for base in ["/media", "/run/media", "/mnt", "/Volumes"] {
+        for e in walkdir::WalkDir::new(base)
+            .max_depth(3)
+            .into_iter()
+            .filter_map(|e| e.ok())
+        {
+            if e.file_type().is_dir() && protocol::validate_device(e.path()).is_ok() {
+                roots.push(e.path().to_string_lossy().into())
+            }
+        }
+    }
+    roots
+}
+pub fn run() -> Result<()> {
+    let args: Vec<String> = std::env::args().collect();
+    let arg = |key: &str| {
+        args.iter()
+            .position(|x| x == key)
+            .and_then(|i| args.get(i + 1))
+            .cloned()
+    };
+    let base = std::env::current_exe()?.parent().unwrap().to_path_buf();
+    let project = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let data = arg("--data")
+        .map(PathBuf::from)
+        .unwrap_or_else(default_data_directory);
+    fs::create_dir_all(&data)?;
+    let mut state: State = fs::read(data.join("catalog.json"))
+        .ok()
+        .map(|b| serde_json::from_slice(&b))
+        .transpose()?
+        .unwrap_or_default();
+    state.job.running = false;
+    let ui = if base.join("ui/index.html").exists() {
+        base.join("ui")
+    } else if base.join("../Resources/ui/index.html").exists() {
+        base.join("../Resources/ui")
+    } else {
+        project.join("ui/dist")
+    };
+    let app = Arc::new(App {
+        state: Mutex::new(state),
+        persist: Mutex::new(()),
+        requests: Mutex::new(()),
+        data,
+        ui,
+        token: stamp(),
+        allow_device_write: args.contains(&"--allow-experimental-device-write".into()),
+    });
+    if let Some(path) = arg("--import") {
+        import(&app, vec![path])?;
+        save(&app)?;
+    }
+    if let Some(source) = arg("--cover-probe") {
+        prepare_cover_probe(&app, Path::new(&source), false)?;
+        return Ok(());
+    }
+    if let Some(source) = arg("--cover-probe-tree") {
+        prepare_cover_probe(&app, Path::new(&source), true)?;
+        return Ok(());
+    }
+    if args.contains(&"--prepare".into()) {
+        let mut s = app.state.lock().unwrap();
+        s.queue = s.tracks.iter().map(|t| t.key.clone()).collect();
+        drop(s);
+        prepare(&app)?;
+        println!("{}", app.state.lock().unwrap().job.message);
+        save(&app)?;
+        return Ok(());
+    }
+    let port = arg("--port").unwrap_or("18718".into());
+    let server = Server::http(format!("127.0.0.1:{port}")).map_err(|e| anyhow::anyhow!("{e}"))?;
+    let url = format!("http://{}", server.server_addr());
+    println!("Island Walkman {url}");
+    if !args.contains(&"--no-open".into()) {
+        open_browser(&url);
+    }
+    for req in server.incoming_requests() {
+        let app = app.clone();
+        std::thread::spawn(move || {
+            handle(req, &app);
+        });
+    }
+    Ok(())
+}
+fn open_browser(url: &str) {
+    #[cfg(windows)]
+    {
+        let _ = std::process::Command::new("rundll32")
+            .args(["url.dll,FileProtocolHandler", url])
+            .spawn();
+    }
+    #[cfg(target_os = "macos")]
+    {
+        let _ = std::process::Command::new("open").arg(url).spawn();
+    }
+    #[cfg(all(unix, not(target_os = "macos")))]
+    {
+        let _ = std::process::Command::new("xdg-open").arg(url).spawn();
+    }
+}
+fn default_data_directory() -> PathBuf {
+    #[cfg(windows)]
+    if let Some(path) = std::env::var_os("LOCALAPPDATA") {
+        return PathBuf::from(path).join("IslandWalkman");
+    }
+    #[cfg(target_os = "macos")]
+    if let Some(path) = std::env::var_os("HOME") {
+        return PathBuf::from(path).join("Library/Application Support/IslandWalkman");
+    }
+    #[cfg(all(unix, not(target_os = "macos")))]
+    {
+        if let Some(path) = std::env::var_os("XDG_DATA_HOME") {
+            if Path::new(&path).is_absolute() {
+                return PathBuf::from(path).join("island-walkman");
+            }
+        }
+        if let Some(path) = std::env::var_os("HOME") {
+            return PathBuf::from(path).join(".local/share/island-walkman");
+        }
+    }
+    PathBuf::from("island-walkman-data")
+}
+fn respond(req: Request, code: u16, data: Vec<u8>, mime: &str) {
+    let response = Response::from_data(data)
+        .with_status_code(StatusCode(code))
+        .with_header(Header::from_bytes("Content-Type", mime).unwrap())
+        .with_header(Header::from_bytes("X-Content-Type-Options", "nosniff").unwrap())
+        .with_header(Header::from_bytes("Cache-Control", "no-store").unwrap());
+    let _ = req.respond(response);
+}
+fn handle(mut req: Request, app: &Arc<App>) {
+    if req.method() == &tiny_http::Method::Get && req.url().starts_with("/api/audio/") {
+        let valid = req
+            .headers()
+            .iter()
+            .any(|h| h.field.equiv("Host") && h.value.as_str().starts_with("127.0.0.1:"));
+        if !valid {
+            respond(req, 400, b"Invalid Host".to_vec(), "text/plain");
+            return;
+        }
+        let key = req
+            .url()
+            .split('?')
+            .next()
+            .unwrap()
+            .rsplit('/')
+            .next()
+            .unwrap();
+        let path = app
+            .state
+            .lock()
+            .unwrap()
+            .tracks
+            .iter()
+            .find(|t| t.key == key)
+            .map(|t| t.path.clone());
+        if let Some(path) = path {
+            if let Ok(file) = File::open(path) {
+                let _ = req.respond(
+                    Response::from_file(file)
+                        .with_header(Header::from_bytes("Content-Type", "audio/mpeg").unwrap()),
+                );
+                return;
+            }
+        }
+        respond(req, 404, b"Audio not found".to_vec(), "text/plain");
+        return;
+    }
+    let result = (|| -> Result<(Vec<u8>, String)> {
+        let host = req
+            .headers()
+            .iter()
+            .find(|h| h.field.equiv("Host"))
+            .map(|h| h.value.as_str())
+            .unwrap_or("");
+        ensure!(host.starts_with("127.0.0.1:"), "Invalid Host header");
+        let url = req.url().split('?').next().unwrap_or("/").to_string();
+        if req.method() == &tiny_http::Method::Get {
+            if url == "/api/state" {
+                let s = app.state.lock().unwrap().clone();
+                return Ok((
+                    serde_json::to_vec(
+                        &json!({"state":s,"token":app.token,"device_write_enabled":app.allow_device_write}),
+                    )?,
+                    "application/json".into(),
+                ));
+            }
+            if url == "/api/devices" {
+                return Ok((serde_json::to_vec(&detect())?, "application/json".into()));
+            }
+            if url.starts_with("/api/cover/") {
+                let key = url.rsplit('/').next().unwrap();
+                let s = app.state.lock().unwrap();
+                let t = s
+                    .tracks
+                    .iter()
+                    .chain(s.device_tracks.iter())
+                    .find(|t| t.key == key)
+                    .context("Track does not exist")?;
+                return Ok((
+                    fs::read(t.cover.as_ref().context("No artwork")?)?,
+                    "image/jpeg".into(),
+                ));
+            }
+            let path = app.ui.join(if url == "/" {
+                "index.html"
+            } else {
+                url.trim_start_matches('/')
+            });
+            let canonical = path.canonicalize()?;
+            ensure!(
+                canonical.starts_with(app.ui.canonicalize()?),
+                "Invalid resource path"
+            );
+            let mime = match path.extension().and_then(|s| s.to_str()).unwrap_or("") {
+                "js" => "text/javascript",
+                "css" => "text/css",
+                "woff2" => "font/woff2",
+                "html" => "text/html; charset=utf-8",
+                _ => "application/octet-stream",
+            };
+            return Ok((fs::read(canonical)?, mime.into()));
+        }
+        ensure!(
+            req.method() == &tiny_http::Method::Post,
+            "Only GET and POST are supported"
+        );
+        ensure!(
+            req.headers()
+                .iter()
+                .any(|h| h.field.equiv("X-Island-Token") && h.value.as_str() == app.token),
+            "Request validation failed; refresh the interface"
+        );
+        // Keep idle checks and their subsequent mutations atomic relative to launch.
+        let _request = app.requests.lock().unwrap();
+        ensure!(
+            req.body_length().unwrap_or(0) < 2 * 1024 * 1024,
+            "Request is too large"
+        );
+        let mut body = String::new();
+        req.as_reader()
+            .take(2 * 1024 * 1024)
+            .read_to_string(&mut body)?;
+        let v: Value = serde_json::from_str(&body)?;
+        match url.as_str() {
+            "/api/browse" => {
+                let home = std::env::var("USERPROFILE")
+                    .or_else(|_| std::env::var("HOME"))
+                    .unwrap_or("/".into());
+                let input = v["path"]
+                    .as_str()
+                    .filter(|s| !s.is_empty())
+                    .map(PathBuf::from)
+                    .unwrap_or_else(|| PathBuf::from(home).join("Music"));
+                let path = input.canonicalize()?;
+                let mut entries = vec![];
+                for e in fs::read_dir(&path)? {
+                    let e = e?;
+                    let kind = e.file_type()?;
+                    if kind.is_dir()
+                        || e.path().extension().is_some_and(|e| {
+                            ["mp3", "jpg", "jpeg", "png", "webp"]
+                                .iter()
+                                .any(|x| e.eq_ignore_ascii_case(x))
+                        })
+                    {
+                        entries.push(json!({"name":e.file_name().to_string_lossy(),"path":e.path().to_string_lossy(),"directory":kind.is_dir()}));
+                    }
+                }
+                entries.sort_by_key(|e| {
+                    (
+                        e["directory"] != true,
+                        e["name"].as_str().unwrap_or("").to_lowercase(),
+                    )
+                });
+                return Ok((
+                    serde_json::to_vec(
+                        &json!({"path":path.to_string_lossy(),"parent":path.parent().map(|p|p.to_string_lossy()),"entries":entries}),
+                    )?,
+                    "application/json".into(),
+                ));
+            }
+            "/api/import" => {
+                let paths: Vec<String> = serde_json::from_value(v["paths"].clone())?;
+                launch(app.clone(), "Importing", move |a| import(a, paths))?;
+            }
+            "/api/connect" => {
+                ensure_idle(app)?;
+                let root = v["path"].as_str().context("Missing device path")?;
+                protocol::validate_device(Path::new(root))?;
+                let tracks = protocol::read_device(Path::new(root))?;
+                let mut s = app.state.lock().unwrap();
+                s.device_root = root.into();
+                s.device_tracks = tracks;
+            }
+            "/api/queue" => {
+                ensure_idle(app)?;
+                let keys: Vec<String> = serde_json::from_value(v["keys"].clone())?;
+                let mut s = app.state.lock().unwrap();
+                for key in keys {
+                    ensure!(
+                        s.tracks.iter().any(|t| t.key == key),
+                        "Track does not exist"
+                    );
+                    if !s.queue.contains(&key) {
+                        s.queue.push(key);
+                    }
+                }
+            }
+            "/api/queue/remove" => {
+                ensure_idle(app)?;
+                let key = v["key"].as_str().context("Missing track key")?;
+                app.state.lock().unwrap().queue.retain(|k| k != key);
+            }
+            "/api/edit" => {
+                ensure_idle(app)?;
+                let edited: Track = serde_json::from_value(v["track"].clone())?;
+                let mut s = app.state.lock().unwrap();
+                let t = s
+                    .tracks
+                    .iter_mut()
+                    .find(|t| t.key == edited.key)
+                    .context("Track does not exist")?;
+                t.title = edited.title;
+                t.artist = edited.artist;
+                t.album = edited.album;
+                t.album_artist = edited.album_artist;
+                t.genre = edited.genre;
+                t.year = edited.year;
+                t.track = edited.track;
+                t.track_total = edited.track_total;
+                t.disc = edited.disc;
+                t.disc_total = edited.disc_total;
+            }
+            "/api/cover" => {
+                ensure_idle(app)?;
+                let key = v["key"].as_str().context("Missing track key")?;
+                let path = v["path"].as_str().context("Missing image path")?;
+                let dest = metadata::save_cover(&fs::read(path)?, &app.data.join("covers"), key)?;
+                let mut s = app.state.lock().unwrap();
+                s.tracks
+                    .iter_mut()
+                    .find(|t| t.key == key)
+                    .context("Track does not exist")?
+                    .cover = Some(dest.to_string_lossy().into());
+            }
+            "/api/transfer" => {
+                let covers = v["covers"].as_bool().unwrap_or(false);
+                launch(app.clone(), "Preparing transfer", move |a| {
+                    transfer(a, covers)
+                })?;
+            }
+            "/api/prepare" => {
+                launch(app.clone(), "Preparing local library", prepare)?;
+            }
+            _ => bail!("Unknown endpoint"),
+        }
+        save(app)?;
+        Ok((
+            serde_json::to_vec(&json!({"ok":true}))?,
+            "application/json".into(),
+        ))
+    })();
+    match result {
+        Ok((body, mime)) => respond(req, 200, body, &mime),
+        Err(e) => {
+            if e.to_string() != "__responded" {
+                respond(
+                    req,
+                    400,
+                    serde_json::to_vec(&json!({"error":format!("{e:#}")})).unwrap(),
+                    "application/json",
+                );
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn device_write_gate_is_checked_before_any_device_access() {
+        let d = tempfile::tempdir().unwrap();
+        let app = Arc::new(App {
+            state: Mutex::new(State::default()),
+            persist: Mutex::new(()),
+            requests: Mutex::new(()),
+            data: d.path().into(),
+            ui: d.path().into(),
+            token: "test".into(),
+            allow_device_write: false,
+        });
+        let e = transfer(&app, true).unwrap_err();
+        assert!(e.to_string().contains("Device writes are disabled"));
+        assert_eq!(fs::read_dir(d.path()).unwrap().count(), 0);
+    }
+}
