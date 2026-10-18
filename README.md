@@ -56,7 +56,7 @@ Use `--data <directory>` to select another library. Data and backups live outsid
 --headless                Run the optional local HTTP interface
 --no-open                 Do not open a browser in headless mode
 --port 18719              Use another local port
---device-io compatible    Conservative experimental device copy (development builds)
+--device-io compatible    Conservative experimental device copy (v0.2.1 and later)
 --device-io standard      Previous copy strategy for controlled comparisons
 --data <directory>        Choose the application data directory
 --import <file-or-folder> Import local MP3 files at startup
@@ -79,7 +79,7 @@ Device roots are resolved before validation. Windows targets must use a local dr
 
 Experimental writes require `--allow-experimental-device-write`. This development gate is not a compatibility guarantee. The available player currently produces lower-level I/O errors during full transfers. Passing unit tests and the separate successful artwork probe do not establish full native transfer support.
 
-Development source after v0.2.0 adds a default compatible copy profile: 32 KiB application writes, at most 1 MiB/s of application-issued payload, one final flush per file, a 100 ms settling interval and paced SHA-256 readback. It fails on a device I/O error rather than automatically replaying writes; existing staging files are never truncated in compatible mode. Background device enumeration and device artwork reads are blocked during jobs. These controls do not change USB packet sizes or bypass the host controller. They remain unverified on the physical A918 and are not included in the v0.2.0 installer. The experimental write gate stays off by default.
+Version 0.2.1 adds a default compatible copy profile: 32 KiB application writes, at most 1 MiB/s of application-issued payload, one final flush per file, a 100 ms settling interval and paced SHA-256 readback. It fails on a device I/O error rather than automatically replaying writes; existing staging files are never truncated in compatible mode. Background device enumeration and device artwork reads are blocked during jobs. These controls do not change USB packet sizes or bypass the host controller. They remain unverified on the physical A918. The experimental write gate stays off by default.
 
 Before commit the program stages and hashes new files, verifies the original library and retains a complete host backup. A host `transaction.json` records paths, manifests and commit phase. An incomplete `ISLAND-NEW-*` folder does not mean a transfer committed.
 

@@ -4,6 +4,10 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-18
+
+The compatible I/O profile is experimental. Device writes remain disabled by default; physical A918 reliability improvement has not been established.
+
 ### Changed
 
 - Experimental transfers default to a conservative device I/O profile: 32 KiB application writes, a 1 MiB/s application-level cap, paced readback and a 100 ms settling interval after each file's final flush. `--device-io standard` retains the previous copy strategy for controlled comparisons. Physical reliability improvement has not been established.

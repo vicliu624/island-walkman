@@ -54,6 +54,8 @@ jobs:
             ~/.cargo/git
             target
           key: desktop-1.95-${{ matrix.os }}-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            desktop-1.95-${{ matrix.os }}-${{ matrix.target }}-
       - name: Install frontend dependencies
         working-directory: ui
         run: npm ci
