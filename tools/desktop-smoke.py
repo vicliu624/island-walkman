@@ -14,7 +14,11 @@ with tempfile.TemporaryDirectory(prefix='island-desktop-smoke-') as folder:
     command = [str(args.executable.resolve()), '--desktop-smoke', '--smoke-report', str(report), '--data', folder]
     if args.verify_release:
         command.append('--verify-release')
-    subprocess.run(command, check=True, timeout=120 if args.verify_release else 60)
+    try:
+        subprocess.run(command, check=True, timeout=120 if args.verify_release else 60)
+    except subprocess.TimeoutExpired:
+        print('Desktop result before timeout:', report.read_text(encoding='utf-8') if report.exists() else 'No IPC report received', flush=True)
+        raise
     assert report.exists(), 'Desktop exited without validating its window (possibly an existing instance)'
     result = json.loads(report.read_text(encoding='utf-8'))
     assert result['passed'], result.get('error')

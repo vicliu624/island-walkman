@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use tauri::Manager;
+use tauri_plugin_dialog::DialogExt;
 
 #[derive(Default, Serialize, Deserialize)]
 struct Preferences {
@@ -116,34 +117,65 @@ pub fn run() -> anyhow::Result<()> {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .setup(|app| {
-            let ui = if cfg!(debug_assertions)
-                || (std::env::args().any(|arg| arg == "--desktop-smoke")
-                    && !app.path().resource_dir()?.join("ui/index.html").exists())
-            {
-                std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("ui/dist")
-            } else {
-                app.path().resource_dir()?.join("ui")
-            };
-            if !ui.join("index.html").exists() {
-                return Err(format!("Application UI is missing: {}", ui.display()).into());
+            let result = initialize(app);
+            if let Err(error) = &result {
+                let message = format!("Island Walkman could not start.\n\n{error}");
+                let path = crate::service::default_data_directory();
+                let _ = std::fs::create_dir_all(&path);
+                let _ = std::fs::write(path.join("startup-error.log"), &message);
+                if !std::env::args().any(|arg| arg == "--desktop-smoke") {
+                    app.dialog()
+                        .message(message)
+                        .title("Island Walkman")
+                        .blocking_show();
+                }
             }
-            let (ready, receiver) = std::sync::mpsc::channel();
-            std::thread::spawn(move || crate::service::run_desktop(ui, ready));
-            let url = receiver
-                .recv_timeout(std::time::Duration::from_secs(30))?
-                .map_err(anyhow::Error::msg)?;
-            app.add_capability(
-                tauri::ipc::CapabilityBuilder::new("active-desktop")
-                    .window("main")
-                    .local(false)
-                    .remote(format!("{url}/*"))
-                    .permission("core:default")
-                    .permission("dialog:allow-open")
-                    .permission("updater:default")
-                    .permission("process:allow-restart"),
-            )?;
-            let allowed_origin = url.clone();
-            tauri::WebviewWindowBuilder::new(
+            result
+        })
+        .build(tauri::generate_context!())?
+        .run(|app, event| {
+            // This application has one window. Exit explicitly on every platform,
+            // including macOS, without querying the window map during destruction.
+            if let tauri::RunEvent::WindowEvent {
+                event: tauri::WindowEvent::CloseRequested { .. },
+                ..
+            } = event
+            {
+                app.exit(0);
+            }
+        });
+    Ok(())
+}
+
+fn initialize(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
+    let ui = if cfg!(debug_assertions)
+        || (std::env::args().any(|arg| arg == "--desktop-smoke")
+            && !app.path().resource_dir()?.join("ui/index.html").exists())
+    {
+        std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("ui/dist")
+    } else {
+        app.path().resource_dir()?.join("ui")
+    };
+    if !ui.join("index.html").exists() {
+        return Err(format!("Application UI is missing: {}", ui.display()).into());
+    }
+    let (ready, receiver) = std::sync::mpsc::channel();
+    std::thread::spawn(move || crate::service::run_desktop(ui, ready));
+    let url = receiver
+        .recv_timeout(std::time::Duration::from_secs(30))?
+        .map_err(anyhow::Error::msg)?;
+    app.add_capability(
+        tauri::ipc::CapabilityBuilder::new("active-desktop")
+            .window("main")
+            .local(false)
+            .remote(format!("{url}/*"))
+            .permission("core:default")
+            .permission("dialog:allow-open")
+            .permission("updater:default")
+            .permission("process:allow-restart"),
+    )?;
+    let allowed_origin = url.clone();
+    tauri::WebviewWindowBuilder::new(
                 app,
                 "main",
                 tauri::WebviewUrl::External(url.parse()?),
@@ -168,24 +200,11 @@ pub fn run() -> anyhow::Result<()> {
                     }, 1500);"#);
                 }
             })
+            .visible(!std::env::args().any(|arg| arg == "--desktop-smoke"))
             .title("Island Walkman")
             .inner_size(1280.0, 840.0)
             .min_inner_size(980.0, 640.0)
             .on_navigation(move |target| target.as_str().starts_with(&format!("{allowed_origin}/")))
             .build()?;
-            Ok(())
-        })
-        .build(tauri::generate_context!())?
-        .run(|app, event| {
-            // This application has one window. Exit explicitly on every platform,
-            // including macOS, without querying the window map during destruction.
-            if let tauri::RunEvent::WindowEvent {
-                event: tauri::WindowEvent::CloseRequested { .. },
-                ..
-            } = event
-            {
-                app.exit(0);
-            }
-        });
     Ok(())
 }
