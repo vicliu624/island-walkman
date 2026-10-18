@@ -195,6 +195,11 @@ readback requirement and adds stricter identity/ambiguity handling.
 
 ## Recovery limitations
 
+Follow-up [installation/recovery evidence](FIRMWARE_RECOVERY.md) closes the
+static interface-table binding described above, records reboot cleanup evidence,
+and adds a host-only pipeline-failure reproduction. Resident recovery remains
+unverified and firmware activation stays disabled.
+
 The root filesystem's `/etc/init.d/gemini` has run_emergency for a missing or
 failed Sony application. It starts MSC helper behavior, or a WMT rescue-driver
 branch when configured for WMT. load_usb_epson contains a shared rescue PID

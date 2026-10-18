@@ -6,6 +6,8 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ### Added
 
+- Local installation/recovery evidence and host-only pipeline fault tests that demonstrate a potentially masked producer failure in the stock script's ordinary pipeline semantics. Resident recovery and hardware power-loss behavior remain unverified; firmware activation stays disabled.
+
 - Strict MSC device-information and power-response decoders, an explicit Windows read-only diagnostic restricted to serial-bound fixed data-in queries, and a safety-report command/API. No firmware write or activation capability is added.
 - Offline firmware transaction/checkpoint modeling with ambiguity review, no post-intent automatic resend, exact identity/version readback, same-version/downgrade refusal and malformed-frame/driver-response/checkpoint fault tests.
 
