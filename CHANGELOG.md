@@ -6,6 +6,8 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [0.2.0] - 2026-10-18
 
+This desktop preview keeps device writes disabled by default while full A918 transfer validation remains in progress.
+
 ### Added
 
 - Independent Tauri 2 desktop windows and native music, folder and artwork dialogs.

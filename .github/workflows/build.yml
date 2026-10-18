@@ -3,7 +3,6 @@ name: Build and package
 on:
   push:
     branches: [main]
-    tags: ['v*']
   pull_request:
   workflow_dispatch:
 
@@ -79,7 +78,7 @@ jobs:
         run: |
           extra=()
           if [ -z "$TAURI_SIGNING_PRIVATE_KEY" ]; then
-            if [[ "$GITHUB_REF" == refs/tags/* ]]; then echo 'Release signing secret is required'; exit 1; fi
+            if [ "$GITHUB_EVENT_NAME" != pull_request ]; then echo 'Distribution signing secret is required'; exit 1; fi
             extra=(--config '{"bundle":{"createUpdaterArtifacts":false}}')
           fi
           npx --prefix ui tauri build --target '${{ matrix.target }}' --bundles '${{ matrix.bundles }}' "${extra[@]}"
@@ -91,21 +90,17 @@ jobs:
       - name: Test real desktop window on Linux
         if: runner.os == 'Linux'
         run: xvfb-run -a python tools/desktop-smoke.py --executable target/${{ matrix.target }}/release/island-walkman
-      - name: Test installed Windows application
+      - name: Test installed Windows application and shortcut choices
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           $installer = Get-ChildItem target/${{ matrix.target }}/release/bundle/nsis/*-setup.exe | Select-Object -First 1
-          $installDir = Join-Path $env:RUNNER_TEMP 'IslandWalkmanInstalled'
-          $install = Start-Process -FilePath $installer.FullName -ArgumentList '/S', '/NS', "/D=$installDir" -WindowStyle Hidden -Wait -PassThru
-          if ($install.ExitCode -ne 0) { throw "Installer failed: $($install.ExitCode)" }
-          python tools/desktop-smoke.py --executable "$installDir/island-walkman.exe"
-          if ($LASTEXITCODE -ne 0) { throw 'Installed desktop test failed' }
+          ./tools/test-windows-install.ps1 -Installer $installer.FullName
       - name: Test installed Debian application
         if: runner.os == 'Linux'
         run: |
           sudo dpkg -i target/${{ matrix.target }}/release/bundle/deb/*.deb
-          xvfb-run -a python tools/desktop-smoke.py --executable /usr/bin/island-walkman
+          xvfb-run -a python tools/desktop-smoke.py --installed --executable /usr/bin/island-walkman
       - name: Stage release assets
         run: python tools/stage-release.py --bundle target/${{ matrix.target }}/release/bundle --arch ${{ matrix.arch }}
       - uses: actions/upload-artifact@v7
@@ -114,28 +109,3 @@ jobs:
           path: dist/native/*
           if-no-files-found: error
           retention-days: 14
-  release:
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: package
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/download-artifact@v8
-        with:
-          path: release-assets
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
-      - name: Generate complete signed updater feed
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: python tools/release-manifest.py --artifacts release-assets --version "${RELEASE_TAG#v}"
-      - name: Publish GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: |
-          mapfile -d '' assets < <(find release-assets -type f -print0)
-          gh release create "$RELEASE_TAG" "${assets[@]}" --verify-tag --title "Island Walkman $RELEASE_TAG" --generate-notes

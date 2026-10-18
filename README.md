@@ -32,7 +32,7 @@ Windows: run the setup EXE. Installation is per-user. The Start Menu page offers
 
 Debian: install the DEB using `sudo apt install ./<downloaded-package>.deb`, or make the AppImage executable and run it. The desktop uses WebKitGTK 4.1 and GTK 3. Both package types have signed update assets. DEB installation uses the system package manager and requires administrator authorization.
 
-macOS: open the DMG and copy Island Walkman to Applications. CI apps are ad-hoc signed, not Apple-notarized. Developer ID signing and notarization credentials are not configured.
+macOS: open the DMG and copy Island Walkman to Applications. Developer ID signing and Apple notarization credentials are not configured.
 
 Normal startup opens an independent desktop window. Closing the last window exits the process; repeated launches focus the existing window. A loopback-only service runs inside the same process on an OS-selected port. Native permissions are restricted to that window and its exact origin. No external browser is opened.
 
@@ -101,13 +101,13 @@ cargo run --locked
 
 Use `build.ps1` on Windows or `./build.sh` on Linux/macOS to produce desktop installers. `npm run dev` is available for frontend development.
 
-The CI matrix builds the frontend, tests native Rust targets, creates packages and runs a smoke test against the **packaged executable**. Synthetic audio verifies source preservation, local preparation, the API and packaged UI assets. No personal music or hardware is used in CI.
+The CI matrix builds the frontend and native installers, runs Rust tests, and validates the rendered desktop and IPC. Windows and Debian additionally install and test their packages. Windows tests both shortcut modes and their preservation during updates. Synthetic audio verifies source preservation and local preparation. No personal music or hardware is used in CI.
 
 Legacy headless archive packaging, retained for protocol research:
 
 ```sh
 python tools/package.py --platform windows --arch x86_64 --binary target/release/island-walkman.exe
-python tools/smoke.py --executable dist/stage/island-walkman-0.1.0-windows-x86_64/island-walkman.exe
+python tools/smoke.py --executable dist/stage/island-walkman-0.2.0-windows-x86_64/island-walkman.exe
 ```
 
 Desktop distribution uses Tauri packaging instead. Pushing a version tag publishes a GitHub Release only after all four platform builds pass, including signed updater artifacts and a complete feed. See the distribution guide for local unsigned builds and key configuration.

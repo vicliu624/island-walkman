@@ -1,0 +1,47 @@
+name: Publish release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Download successful desktop build for this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          run_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/build.yml/runs?head_sha=$GITHUB_SHA&status=success&event=push" --jq '[.workflow_runs[] | select(.head_branch == "main")][0].id')
+          if [ -z "$run_id" ] || [ "$run_id" == null ]; then
+            echo 'A successful main-branch desktop build for this exact commit is required before tagging.'
+            exit 1
+          fi
+          run_sha=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" --jq '.head_sha')
+          if [ "$run_sha" != "$GITHUB_SHA" ]; then echo 'Build commit does not match the release tag'; exit 1; fi
+          gh run download "$run_id" --dir release-assets
+      - name: Generate complete signed updater feed
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python tools/release-manifest.py --artifacts release-assets --version "${RELEASE_TAG#v}"
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          mapfile -d '' assets < <(find release-assets -type f -print0)
+          python -c "import json,pathlib; pathlib.Path('release-notes.md').write_text(json.loads(pathlib.Path('release-assets/latest.json').read_text())['notes'],encoding='utf-8')"
+          gh release create "$RELEASE_TAG" "${assets[@]}" --verify-tag --title "Island Walkman $RELEASE_TAG" --notes-file release-notes.md

@@ -15,8 +15,8 @@ DEB installation integrates with the Linux applications menu. AppImage runs with
 1. Set the same semantic version in Cargo.toml, tauri.conf.json and ui/package.json; refresh both lockfiles.
 2. Update the English changelog and run checks.
 3. Configure the repository Actions secret `TAURI_SIGNING_PRIVATE_KEY`. The initial key has an empty password.
-4. Push a `v<version>` tag. CI builds Windows x86-64, Debian x86-64, macOS Apple Silicon and macOS Intel.
-5. After every package job passes, CI gathers signatures, validates all four updater targets, generates latest.json and SHA256SUMS, and publishes the Release.
+4. Push the commit to main and wait for the Windows x86-64, Debian x86-64, macOS Apple Silicon and macOS Intel package jobs to pass.
+5. Push a `v<version>` tag for that exact commit. The release workflow requires a successful main-branch build with the same SHA, downloads its tested artifacts, validates five updater targets (including separate DEB and AppImage entries), generates latest.json and SHA256SUMS, and publishes the Release.
 
 A partial build cannot publish a partial feed. Publish a new version for changes instead of replacing existing assets. Pull requests without the signing secret build unsigned installers and never publish releases. For local unsigned packages, pass `--config '{"bundle":{"createUpdaterArtifacts":false}}'` to the Tauri build command.
 
@@ -24,7 +24,7 @@ A partial build cannot publish a partial feed. Publish a new version for changes
 
 The public key is committed in tauri.conf.json. The private key is stored at the ignored local path `data/updater-signing.key` and in the repository Actions secret. Preserve an independent secure backup. Losing it prevents publishing updates accepted by existing installations. Never commit it, print it in logs or include it in installers. Do not rotate the public key without a migration plan.
 
-Updater signatures are separate from Windows Authenticode and Apple Developer ID. Windows packages are not Authenticode-signed. macOS applications are ad-hoc signed and are not notarized.
+Updater signatures are separate from Windows Authenticode and Apple Developer ID. Windows packages are not Authenticode-signed. macOS Developer ID signing and notarization credentials are not configured.
 
 ## Update behavior
 
@@ -34,6 +34,12 @@ Checking alone never installs an update. Music, catalogs and backups are outside
 
 ## Validation and limits
 
-`tools/smoke.py` tests source preservation, preparation and occupied-port fallback. `tools/desktop-smoke.py` opens a real desktop window, checks React and native IPC, verifies the default write gate, then closes the window and waits for process exit. Windows and Debian CI additionally install and test the native package. Raw executable smoke tests may use source-tree assets; installed-package tests must find packaged assets.
+`tools/smoke.py` tests source preservation, preparation and occupied-port fallback. `tools/desktop-smoke.py` creates an actual desktop window (hidden during unattended checks), checks React and native IPC, verifies the default write gate, then closes the window and waits for process exit. Windows and Debian CI additionally install and test the native package. Windows tests verify both shortcut modes, their preservation through installer update mode, and uninstall cleanup. Raw executable smoke tests may use source-tree assets; installed-package tests must find packaged assets.
+
+Installed-package checks pass `--installed`, which forbids fallback to source-tree UI assets. After publishing, `tools/desktop-smoke.py --installed --executable <installed-executable> --verify-release` downloads the real HTTPS updater artifact, verifies its signature and rejects a modified copy. This check does not install over the test application.
 
 macOS builds validate packaging; physical macOS window and update behavior still require platform testing. A successful first-release check verifies feed access, not an actual upgrade between two installed versions.
+
+## Upstream dependency tracking
+
+The Linux GTK 3 dependency tree includes glib 0.18, covered by [GHSA-wrw7-89jp-8q8g](https://github.com/advisories/GHSA-wrw7-89jp-8q8g) concerning VariantStrIter. The application does not directly call that API; transitive exposure has not been audited. GTK 3 bindings constrain this dependency below the patched glib 0.20 line. The advisory remains open for upstream tracking rather than being dismissed as unaffected.

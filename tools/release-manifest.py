@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import urllib.parse
+import tomllib
 
 
 def manifest(root, version, repository):
@@ -31,8 +32,21 @@ if __name__ == '__main__':
     parser.add_argument('--version', required=True)
     parser.add_argument('--repository', default='vicliu624/island-walkman')
     args = parser.parse_args()
+    repository_root = Path(__file__).resolve().parents[1]
+    versions = [tomllib.loads((repository_root/'Cargo.toml').read_text(encoding='utf-8'))['package']['version'],
+                json.loads((repository_root/'tauri.conf.json').read_text(encoding='utf-8'))['version'],
+                json.loads((repository_root/'ui/package.json').read_text(encoding='utf-8'))['version']]
+    if any(version != args.version for version in versions):
+        raise ValueError(f'Release tag and application versions disagree: {args.version}, {versions}')
     output = args.artifacts
-    (output/'latest.json').write_text(json.dumps(manifest(output, args.version, args.repository), indent=2)+'\n', encoding='utf-8')
+    changelog = (repository_root/'CHANGELOG.md').read_text(encoding='utf-8')
+    heading = f'## [{args.version}]'
+    if heading not in changelog:
+        raise ValueError('A versioned changelog entry is required before publishing')
+    notes = changelog.split(heading, 1)[1].split('\n## [', 1)[0].partition('\n')[2].strip()
+    feed = manifest(output, args.version, args.repository)
+    feed['notes'] = notes
+    (output/'latest.json').write_text(json.dumps(feed, indent=2)+'\n', encoding='utf-8')
     files = sorted(path for path in output.rglob('*') if path.is_file() and path.name != 'SHA256SUMS')
     names = [p.name for p in files]
     if len(names) != len(set(names)): raise ValueError('Release asset names must be unique')

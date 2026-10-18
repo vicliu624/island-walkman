@@ -148,13 +148,15 @@ pub fn run() -> anyhow::Result<()> {
 }
 
 fn initialize(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
-    let ui = if cfg!(debug_assertions)
-        || (std::env::args().any(|arg| arg == "--desktop-smoke")
-            && !app.path().resource_dir()?.join("ui/index.html").exists())
+    let installed_ui = app.path().resource_dir()?.join("ui");
+    let require_installed = std::env::args().any(|arg| arg == "--require-installed-resources");
+    let smoke = std::env::args().any(|arg| arg == "--desktop-smoke");
+    let ui = if !require_installed
+        && (cfg!(debug_assertions) || (smoke && !installed_ui.join("index.html").exists()))
     {
         std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("ui/dist")
     } else {
-        app.path().resource_dir()?.join("ui")
+        installed_ui
     };
     if !ui.join("index.html").exists() {
         return Err(format!("Application UI is missing: {}", ui.display()).into());

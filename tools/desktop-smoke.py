@@ -8,12 +8,15 @@ import tempfile
 parser = argparse.ArgumentParser()
 parser.add_argument('--executable', required=True, type=Path)
 parser.add_argument('--verify-release', action='store_true')
+parser.add_argument('--installed', action='store_true')
 args = parser.parse_args()
 with tempfile.TemporaryDirectory(prefix='island-desktop-smoke-') as folder:
     report = Path(folder)/'desktop-result.json'
     command = [str(args.executable.resolve()), '--desktop-smoke', '--smoke-report', str(report), '--data', folder]
     if args.verify_release:
         command.append('--verify-release')
+    if args.installed:
+        command.append('--require-installed-resources')
     try:
         subprocess.run(command, check=True, timeout=120 if args.verify_release else 60)
     except subprocess.TimeoutExpired:

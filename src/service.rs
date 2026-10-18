@@ -919,6 +919,9 @@ fn handle(mut req: Request, app: &Arc<App>) {
                 ));
             }
             if url == "/api/devices" {
+                if std::env::args().any(|arg| arg == "--desktop-smoke") {
+                    return Ok((b"[]".to_vec(), "application/json".into()));
+                }
                 return Ok((serde_json::to_vec(&detect())?, "application/json".into()));
             }
             if url.starts_with("/api/cover/") {
