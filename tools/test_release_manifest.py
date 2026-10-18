@@ -11,7 +11,7 @@ spec.loader.exec_module(module)
 
 class ReleaseManifestTests(unittest.TestCase):
     def seed(self, root):
-        for name in ['Island Walkman_0.2.0_x64-setup.exe', 'Island Walkman_0.2.0_amd64.AppImage',
+        for name in ['Island Walkman_0.2.0_x64-setup.exe', 'Island Walkman_0.2.0_amd64.AppImage', 'Island Walkman_0.2.0_amd64.deb',
                      'Island Walkman_aarch64.app.tar.gz', 'Island Walkman_x86_64.app.tar.gz']:
             (root/name).write_bytes(b'fixture')
             (root/(name+'.sig')).write_text('signature-fixture')
@@ -21,7 +21,7 @@ class ReleaseManifestTests(unittest.TestCase):
             root = Path(folder)
             self.seed(root)
             feed = module.manifest(root, '0.2.0', 'owner/repo')
-            self.assertEqual(len(feed['platforms']), 4)
+            self.assertEqual(len(feed['platforms']), 5)
             self.assertIn('%20', feed['platforms']['windows-x86_64']['url'])
             self.assertIn('aarch64', feed['platforms']['darwin-aarch64']['url'])
 

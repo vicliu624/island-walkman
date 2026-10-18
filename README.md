@@ -30,7 +30,7 @@ Download installers from [GitHub Releases](https://github.com/vicliu624/island-w
 
 Windows: run the setup EXE. Installation is per-user. The Start Menu page offers an option to skip shortcuts; the final page independently offers a desktop shortcut checkbox. Updates preserve existing shortcuts. WebView2 is installed if missing.
 
-Debian: install the DEB using `sudo apt install ./<downloaded-package>.deb`, or make the AppImage executable and run it. The desktop uses WebKitGTK 4.1 and GTK 3. AppImage supports in-app updates; DEB installations use the package manager.
+Debian: install the DEB using `sudo apt install ./<downloaded-package>.deb`, or make the AppImage executable and run it. The desktop uses WebKitGTK 4.1 and GTK 3. Both package types have signed update assets. DEB installation uses the system package manager and requires administrator authorization.
 
 macOS: open the DMG and copy Island Walkman to Applications. CI apps are ad-hoc signed, not Apple-notarized. Developer ID signing and notarization credentials are not configured.
 
@@ -119,7 +119,7 @@ Desktop distribution uses Tauri packaging instead. Pushing a version tag publish
 - Device deletion and playlist editing are not implemented. Existing playlists prevent unsupported index rebuilding.
 - Full native A918 transfers, power-loss recovery and Debian/macOS USB behavior remain unverified.
 - Windows installers are not Authenticode-signed; macOS applications are not Developer ID signed or notarized. Updater signatures are separate.
-- In-app Linux updates require AppImage; DEB updates use the package manager.
+- DEB updates require administrator authorization through the system package manager; physical Linux update installation remains to be verified.
 - Protocol coverage is limited to recovered and tested cases; see [protocol notes](docs/PROTOCOL.md).
 
 ## Documentation and license

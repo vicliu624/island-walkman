@@ -42,9 +42,53 @@ fn set_language(language: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-fn desktop_smoke_result(app: tauri::AppHandle, error: Option<String>) {
+async fn verify_release_update(app: tauri::AppHandle) -> Result<usize, String> {
+    if !std::env::args().any(|arg| arg == "--verify-release") {
+        return Ok(0);
+    }
+    use tauri_plugin_updater::UpdaterExt;
+    let updater = app
+        .updater_builder()
+        .version_comparator(|_, _| true)
+        .build()
+        .map_err(|error| error.to_string())?;
+    let update = updater
+        .check()
+        .await
+        .map_err(|error| error.to_string())?
+        .ok_or("No release artifact available")?;
+    let bytes = update
+        .download(|_, _| {}, || {})
+        .await
+        .map_err(|error| error.to_string())?;
+    // Exercise both acceptance and rejection without installing over the test app.
+    update.verify(&bytes).map_err(|error| error.to_string())?;
+    let mut tampered = bytes.clone();
+    if let Some(byte) = tampered.first_mut() {
+        *byte ^= 1;
+    }
+    if update.verify(&tampered).is_ok() {
+        return Err("Tampered update was accepted".into());
+    }
+    Ok(bytes.len())
+}
+
+#[tauri::command]
+async fn desktop_smoke_result(app: tauri::AppHandle, error: Option<String>) {
     if !std::env::args().any(|arg| arg == "--desktop-smoke") {
         return;
+    }
+    let args: Vec<_> = std::env::args().collect();
+    if let Some(path) = args
+        .iter()
+        .position(|arg| arg == "--smoke-report")
+        .and_then(|index| args.get(index + 1))
+    {
+        let _ = std::fs::write(
+            path,
+            serde_json::to_vec(&serde_json::json!({"passed": error.is_none(), "error": error}))
+                .unwrap(),
+        );
     }
     if let Some(error) = error {
         eprintln!("Desktop smoke failed: {error}");
@@ -59,6 +103,7 @@ pub fn run() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             get_language,
             set_language,
+            verify_release_update,
             desktop_smoke_result
         ])
         .plugin(tauri_plugin_single_instance::init(|app, _, _| {
@@ -113,6 +158,7 @@ pub fn run() -> anyhow::Result<()> {
                             const invoke = window.__TAURI_INTERNALS__.invoke;
                             if (!await invoke('plugin:app|version')) throw Error('Native version unavailable');
                             await invoke('get_language');
+                            await invoke('verify_release_update');
                             const state = await (await fetch('/api/state')).json();
                             if (state.device_write_enabled) throw Error('Device writes unexpectedly enabled');
                             if (!document.querySelector('h1')) throw Error('React UI missing');

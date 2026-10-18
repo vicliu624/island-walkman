@@ -28,7 +28,7 @@ Updater signatures are separate from Windows Authenticode and Apple Developer ID
 
 ## Update behavior
 
-Settings offers an explicit check, release notes, download progress and installation. Windows verifies the setup EXE and invokes passive update mode. macOS verifies an APP archive and replaces the application. Linux in-app replacement supports AppImage; DEB users install the newer package through their package manager. The feed uses HTTPS assets from this public repository and contains no GitHub token.
+Settings offers an explicit check, release notes, download progress and installation. Windows verifies the setup EXE and invokes passive update mode. macOS verifies an APP archive and replaces the application. Linux uses separate signed AppImage and DEB targets. Tauri 2.14 installs DEB updates through dpkg with system privilege authorization. Physical Linux update installation remains to be verified. The feed uses HTTPS assets from this public repository and contains no GitHub token.
 
 Checking alone never installs an update. Music, catalogs and backups are outside the installation directory. Finish active transfers before updating. Network and signature failures must leave the existing installation usable.
 
