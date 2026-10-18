@@ -6,6 +6,9 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ### Added
 
+- Strict MSC device-information and power-response decoders, an explicit Windows read-only diagnostic restricted to serial-bound fixed data-in queries, and a safety-report command/API. No firmware write or activation capability is added.
+- Offline firmware transaction/checkpoint modeling with ambiguity review, no post-intent automatic resend, exact identity/version readback, same-version/downgrade refusal and malformed-frame/driver-response/checkpoint fault tests.
+
 - Read-only firmware research card with English, Chinese and Japanese UI, native USB inventory on Windows/Linux/macOS and bounded local A91x UPG container validation.
 - Firmware CLI inspection that exits before catalog loading and transfer recovery, plus independent synthetic-container smoke coverage in all four CI targets.
 - REA/Ghidra evidence for the original updater and an offline device-information command specification cross-checked against the device kernel. No vendor-command execution or firmware flashing is enabled.

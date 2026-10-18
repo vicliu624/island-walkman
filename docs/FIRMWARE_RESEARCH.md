@@ -2,9 +2,12 @@
 
 This is an unreleased, read-only first stage of replacing Sony's Windows updater.
 It is not a firmware installer. The application contains no firmware write,
-vendor-command transport, reset, detach, upgrade activation, or updater-launch
+arbitrary vendor-command sending, reset, detach, upgrade activation, or updater-launch
 implementation. No Sony executable, firmware image, theme or commercial ROM is
-bundled with Island Walkman.
+bundled with Island Walkman. The current extension adds a Windows-only explicit
+reader restricted to two fixed data-in queries, plus offline response decoding
+and transaction modeling. See [Protocol phase 2](FIRMWARE_PROTOCOL_PHASE2.md) for
+its exact boundary, failed presence-only diagnostic and recovery limitations.
 
 ## Implemented boundary
 
@@ -110,7 +113,7 @@ completion. The downstream connection-state consumer, update acceptance and
 failure/recovery sequence remain to be established. The additional module was
 also analyzed with static Ghidra headless, not Windows REA ARM support.
 
-`DeviceInfoQuery` records the cross-checked request and expected response length
+`ReadQuerySpec` records the cross-checked request and expected response length
 as an **offline specification** with `live_enabled = false`. It cannot be
 submitted through any application endpoint. Other `0xFC` requests must not be
 treated as safe merely because they use the same opcode.
@@ -159,9 +162,11 @@ enumeration but does not send SCSI commands or open a player filesystem. Its
 
 Before a native installer can be enabled, remaining evidence must establish:
 
-1. Exact A918 model, installed-version and battery response decoding.
-2. Windows SPTI, Linux SG_IO and macOS storage transport behavior without driver
-   replacement, interface seizure or automatic unmounting.
+1. Physical validation of the decoded A918 identity/version/power responses,
+   their serial binding and a model-specific battery policy.
+2. Firmware upload/activation transport behavior on Windows, Linux and macOS;
+   only a fixed Windows diagnostic reader currently exists. No driver
+   replacement, interface seizure or automatic unmounting is implemented.
 3. The EXE-to-COM branch selected by the A918 INI, device-side upgrade acceptance,
    activation command, return values and re-enumeration sequence.
 4. Immutable host staging, fresh package hashes and complete device-file readback

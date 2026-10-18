@@ -145,6 +145,14 @@ Application code is [MIT licensed](LICENSE). Dependencies retain their licenses.
 
 A read-only Device firmware card inspects native USB identity and local A91x UPG
 containers. Windows, Debian and macOS share the Rust implementation. No firmware
-write, reset, vendor-command transport or Sony updater launch is enabled. Battery
-and installed firmware version remain unknown. See [Firmware research](docs/FIRMWARE_RESEARCH.md)
+write, reset, arbitrary vendor-command sender or Sony updater launch is enabled.
+An explicit Windows developer command supports only fixed, serial-bound data-in
+information queries; it is not called by the UI or background scanning. Offline
+identity/version/power decoders and a fail-closed transaction model are included.
+Live identity, firmware and battery responses remain unmeasured in this stage. See [Firmware research](docs/FIRMWARE_RESEARCH.md)
 for evidence, validation limits and the remaining work toward a native updater.
+
+See [Protocol phase 2](docs/FIRMWARE_PROTOCOL_PHASE2.md) for the response layouts,
+read-only diagnostic boundary, modeled fault tests and unresolved resident-loader
+recovery contract. Linux/macOS storage-query adapters and all firmware activation
+remain unavailable.

@@ -1,5 +1,9 @@
-//! Read-only firmware research boundary. No device handles, claims, raw CDBs,
-//! update requests, file copies to a player, or updater subprocesses exist here.
+//! Read-only firmware research boundary. No mutating commands or device writes,
+//! interface claims, upgrade activation or updater subprocesses exist here.
+pub mod responses;
+pub mod session;
+#[cfg(windows)]
+pub mod windows_readonly;
 use anyhow::{Result, ensure};
 use des::{
     Des,
@@ -16,17 +20,17 @@ const STOCK_SHA256: &str = "cfbcc372e2a18f11c12a080c9e5f039333e09175f5db03ac841a
 /// An offline specification, NOT an executable transport request. Corroborated
 /// by FWUpdaterCom 0x1000a180 and mgscsi vscProcessCmd 0x11b8c / DEVINFO.
 #[derive(Debug, Serialize)]
-pub struct DeviceInfoQuery {
+pub struct ReadQuerySpec {
     pub cdb: [u8; 12],
     pub response_bytes: usize,
     pub live_enabled: bool,
 }
 
-impl DeviceInfoQuery {
-    fn researched() -> Self {
+impl ReadQuerySpec {
+    fn for_query(query: responses::ReadQuery) -> Self {
         Self {
-            cdb: [0xfc, 0, 0x20, b'd', b'b', b'm', b'n', 0, 0x80, 0, 0, 0],
-            response_bytes: 128,
+            cdb: query.cdb(),
+            response_bytes: query.response_len(),
             live_enabled: false,
         }
     }
@@ -52,7 +56,8 @@ pub struct ProbeReport {
     pub mode: &'static str,
     pub firmware_write_enabled: bool,
     pub vendor_queries_enabled: bool,
-    pub researched_device_info_query: DeviceInfoQuery,
+    pub researched_device_info_query: ReadQuerySpec,
+    pub researched_power_status_query: ReadQuerySpec,
     pub installed_firmware: Option<String>,
     pub battery_percent: Option<u8>,
     pub candidates: Vec<UsbCandidate>,
@@ -80,7 +85,8 @@ pub fn probe() -> Result<ProbeReport> {
         mode: "usb_inventory_only",
         firmware_write_enabled: false,
         vendor_queries_enabled: false,
-        researched_device_info_query: DeviceInfoQuery::researched(),
+        researched_device_info_query: ReadQuerySpec::for_query(responses::ReadQuery::DeviceInfo),
+        researched_power_status_query: ReadQuerySpec::for_query(responses::ReadQuery::PowerStatus),
         installed_firmware: None,
         battery_percent: None,
         candidates,
@@ -207,7 +213,7 @@ mod tests {
 
     #[test]
     fn device_info_spec_matches_both_host_and_device_checks_and_stays_offline() {
-        let query = DeviceInfoQuery::researched();
+        let query = ReadQuerySpec::for_query(responses::ReadQuery::DeviceInfo);
         assert_eq!(
             query.cdb,
             [0xfc, 0, 0x20, 0x64, 0x62, 0x6d, 0x6e, 0, 0x80, 0, 0, 0]

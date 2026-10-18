@@ -1241,6 +1241,12 @@ fn handle(mut req: Request, app: &Arc<App>) {
             return Ok((b"{}".to_vec(), "application/json".into()));
         }
         match url.as_str() {
+            "/api/firmware/safety" => {
+                return Ok((
+                    serde_json::to_vec(&crate::firmware::session::live_gate())?,
+                    "application/json".into(),
+                ));
+            }
             "/api/firmware/probe" => {
                 ensure_idle(app)?;
                 return Ok((

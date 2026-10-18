@@ -64,9 +64,46 @@ def main():
         result = invoke('--allow-device-write', '--firmware-probe')
         assert result.returncode == 0, result.stderr
         assert json.loads(result.stdout)['firmware_write_enabled'] is False
+        safety = invoke('--allow-device-write', '--firmware-safety')
+        assert safety.returncode == 0, safety.stderr
+        assert json.loads(safety.stdout)['firmware_write_enabled'] is False
+        assert json.loads(safety.stdout)['blockers']
+        # Synthetic response captures, not observations of the connected player.
+        info = bytearray(128)
+        info[:8] = b'DEVINFO\x80'
+        info[16:24] = b'SONY    '
+        info[24:40] = b'NW-A918         '
+        info[40:48] = b'1.0300  '
+        info_path = root / 'synthetic-devinfo.bin'
+        info_path.write_bytes(info)
+        result = invoke('--inspect-firmware-response', 'devinfo', str(info_path))
+        assert result.returncode == 0, result.stderr
+        decoded = json.loads(result.stdout)
+        assert decoded['source'] == 'supplied_capture_not_live_device'
+        assert decoded['decoded']['model'] == 'NW-A918'
+        assert decoded['decoded']['version'] == {'major': 1, 'minor': 3}
+        assert decoded['safety']['firmware_write_enabled'] is False
+        assert info_path.read_bytes() == info
+        power = bytearray(32)
+        power[:8] = b'PW_STAT\x20'
+        power[9:12] = bytes([1, 8, 255])
+        power[12:16] = (3600).to_bytes(4, 'big')
+        power[16:20] = bytes([255])*4
+        power_path = root / 'synthetic-power.bin'
+        power_path.write_bytes(power)
+        result = invoke('--inspect-firmware-response', 'power', str(power_path))
+        assert result.returncode == 0, result.stderr
+        decoded = json.loads(result.stdout)['decoded']
+        assert decoded['percent'] is None
+        assert decoded['life_seconds'] == 3600
+        assert decoded['full_life_seconds'] is None
+        power[11] = 101
+        power_path.write_bytes(power)
+        assert invoke('--inspect-firmware-response', 'power', str(power_path)).returncode != 0
+        assert invoke('--inspect-firmware-response', 'activation', str(info_path)).returncode != 0
         assert not data.exists(), 'Firmware CLI must bypass catalog loading and recovery'
     print('Firmware smoke passed: native USB inventory, independent synthetic UPG, '
-          'corruption rejection, unchanged inputs and no catalog/recovery startup.')
+          'response decoding, corruption rejection, unchanged inputs and no catalog/recovery startup.')
 
 
 if __name__ == '__main__':
