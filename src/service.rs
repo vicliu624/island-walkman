@@ -38,6 +38,7 @@ struct App {
     ui: PathBuf,
     token: String,
     allow_device_write: bool,
+    device_io_profile: crate::device_io::Profile,
 }
 fn stamp() -> String {
     SystemTime::now()
@@ -161,6 +162,13 @@ fn import(app: &Arc<App>, paths: Vec<String>) -> Result<()> {
     Ok(())
 }
 fn copy_tree(src: &Path, dst: &Path) -> Result<()> {
+    copy_tree_with_profile(src, dst, crate::device_io::Profile::Standard)
+}
+fn copy_tree_with_profile(
+    src: &Path,
+    dst: &Path,
+    profile: crate::device_io::Profile,
+) -> Result<()> {
     fs::create_dir_all(dst)?;
     for e in walkdir::WalkDir::new(src).follow_links(false).min_depth(1) {
         let e = e?;
@@ -173,6 +181,10 @@ fn copy_tree(src: &Path, dst: &Path) -> Result<()> {
             fs::create_dir_all(&to)
                 .with_context(|| format!("Cannot create directory: {}", to.display()))?;
         } else if e.file_type().is_file() {
+            if profile == crate::device_io::Profile::Compatible {
+                crate::device_io::copy_file(e.path(), &to)?;
+                continue;
+            }
             // Flush each completed file before verifying and before directory
             // commit. Include the path in errors from removable media.
             let mut source = fs::File::open(e.path())
@@ -204,7 +216,16 @@ fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
     let root = PathBuf::from(&state.device_root).canonicalize()?;
     protocol::validate_device(&root)?;
     protocol::validate_rebuild_supported(&root)?;
-    transfer_staged(app, covers, &root, state, copy_tree)
+    if app.device_io_profile == crate::device_io::Profile::Compatible {
+        log(
+            app,
+            0,
+            "Compatible device I/O: 32 KiB chunks, 1 MiB/s cap and paced verification",
+        );
+    }
+    transfer_staged(app, covers, &root, state, |source, destination| {
+        copy_tree_with_profile(source, destination, app.device_io_profile)
+    })
 }
 
 // The public operation enforces policy above; this private core accepts an I/O
@@ -767,6 +788,7 @@ fn run_inner(
         ui,
         token: stamp(),
         allow_device_write: args.contains(&"--allow-experimental-device-write".into()),
+        device_io_profile: crate::device_io::Profile::parse(arg("--device-io").as_deref())?,
     });
     if let Some(path) = arg("--import") {
         import(&app, vec![path])?;
@@ -913,7 +935,7 @@ fn handle(mut req: Request, app: &Arc<App>) {
                 let s = app.state.lock().unwrap().clone();
                 return Ok((
                     serde_json::to_vec(
-                        &json!({"state":s,"token":app.token,"device_write_enabled":app.allow_device_write}),
+                        &json!({"state":s,"token":app.token,"device_write_enabled":app.allow_device_write,"device_io_profile":app.device_io_profile.name()}),
                     )?,
                     "application/json".into(),
                 ));
@@ -922,6 +944,8 @@ fn handle(mut req: Request, app: &Arc<App>) {
                 if std::env::args().any(|arg| arg == "--desktop-smoke") {
                     return Ok((b"[]".to_vec(), "application/json".into()));
                 }
+                let _request = app.requests.lock().unwrap();
+                ensure_idle(app)?;
                 return Ok((serde_json::to_vec(&detect())?, "application/json".into()));
             }
             if url.starts_with("/api/cover/") {
@@ -933,6 +957,10 @@ fn handle(mut req: Request, app: &Arc<App>) {
                     .chain(s.device_tracks.iter())
                     .find(|t| t.key == key)
                     .context("Track does not exist")?;
+                ensure!(
+                    t.device_id.is_none() || !s.job.running,
+                    "A task is running; try again later"
+                );
                 return Ok((
                     fs::read(t.cover.as_ref().context("No artwork")?)?,
                     "image/jpeg".into(),
@@ -993,6 +1021,7 @@ fn handle(mut req: Request, app: &Arc<App>) {
         }
         match url.as_str() {
             "/api/browse" => {
+                ensure_idle(app)?;
                 let home = std::env::var("USERPROFILE")
                     .or_else(|_| std::env::var("HOME"))
                     .unwrap_or("/".into());
@@ -1129,6 +1158,52 @@ fn handle(mut req: Request, app: &Arc<App>) {
 mod tests {
     use super::*;
     #[test]
+    fn compatible_tree_copy_verifies_nested_files_and_preserves_source() {
+        let temp = tempfile::tempdir().unwrap();
+        let source = temp.path().join("source");
+        let target = temp.path().join("incoming");
+        fs::create_dir_all(source.join("nested")).unwrap();
+        fs::write(source.join("nested/audio.oma"), vec![0x59; 33 * 1024]).unwrap();
+        fs::write(source.join("index.dat"), b"small index").unwrap();
+        let before = manifest(&source).unwrap();
+        copy_tree_with_profile(&source, &target, crate::device_io::Profile::Compatible).unwrap();
+        assert_eq!(manifest(&target).unwrap(), before);
+        assert_eq!(manifest(&source).unwrap(), before);
+    }
+
+    #[test]
+    fn busy_device_cover_requests_stop_before_opening_the_file() {
+        let (temp, app, _, _) = virtual_player();
+        {
+            let mut state = app.state.lock().unwrap();
+            let mut track = state.tracks[0].clone();
+            track.key = "busy-device-cover".into();
+            track.device_id = Some(99);
+            track.cover = Some(
+                temp.path()
+                    .join("must-not-be-opened.jpg")
+                    .to_string_lossy()
+                    .into(),
+            );
+            state.device_tracks = vec![track];
+            state.job.running = true;
+        }
+        let server = Server::http("127.0.0.1:0").unwrap();
+        let address = server.server_addr().to_ip().unwrap();
+        let worker = std::thread::spawn(move || handle(server.recv().unwrap(), &app));
+        let mut client = std::net::TcpStream::connect(address).unwrap();
+        client
+            .set_read_timeout(Some(std::time::Duration::from_secs(3)))
+            .unwrap();
+        write!(client, "GET /api/cover/busy-device-cover HTTP/1.0\r\nHost: {address}\r\nConnection: close\r\n\r\n").unwrap();
+        let mut response = String::new();
+        client.read_to_string(&mut response).unwrap();
+        worker.join().unwrap();
+        assert!(response.contains("400"));
+        assert!(response.contains("A task is running; try again later"));
+        assert!(!response.contains("cannot find"));
+    }
+    #[test]
     fn missing_current_library_with_a_device_backup_blocks_a_new_transfer() {
         let (_temp, app, root, _source) = virtual_player();
         fs::rename(
@@ -1253,6 +1328,7 @@ mod tests {
             ui: temp.path().into(),
             token: "test".into(),
             allow_device_write: true,
+            device_io_profile: crate::device_io::Profile::Standard,
         });
         import(&app, vec![source.to_string_lossy().into_owned()]).unwrap();
         {
@@ -1449,6 +1525,7 @@ mod tests {
             ui: d.path().into(),
             token: "test".into(),
             allow_device_write: false,
+            device_io_profile: crate::device_io::Profile::Compatible,
         });
         let e = transfer(&app, true).unwrap_err();
         assert!(e.to_string().contains("Device writes are disabled"));

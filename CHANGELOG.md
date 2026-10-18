@@ -4,6 +4,15 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [Unreleased]
 
+### Changed
+
+- Experimental transfers default to a conservative device I/O profile: 32 KiB application writes, a 1 MiB/s application-level cap, paced readback and a 100 ms settling interval after each file's final flush. `--device-io standard` retains the previous copy strategy for controlled comparisons. Physical reliability improvement has not been established.
+- Device enumeration, device artwork reads and application file browsing are blocked during active jobs to reduce competing I/O. Media I/O failures stop immediately without automatic rewrite retries.
+
+### Added
+
+- Deterministic pacing, short-write and fail-fast tests, no-truncation protection for existing staging files, and virtual-filesystem coverage of compatible copy and busy-device artwork requests.
+
 ## [0.2.0] - 2026-10-18
 
 This desktop preview keeps device writes disabled by default while full A918 transfer validation remains in progress.

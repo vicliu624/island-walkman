@@ -47,6 +47,7 @@ def main():
             else:
                 raise RuntimeError('Local server did not start')
             assert state['device_write_enabled'] is False
+            assert state['device_io_profile'] == 'compatible'
             assert len(state['state']['tracks']) == 1
             with urllib.request.urlopen(base+'/', timeout=5) as response:
                 html = response.read().decode()

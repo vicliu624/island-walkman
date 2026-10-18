@@ -2,6 +2,7 @@
 mod database;
 #[cfg(feature = "desktop")]
 mod desktop;
+mod device_io;
 mod metadata;
 mod protocol;
 mod service;

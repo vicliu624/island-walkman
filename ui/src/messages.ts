@@ -1,6 +1,7 @@
 // Source keys preserve the original wording; values are [English, Japanese].
 // Track metadata and filesystem paths are never translated.
 export const messages: Record<string, readonly [string, string, string?]> = {
+"任务运行时暂停读取设备封面":["Device artwork reads are paused while a task is running", "処理中は機器のジャケット読み取りを停止します"],
 "软件更新":["Software updates", "ソフトウェアの更新"],
 "检查更新":["Check for updates", "更新を確認"],
 "正在检查更新":["Checking for updates…", "更新を確認しています…"],

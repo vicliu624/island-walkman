@@ -728,5 +728,15 @@
     "Windows target must use a local drive letter",
     "Windows の転送先にはローカルのドライブ文字を使用してください",
     "Windows 传输目标必须使用本地盘符"
+  ],
+  [
+    "Compatible device I/O: 32 KiB chunks, 1 MiB/s cap and paced verification",
+    "互換 I/O：32 KiB 単位、最大 1 MiB/秒、検証の読み取りも制限します",
+    "兼容 I/O：32 KiB 分块、最高 1 MiB/秒，并限制校验读取节奏"
+  ],
+  [
+    "Cannot verify device file: {path}",
+    "機器のファイルを検証できません：{path}",
+    "无法校验设备文件：{path}"
   ]
 ]
