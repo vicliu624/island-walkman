@@ -170,41 +170,26 @@ fn initialize(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
             .local(false)
             .remote(format!("{url}/*"))
             .permission("core:default")
+            .permission("allow-get-language")
+            .permission("allow-set-language")
+            .permission("allow-desktop-smoke-result")
+            .permission("allow-verify-release-update")
             .permission("dialog:allow-open")
             .permission("updater:default")
             .permission("process:allow-restart"),
     )?;
     let allowed_origin = url.clone();
-    tauri::WebviewWindowBuilder::new(
-                app,
-                "main",
-                tauri::WebviewUrl::External(url.parse()?),
-            )
-            .on_page_load(|webview, payload| {
-                if std::env::args().any(|arg| arg == "--desktop-smoke")
-                    && payload.event() == tauri::webview::PageLoadEvent::Finished
-                {
-                    let _ = webview.eval(r#"setTimeout(async () => {
-                        let error = null;
-                        try {
-                            const invoke = window.__TAURI_INTERNALS__.invoke;
-                            if (!await invoke('plugin:app|version')) throw Error('Native version unavailable');
-                            await invoke('get_language');
-                            await invoke('verify_release_update');
-                            const state = await (await fetch('/api/state')).json();
-                            if (state.device_write_enabled) throw Error('Device writes unexpectedly enabled');
-                            if (!document.querySelector('h1')) throw Error('React UI missing');
-                            if (!document.querySelector('button')) throw Error('UI controls missing');
-                        } catch (e) { error = String(e); }
-                        window.__TAURI_INTERNALS__.invoke('desktop_smoke_result', { error });
-                    }, 1500);"#);
-                }
-            })
-            .visible(!std::env::args().any(|arg| arg == "--desktop-smoke"))
-            .title("Island Walkman")
-            .inner_size(1280.0, 840.0)
-            .min_inner_size(980.0, 640.0)
-            .on_navigation(move |target| target.as_str().starts_with(&format!("{allowed_origin}/")))
-            .build()?;
+    tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::External(url.parse()?))
+        .initialization_script(if std::env::args().any(|arg| arg == "--desktop-smoke") {
+            "window.__ISLAND_DESKTOP_SMOKE__ = true;"
+        } else {
+            ""
+        })
+        .visible(!std::env::args().any(|arg| arg == "--desktop-smoke"))
+        .title("Island Walkman")
+        .inner_size(1280.0, 840.0)
+        .min_inner_size(980.0, 640.0)
+        .on_navigation(move |target| target.as_str().starts_with(&format!("{allowed_origin}/")))
+        .build()?;
     Ok(())
 }

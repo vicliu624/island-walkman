@@ -975,6 +975,19 @@ fn handle(mut req: Request, app: &Arc<App>) {
             .take(2 * 1024 * 1024)
             .read_to_string(&mut body)?;
         let v: Value = serde_json::from_str(&body)?;
+        if url == "/api/desktop-smoke-report"
+            && std::env::args().any(|arg| arg == "--desktop-smoke")
+        {
+            let args: Vec<_> = std::env::args().collect();
+            if let Some(path) = args
+                .iter()
+                .position(|arg| arg == "--smoke-report")
+                .and_then(|index| args.get(index + 1))
+            {
+                fs::write(path, serde_json::to_vec(&v)?)?;
+            }
+            return Ok((b"{}".to_vec(), "application/json".into()));
+        }
         match url.as_str() {
             "/api/browse" => {
                 let home = std::env::var("USERPROFILE")

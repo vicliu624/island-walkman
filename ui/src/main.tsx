@@ -1,3 +1,4 @@
+import { runDesktopSmoke } from './desktop-smoke';
 import { isTauri } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
 import { Updates } from './updates';
@@ -205,3 +206,5 @@ function App() {
 createRoot(document.getElementById('root')!).render(<App />);
 
 void restoreDesktopLanguage();
+
+void runDesktopSmoke();
