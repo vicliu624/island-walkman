@@ -63,4 +63,5 @@ jobs:
         run: |
           mapfile -d '' assets < <(find release-assets -type f -print0)
           python -c "import json,pathlib; pathlib.Path('release-notes.md').write_text(json.loads(pathlib.Path('release-assets/latest.json').read_text())['notes'],encoding='utf-8')"
-          gh release create "$RELEASE_TAG" "${assets[@]}" --verify-tag --title "Island Walkman $RELEASE_TAG" --notes-file release-notes.md
+          gh release create "$RELEASE_TAG" "${assets[@]}" --verify-tag --draft --title "Island Walkman $RELEASE_TAG" --notes-file release-notes.md
+          gh release edit "$RELEASE_TAG" --draft=false --latest
