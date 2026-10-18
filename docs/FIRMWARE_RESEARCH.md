@@ -58,6 +58,7 @@ under this application's ignored `data/firmware-analysis` and
 | FWUpdater.exe | `3cf7eb2e354d2e6d3f0cddd06ab67755696579a0d2cc85b68672ecc44ccb3c1c` |
 | FWUpdaterCom.dll | `2b7550cd945a8d71d139063fce0ce006bfa6b59ee940f17e5151bdb6e35ebe2f` |
 | FWUpdaterRes.dll | `0536de4cc4373f2f1391fbb52f11edf47af28fa52551959d569b6488c639b243` |
+| g_nwm_msc.ko | `dd6e6c7427e81494abd7751d3adfdcb760afad338c00820cf498e6690c6583d3` |
 | Stock NW_A91X.UPG | `cfbcc372e2a18f11c12a080c9e5f039333e09175f5db03ac841a4227d3896b32` |
 | mgscsi.ko | `27e9ae59a30d1c3999534838010b1288840c787b798fe46bc58657b7eb30cac6` |
 
@@ -81,8 +82,9 @@ functions rather than treating every lookup as a finding.
 | Resource module | REA resource string inventory | UI/status/error resources; not evidence for a replacement transport |
 
 Windows REA's Ghidra P0 rejects ARM ELF. The WSL REA attempt opened the module
-but its deeper analysis stalled at process enumeration and was interrupted.
-The device-side cross-check therefore used a separate, static Ghidra headless
+but deeper requests did not complete; concurrent diagnostics observed stalled
+process-list commands. That attempt was interrupted. The device-side cross-check
+therefore used a separate, static Ghidra headless
 analysis, not a successful REA decompilation and not device execution.
 
 In `mgscsi.ko`, Ghidra loaded the text section at `0x10000`:
@@ -95,6 +97,18 @@ In `mgscsi.ko`, Ghidra loaded the text section at `0x10000`:
   response. It does not implement the legacy activation subcommand.
 - DNK processing is a separate `0xDD` branch. It includes state-changing
   operations and is deliberately outside this read-only work.
+
+The separate USB gadget module explains the activation boundary that is absent
+from the ordinary mgscsi information-response handler. In `g_nwm_msc.ko`,
+`fsg_main_thread` at `0x128fc` handles `0xFC` subcommand 4 directly. It checks the
+12-byte no-data request, the LUN/command constraints and the `dbmn` selector,
+then calls `fsync_all`, stores 2 in the gadget state byte at offset `0x3e`,
+and calls `usbconn_chg_sts`.
+Its distinct subcommand `0x20` goes to the information response path. These are
+static observations, not a transmitted request or proof of successful upgrade
+completion. The downstream connection-state consumer, update acceptance and
+failure/recovery sequence remain to be established. The additional module was
+also analyzed with static Ghidra headless, not Windows REA ARM support.
 
 `DeviceInfoQuery` records the cross-checked request and expected response length
 as an **offline specification** with `live_enabled = false`. It cannot be
@@ -116,6 +130,21 @@ The CI matrix runs the read-only firmware smoke on Windows, Debian and both
 macOS architectures; configured coverage is distinct from a completed run or
 physical player validation on those systems.
 
+All 17 modified UPGs in that local set retained the stock upgrade-script,
+kernel and initrd component hashes; their root filesystem components differ.
+This comparison does not prove safe boot, compatibility or a recovery path.
+
+The implementation at commit `e9436a40253d7cca415881bda7ea1cdce8a6984a`
+passed its four build/test jobs (Windows x86_64, Debian x86_64, macOS ARM64 and
+macOS Intel) in [CI run 39115986675](https://github.com/vicliu624/island-walkman/actions/runs/39115986675).
+The native firmware CLI smoke passed on each target. Windows and Debian also
+passed the real desktop-window tests, including the read-only firmware card/API.
+Local Windows Rust validation passed 75 tests; one GUI fixture exporter remains
+intentionally ignored. Eight Python packaging tests and 214 complete UI message
+sets passed. Hardware evidence is limited to Windows USB inventory: no vendor
+query, activation, firmware copy or physical flash was performed. No firmware
+feature release was published; the current release remains v0.3.0.
+
 Reproduce the hardware-independent checks:
 
 ```sh
@@ -135,7 +164,8 @@ Before a native installer can be enabled, remaining evidence must establish:
    replacement, interface seizure or automatic unmounting.
 3. The EXE-to-COM branch selected by the A918 INI, device-side upgrade acceptance,
    activation command, return values and re-enumeration sequence.
-4. Handling of same-version installs, incompatible/modified images and failures
+4. Immutable host staging, fresh package hashes and complete device-file readback
+   before activation, plus handling of same-version installs, incompatible/modified images and failures
    before versus after irreversible device-side installation begins.
 5. Simulated transport/failure tests followed by separately authorized hardware
    validation. A successful copy, process exit or USB disconnect is insufficient
