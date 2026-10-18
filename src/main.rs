@@ -13,6 +13,20 @@ mod space;
 fn main() -> anyhow::Result<()> {
     // Research commands exit before desktop startup, catalog loading or recovery.
     let args: Vec<_> = std::env::args().collect();
+    let firmware_operations = [
+        "--firmware-readonly-probe",
+        "--firmware-safety",
+        "--inspect-firmware-response",
+        "--firmware-probe",
+        "--inspect-firmware",
+    ];
+    anyhow::ensure!(
+        args.iter()
+            .filter(|arg| firmware_operations.contains(&arg.as_str()))
+            .count()
+            <= 1,
+        "Select exactly one firmware diagnostic operation"
+    );
     if let Some(index) = args
         .iter()
         .position(|arg| arg == "--firmware-readonly-probe")

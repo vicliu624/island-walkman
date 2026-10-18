@@ -101,6 +101,8 @@ def main():
         power_path.write_bytes(power)
         assert invoke('--inspect-firmware-response', 'power', str(power_path)).returncode != 0
         assert invoke('--inspect-firmware-response', 'activation', str(info_path)).returncode != 0
+        assert invoke('--firmware-safety','--firmware-probe').returncode != 0
+        assert invoke('--firmware-safety','--firmware-readonly-probe','F:','--usb-serial','not-a-device').returncode != 0
         assert not data.exists(), 'Firmware CLI must bypass catalog loading and recovery'
     print('Firmware smoke passed: native USB inventory, independent synthetic UPG, '
           'response decoding, corruption rejection, unchanged inputs and no catalog/recovery startup.')

@@ -87,13 +87,15 @@ fn ioctl(
 fn descriptor_serial(bytes: &[u8]) -> Result<&str> {
     ensure!(bytes.len() >= 36, "Truncated storage descriptor");
     let word = |at| u32::from_le_bytes(bytes[at..at + 4].try_into().unwrap());
+    let size = word(4) as usize;
+    ensure!(
+        word(0) >= 36 && word(0) as usize <= size && size >= 36 && size <= bytes.len(),
+        "Invalid storage descriptor header"
+    );
     ensure!(word(28) == 7, "Selected volume is not USB storage");
     let at = word(24) as usize;
-    ensure!(
-        at >= 36 && at < bytes.len(),
-        "Storage serial is unavailable"
-    );
-    let tail = &bytes[at..];
+    ensure!(at >= 36 && at < size, "Storage serial is unavailable");
+    let tail = &bytes[at..size];
     let end = tail
         .iter()
         .position(|b| *b == 0)
@@ -272,6 +274,8 @@ mod tests {
     #[test]
     fn volume_binding_rejects_unknown_serial_non_usb_and_truncated_descriptors() {
         let mut b = vec![0; 64];
+        b[..4].copy_from_slice(&36u32.to_le_bytes());
+        b[4..8].copy_from_slice(&64u32.to_le_bytes());
         b[24..28].copy_from_slice(&36u32.to_le_bytes());
         b[28..32].copy_from_slice(&7u32.to_le_bytes());
         b[36..41].copy_from_slice(b"TEST\0");
@@ -283,6 +287,14 @@ mod tests {
         assert!(descriptor_serial(&b).is_err());
         b[28] = 7;
         b[24..28].fill(255);
+        assert!(descriptor_serial(&b).is_err());
+        b[24..28].copy_from_slice(&36u32.to_le_bytes());
+        for size in [0u32, 35, 36, 128, u32::MAX] {
+            b[4..8].copy_from_slice(&size.to_le_bytes());
+            assert!(descriptor_serial(&b).is_err());
+        }
+        b[4..8].copy_from_slice(&64u32.to_le_bytes());
+        b[..4].fill(255);
         assert!(descriptor_serial(&b).is_err());
     }
 }
