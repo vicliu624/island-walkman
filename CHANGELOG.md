@@ -4,6 +4,29 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-18
+
+### Added
+
+- Independent Tauri 2 desktop windows and native music, folder and artwork dialogs.
+- Official Animal Island UI artwork in executable, window and installer icons, with attribution.
+- Windows setup with optional Start Menu and desktop shortcuts, Debian DEB/AppImage and macOS DMG packages.
+- Three-language update checking, release notes, progress, signature verification and installation from this repository's GitHub Releases.
+- Signed updater artifacts and a complete platform feed published after every platform build succeeds.
+- Native desktop IPC and close-to-exit checks, including installed Windows and Debian packages.
+
+### Changed
+
+- Normal startup opens a desktop window. The optional browser service requires `--headless`.
+- Repeated launches focus the running instance; closing the last window exits the application.
+- Desktop language preference persists independently of the internal service port.
+
+### Fixed
+
+- The desktop no longer competes for the earlier browser preview's default port.
+
+## [0.1.0] - Development preview
+
 ### Added
 
 - CI builds, packages, checksums and packaged-application smoke tests for Windows, Debian and macOS Apple Silicon/Intel.

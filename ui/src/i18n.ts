@@ -1,3 +1,4 @@
+import { invoke, isTauri } from '@tauri-apps/api/core';
 import {useSyncExternalStore} from 'react';
 import {messages} from './messages';
 import {translateDiagnostic} from './diagnostic-text';
@@ -15,9 +16,10 @@ function updateDocument() {
     document.title = language === 'zh-CN' ? '唱片小岛 · Island Walkman' : language === 'ja' ? '音楽の島 · Island Walkman' : 'Island Walkman';
 }
 updateDocument();
-function setLanguage(value: Language) {
+export function setLanguage(value: Language) {
     language = normalizeLanguage(value);
     try { localStorage.setItem(storageKey, language); } catch { /* Switching still works without persistence. */ }
+    if (isTauri()) void invoke("set_language", { language }).catch(() => {});
     updateDocument();
     listeners.forEach(listener => listener());
 }
@@ -31,4 +33,10 @@ export function diagnostic(text: string): string { return translateDiagnostic(la
 export function useLanguage(): readonly [Language, typeof setLanguage] {
     const locale = useSyncExternalStore(listener => { listeners.add(listener); return () => { listeners.delete(listener); }; }, () => language);
     return [locale, setLanguage];
+}
+
+export async function restoreDesktopLanguage() {
+    if (isTauri()) {
+        try { const saved = await invoke<string | null>("get_language"); if (saved) setLanguage(normalizeLanguage(saved)); } catch { /* English remains available. */ }
+    }
 }

@@ -4,6 +4,7 @@ Island Walkman application code is distributed under the MIT License. Dependenci
 
 | Component | License | Purpose |
 | --- | --- | --- |
+| Tauri 2 and plugins | MIT OR Apache-2.0 | Native windows, dialogs, lifecycle and signed updates |
 | React and React DOM | MIT | User interface runtime |
 | Animal Island UI | MIT | Interface components, styles and bundled illustration assets |
 | Naive Icons | MIT | Interface icons |
@@ -20,3 +21,7 @@ JSymphonic was consulted during early protocol exploration. It is GPL-3.0-or-lat
 REA and Ghidra were research tools, not runtime dependencies. Sony firmware, Sony installers, decompiled listings, proprietary DLLs, user music, album artwork and device backups are excluded from source publication and release archives. The research notes describe observations and their limitations; they do not grant redistribution rights to Sony software.
 
 Sony and WALKMAN are trademarks of their respective owners. This project is independent and is not endorsed by Sony.
+
+The application icon is `demo/assets/logo.png` from [Animal Island UI](https://github.com/guokaigdg/animal-island-ui), copyright guokaigdg, under its MIT license. Generated platform icons retain this attribution. Use does not imply endorsement by its author.
+
+The customized Windows installer template derives from Tauri (`crates/tauri-bundler/src/bundle/windows/nsis/installer.nsi`), copyright Tauri Programme within The Commons Conservancy, under MIT OR Apache-2.0. Upstream license texts are retained in `licenses/tauri/`.

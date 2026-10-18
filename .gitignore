@@ -17,3 +17,6 @@ __pycache__/
 /docs/research/*.log
 /docs/research/**/rea/
 /docs/research/sonicstage-tree-rea/
+
+/gen/
+/package-lock.json

@@ -11,22 +11,22 @@ permissions:
   contents: read
 
 concurrency:
-  group: build-${{ github.workflow }}-${{ github.ref }}
+  group: desktop-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   package:
     name: ${{ matrix.platform }} / ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 35
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {os: windows-2022, platform: windows, arch: x86_64, target: x86_64-pc-windows-msvc, suffix: '.exe'}
-          - {os: ubuntu-24.04, platform: debian, arch: x86_64, target: x86_64-unknown-linux-musl, suffix: ''}
-          - {os: macos-14, platform: macos, arch: aarch64, target: aarch64-apple-darwin, suffix: ''}
-          - {os: macos-15-intel, platform: macos, arch: x86_64, target: x86_64-apple-darwin, suffix: ''}
+          - {os: windows-2022, platform: windows, arch: x86_64, target: x86_64-pc-windows-msvc, bundles: nsis, suffix: '.exe'}
+          - {os: ubuntu-22.04, platform: debian, arch: x86_64, target: x86_64-unknown-linux-gnu, bundles: 'deb,appimage', suffix: ''}
+          - {os: macos-14, platform: macos, arch: aarch64, target: aarch64-apple-darwin, bundles: 'app,dmg', suffix: ''}
+          - {os: macos-15-intel, platform: macos, arch: x86_64, target: x86_64-apple-darwin, bundles: 'app,dmg', suffix: ''}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -45,46 +45,97 @@ jobs:
           rustup toolchain install 1.95.0 --profile minimal --component rustfmt
           rustup default 1.95.0
           rustup target add '${{ matrix.target }}'
-      - name: Install Linux packaging prerequisites
+      - name: Install Linux desktop prerequisites
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y musl-tools
-      - name: Cache Rust dependencies and build output
-        uses: actions/cache@v5
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libfuse2 xvfb
+      - uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: rust-1.95-${{ matrix.os }}-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+          key: desktop-1.95-${{ matrix.os }}-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
       - name: Install frontend dependencies
         working-directory: ui
         run: npm ci
-      - name: Validate translations and build UI
+      - name: Build frontend and validate translations
         working-directory: ui
         run: npm run build
-      - name: Check Rust formatting
-        run: cargo fmt --check
-      - name: Check documentation
-        run: python tools/check-docs.py
-      - name: Test archive packaging
-        run: python -m unittest discover -s tools -p test_package.py
+      - name: Collect dependency notices
+        run: python tools/collect-notices.py
+      - name: Validate source and documentation
+        run: |
+          cargo fmt --check
+          python tools/check-docs.py
+          python -m unittest discover -s tools -p "test_*.py"
       - name: Test Rust
         run: cargo test --locked --target ${{ matrix.target }}
-      - name: Build executable
-        run: cargo build --release --locked --target ${{ matrix.target }}
-      - name: Create packages
-        run: python tools/package.py --platform ${{ matrix.platform }} --arch ${{ matrix.arch }} --binary target/${{ matrix.target }}/release/island-walkman${{ matrix.suffix }}
-      - name: Test packaged application
+      - name: Build desktop installers and signed updates
         shell: bash
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ''
+          NO_STRIP: 'true'
         run: |
-          python -c "import glob,json,subprocess; p=json.load(open(glob.glob('dist/*.json')[0])); subprocess.run(['python','tools/smoke.py','--executable',p['executable']],check=True)"
+          extra=()
+          if [ -z "$TAURI_SIGNING_PRIVATE_KEY" ]; then
+            if [[ "$GITHUB_REF" == refs/tags/* ]]; then echo 'Release signing secret is required'; exit 1; fi
+            extra=(--config '{"bundle":{"createUpdaterArtifacts":false}}')
+          fi
+          npx --prefix ui tauri build --target '${{ matrix.target }}' --bundles '${{ matrix.bundles }}' "${extra[@]}"
+      - name: Test local preparation and server regression
+        run: python tools/smoke.py --executable target/${{ matrix.target }}/release/island-walkman${{ matrix.suffix }}
+      - name: Test real desktop window on Windows
+        if: runner.os == 'Windows'
+        run: python tools/desktop-smoke.py --executable target/${{ matrix.target }}/release/island-walkman.exe
+      - name: Test real desktop window on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run -a python tools/desktop-smoke.py --executable target/${{ matrix.target }}/release/island-walkman
+      - name: Test installed Windows application
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem target/${{ matrix.target }}/release/bundle/nsis/*-setup.exe | Select-Object -First 1
+          $installDir = Join-Path $env:RUNNER_TEMP 'IslandWalkmanInstalled'
+          $install = Start-Process -FilePath $installer.FullName -ArgumentList '/S', '/NS', "/D=$installDir" -WindowStyle Hidden -Wait -PassThru
+          if ($install.ExitCode -ne 0) { throw "Installer failed: $($install.ExitCode)" }
+          python tools/desktop-smoke.py --executable "$installDir/island-walkman.exe"
+          if ($LASTEXITCODE -ne 0) { throw 'Installed desktop test failed' }
+      - name: Test installed Debian application
+        if: runner.os == 'Linux'
+        run: |
+          sudo dpkg -i target/${{ matrix.target }}/release/bundle/deb/*.deb
+          xvfb-run -a python tools/desktop-smoke.py --executable /usr/bin/island-walkman
+      - name: Stage release assets
+        run: python tools/stage-release.py --bundle target/${{ matrix.target }}/release/bundle --arch ${{ matrix.arch }}
       - uses: actions/upload-artifact@v7
         with:
           name: island-walkman-${{ matrix.platform }}-${{ matrix.arch }}
-          path: |
-            dist/*.zip
-            dist/*.tar.gz
-            dist/*.deb
-            dist/*.sha256
+          path: dist/native/*
           if-no-files-found: error
           retention-days: 14
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: package
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          path: release-assets
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Generate complete signed updater feed
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python tools/release-manifest.py --artifacts release-assets --version "${RELEASE_TAG#v}"
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          mapfile -d '' assets < <(find release-assets -type f -print0)
+          gh release create "$RELEASE_TAG" "${assets[@]}" --verify-tag --title "Island Walkman $RELEASE_TAG" --generate-notes

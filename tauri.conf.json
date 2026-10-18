@@ -1,0 +1,77 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Island Walkman",
+  "version": "0.2.0",
+  "identifier": "io.github.vicliu624.island-walkman",
+  "build": {
+    "frontendDist": "ui/dist",
+    "beforeBuildCommand": "npm run build",
+    "features": [
+      "desktop"
+    ]
+  },
+  "app": {
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis",
+      "deb",
+      "appimage",
+      "app",
+      "dmg"
+    ],
+    "createUpdaterArtifacts": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": {
+      "ui/dist/": "ui/",
+      "LICENSE": "LICENSE",
+      "THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
+      "data/bundle-notices/": "third-party-licenses/"
+    },
+    "category": "Music",
+    "shortDescription": "A cozy desktop music library for Sony WALKMAN",
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "English",
+          "SimpChinese",
+          "Japanese"
+        ],
+        "displayLanguageSelector": true,
+        "template": "windows/installer.nsi",
+        "startMenuFolder": "Island Walkman"
+      }
+    },
+    "linux": {
+      "deb": {
+        "depends": [
+          "libwebkit2gtk-4.1-0",
+          "libgtk-3-0"
+        ]
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDNGRTBBQUU4NDAxMTVEOUUKUldTZVhSRkE2S3JnUDMzd213T3RUdlkxaXEwQzBoT3VyNTJIUmdvVUhLbFRvOG1od2Y1MkZIZTcK",
+      "endpoints": [
+        "https://github.com/vicliu624/island-walkman/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}

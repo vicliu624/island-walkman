@@ -719,6 +719,18 @@ fn detect() -> Vec<String> {
     roots
 }
 pub fn run() -> Result<()> {
+    run_inner(None)
+}
+
+pub fn run_desktop(ui: PathBuf, ready: std::sync::mpsc::Sender<Result<String, String>>) {
+    if let Err(error) = run_inner(Some((ui, ready.clone()))) {
+        let _ = ready.send(Err(format!("{error:#}")));
+    }
+}
+
+fn run_inner(
+    desktop: Option<(PathBuf, std::sync::mpsc::Sender<Result<String, String>>)>,
+) -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
     let arg = |key: &str| {
         args.iter()
@@ -738,7 +750,9 @@ pub fn run() -> Result<()> {
         .transpose()?
         .unwrap_or_default();
     state.job.running = false;
-    let ui = if base.join("ui/index.html").exists() {
+    let ui = if let Some((ui, _)) = &desktop {
+        ui.clone()
+    } else if base.join("ui/index.html").exists() {
         base.join("ui")
     } else if base.join("../Resources/ui/index.html").exists() {
         base.join("../Resources/ui")
@@ -781,11 +795,16 @@ pub fn run() -> Result<()> {
         .unwrap_or("18718")
         .parse::<u16>()
         .context("--port must be a number between 0 and 65535")?;
-    let listener = bind_loopback(port, requested_port.is_none())?;
+    let listener = bind_loopback(
+        if desktop.is_some() { 0 } else { port },
+        requested_port.is_none(),
+    )?;
     let server = Server::from_listener(listener, None).map_err(|e| anyhow::anyhow!("{e}"))?;
     let url = format!("http://{}", server.server_addr());
     println!("Island Walkman {url}");
-    if !args.contains(&"--no-open".into()) {
+    if let Some((_, ready)) = desktop {
+        let _ = ready.send(Ok(url.clone()));
+    } else if !args.contains(&"--no-open".into()) {
         open_browser(&url);
     }
     for req in server.incoming_requests() {
@@ -812,7 +831,7 @@ fn open_browser(url: &str) {
         let _ = std::process::Command::new("xdg-open").arg(url).spawn();
     }
 }
-fn default_data_directory() -> PathBuf {
+pub(crate) fn default_data_directory() -> PathBuf {
     #[cfg(windows)]
     if let Some(path) = std::env::var_os("LOCALAPPDATA") {
         return PathBuf::from(path).join("IslandWalkman");

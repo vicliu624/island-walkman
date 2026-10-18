@@ -25,14 +25,14 @@ def main():
         music.write_bytes((bytes.fromhex('fffb9000')+bytes(413))*100)
         before = hashlib.sha256(music.read_bytes()).hexdigest()
         data = root/'data'
-        subprocess.run([str(executable), '--no-open', '--data', str(data), '--import', str(music), '--prepare'], check=True, timeout=60)
+        subprocess.run([str(executable), '--headless', '--no-open', '--data', str(data), '--import', str(music), '--prepare'], check=True, timeout=60)
         preparations = list((data/'preparations').glob('*/manifest.json'))
         assert len(preparations) == 1, 'No local preparation manifest'
         assert hashlib.sha256(music.read_bytes()).hexdigest() == before, 'Source changed'
         with socket.socket() as sock:
             sock.bind(('127.0.0.1', 0))
             port = sock.getsockname()[1]
-        process = subprocess.Popen([str(executable), '--no-open', '--data', str(data), '--port', str(port)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen([str(executable), '--headless', '--no-open', '--data', str(data), '--port', str(port)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         try:
             base = f'http://127.0.0.1:{port}'
             for attempt in range(100):
@@ -74,7 +74,7 @@ def check_occupied_default(executable):
             blocker.listen()
         except OSError:
             blocker.close()  # An existing service already occupies the default.
-        process = subprocess.Popen([str(executable), '--no-open', '--data', folder],
+        process = subprocess.Popen([str(executable), '--headless', '--no-open', '--data', folder],
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         lines = queue.Queue()
         def read_output():

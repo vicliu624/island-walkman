@@ -1,0 +1,13 @@
+{
+  "identifier": "desktop",
+  "description": "Only the local Island Walkman window may use desktop integrations.",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "dialog:allow-open",
+    "updater:default",
+    "process:allow-restart"
+  ]
+}

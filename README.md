@@ -1,6 +1,6 @@
 # Island Walkman
 
-A local music library and transfer application for Sony NW-A918, built with Rust, React and Animal Island UI. No Java runtime or cloud music service is required.
+A native desktop music library and transfer application for Sony NW-A918, built with Tauri 2, Rust, React and Animal Island UI. No Java runtime or cloud music service is required.
 
 **Development preview:** library management and local preparation work. A controlled A918 artwork probe succeeded. Full native transfers remain under investigation after reproducible device I/O errors. Device writes are disabled by default. See [hardware validation](docs/research/native-transfer-validation.md).
 
@@ -10,7 +10,7 @@ A local music library and transfer application for Sony NW-A918, built with Rust
 - Read ID3 v1/v1.1/v2.2/v2.3/v2.4, Unicode and multivalue tags, album artist, track/disc totals and year.
 - Edit library metadata without modifying the original MP3. Full text is retained in OMA tags while indexes respect device limits.
 - Extract front-cover artwork, replace it locally and prepare Sony JPEG descriptors and artwork indexes.
-- Preview source MP3 audio in the browser; queue songs and prepare a local library without a connected player.
+- Preview source MP3 audio in the application; queue songs and prepare a local library without a connected player.
 - Detect mounted players and read existing songs and artwork.
 - Stage transfers with host backups, per-file flush/checks, SHA-256 manifests and a recovery journal.
 - English, Simplified Chinese and Japanese interface. **English is the default**, independent of OS language. The language picker saves your choice locally. Song metadata is never translated.
@@ -21,18 +21,26 @@ The **Build and package** GitHub Actions workflow produces these artifacts on pu
 
 | System | Architecture | Package |
 | --- | --- | --- |
-| Windows 11 | x86-64 | Portable ZIP |
-| Debian 12 or newer | x86-64 | DEB and static portable TAR.GZ |
-| macOS 14 or newer | Apple Silicon | TAR.GZ containing Island Walkman.app |
-| macOS 15 or newer | Intel | TAR.GZ containing Island Walkman.app |
+| Windows 11 | x86-64 | NSIS setup EXE and signed updater |
+| Debian 12 or newer | x86-64 | DEB and AppImage |
+| macOS 14 or newer | Apple Silicon | DMG and signed APP archive |
+| macOS 15 or newer | Intel | DMG and signed APP archive |
 
-Windows: extract the complete archive and open `island-walkman.exe`. Keep `ui/` beside it.
+Download installers from [GitHub Releases](https://github.com/vicliu624/island-walkman/releases).
 
-Debian: install with `sudo apt install ./island-walkman-*.deb`, then launch Island Walkman from the applications menu or run `island-walkman`. The portable archive can also be extracted and run directly. `xdg-utils` opens the browser.
+Windows: run the setup EXE. Installation is per-user. The Start Menu page offers an option to skip shortcuts; the final page independently offers a desktop shortcut checkbox. Updates preserve existing shortcuts. WebView2 is installed if missing.
 
-macOS: extract the archive and copy `Island Walkman.app` to Applications. CI apps are ad-hoc signed, not Apple-notarized; macOS may require approval through its normal security settings. Developer ID signing and notarization credentials are not configured. The app launches a local service and opens the system browser.
+Debian: install the DEB using `sudo apt install ./<downloaded-package>.deb`, or make the AppImage executable and run it. The desktop uses WebKitGTK 4.1 and GTK 3. AppImage supports in-app updates; DEB installations use the package manager.
 
-The service binds only to `127.0.0.1`, normally port `18718`. If that default port is occupied, it selects a free loopback port and opens the correct URL. An explicitly supplied `--port` remains strict. Keep the application running while using its browser tab. Do not expose the local service through a proxy.
+macOS: open the DMG and copy Island Walkman to Applications. CI apps are ad-hoc signed, not Apple-notarized. Developer ID signing and notarization credentials are not configured.
+
+Normal startup opens an independent desktop window. Closing the last window exits the process; repeated launches focus the existing window. A loopback-only service runs inside the same process on an OS-selected port. Native permissions are restricted to that window and its exact origin. No external browser is opened.
+
+### Updates
+
+Open **Settings & help > Software updates > Check for updates**. Review the available release and select **Download and install**. The application displays progress, verifies the signature, installs the update and restarts. Finish active transfers first. Checking alone never installs an update.
+
+The feed is [latest.json from this repository's Releases](https://github.com/vicliu624/island-walkman/releases/latest/download/latest.json). No GitHub token is needed. See [desktop distribution](docs/DISTRIBUTION.md) for publishing, keys and platform limitations.
 
 ## Data and configuration
 
@@ -45,7 +53,8 @@ The service binds only to `127.0.0.1`, normally port `18718`. If that default po
 Use `--data <directory>` to select another library. Data and backups live outside installed application files. Earlier development builds used a project-local `data/`; pass that path explicitly to reuse an earlier library.
 
 ```text
---no-open                 Do not open the browser automatically
+--headless                Run the optional local HTTP interface
+--no-open                 Do not open a browser in headless mode
 --port 18719              Use another local port
 --data <directory>        Choose the application data directory
 --import <file-or-folder> Import local MP3 files at startup
@@ -78,29 +87,30 @@ Safely eject the player and check playback after a successful transfer. On I/O e
 
 ## Build from source
 
-Prerequisites: Rust **1.95.0**, Node.js **24**, Python **3.13** for packaging and the platform Rust linker. Linux static builds need `musl-tools`; Debian packages need `dpkg-deb`. macOS packaging uses `codesign` from developer command-line tools.
+Prerequisites: Rust **1.95.0**, Node.js **24**, Python **3.13**, and the [Tauri platform prerequisites](https://v2.tauri.app/start/prerequisites/). Linux desktop builds require WebKitGTK 4.1, GTK 3, librsvg and patchelf development packages.
 
 ```sh
 cd ui
 npm ci
 npm run build
 cd ..
+python tools/collect-notices.py
 cargo test --locked
-cargo build --release --locked
+cargo run --locked
 ```
 
-Run `cargo run --locked -- --no-open` for development after building `ui/dist`. `npm run dev` is available for frontend development.
+Use `build.ps1` on Windows or `./build.sh` on Linux/macOS to produce desktop installers. `npm run dev` is available for frontend development.
 
 The CI matrix builds the frontend, tests native Rust targets, creates packages and runs a smoke test against the **packaged executable**. Synthetic audio verifies source preservation, local preparation, the API and packaged UI assets. No personal music or hardware is used in CI.
 
-Manual Windows packaging:
+Legacy headless archive packaging, retained for protocol research:
 
 ```sh
 python tools/package.py --platform windows --arch x86_64 --binary target/release/island-walkman.exe
 python tools/smoke.py --executable dist/stage/island-walkman-0.1.0-windows-x86_64/island-walkman.exe
 ```
 
-Use `--platform debian` or `macos` on that OS. Packaging refuses to overwrite an existing stage. SHA-256 files accompany archives. CI does not publish a GitHub Release automatically.
+Desktop distribution uses Tauri packaging instead. Pushing a version tag publishes a GitHub Release only after all four platform builds pass, including signed updater artifacts and a complete feed. See the distribution guide for local unsigned builds and key configuration.
 
 ## Current limits
 
@@ -108,7 +118,8 @@ Use `--platform debian` or `macos` on that OS. Packaging refuses to overwrite an
 - Edits affect the application library and future transfers, not source-file ID3 tags.
 - Device deletion and playlist editing are not implemented. Existing playlists prevent unsupported index rebuilding.
 - Full native A918 transfers, power-loss recovery and Debian/macOS USB behavior remain unverified.
-- The system browser supplies the UI; the macOS app is a service launcher.
+- Windows installers are not Authenticode-signed; macOS applications are not Developer ID signed or notarized. Updater signatures are separate.
+- In-app Linux updates require AppImage; DEB updates use the package manager.
 - Protocol coverage is limited to recovered and tested cases; see [protocol notes](docs/PROTOCOL.md).
 
 ## Documentation and license

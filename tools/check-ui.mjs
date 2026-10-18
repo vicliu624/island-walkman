@@ -17,13 +17,13 @@ for(const [key,values] of Object.entries(messages)) {
     assert(!/\p{Script=Han}/u.test(values[0]),`Chinese text in English value: ${key}`);
     count++;
 }
-const source=ts.createSourceFile('main.tsx',fs.readFileSync(path.join(root,'ui/src/main.tsx'),'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
+let source;
 function visit(node){
     if(ts.isCallExpression(node)&&node.expression.getText(source)==='tr'&&ts.isStringLiteral(node.arguments[0])) assert(messages[node.arguments[0].text],`Missing translation: ${node.arguments[0].text}`);
     if(ts.isJsxText(node)&&node.parent.openingElement?.tagName.getText(source)!=='option') assert(!/\p{Script=Han}/u.test(node.text),`Untranslated JSX text: ${node.text}`);
     ts.forEachChild(node,visit);
 }
-visit(source);
+for (const file of ['main.tsx', 'updates.tsx']) { source=ts.createSourceFile(file, fs.readFileSync(path.join(root,'ui/src',file),'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX); visit(source); }
 assert(fs.readFileSync(path.join(root,'ui/index.html'),'utf8').includes('lang="en"'));
 const diagnostics=JSON.parse(fs.readFileSync(path.join(root,'ui/src/diagnostics.json'),'utf8'));
 for(const row of diagnostics){

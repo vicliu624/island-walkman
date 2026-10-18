@@ -1,10 +1,23 @@
 [package]
 name = "island-walkman"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 license = "MIT"
 
+[features]
+default = ["desktop"]
+desktop = ["dep:tauri", "dep:tauri-build", "dep:tauri-plugin-updater", "dep:tauri-plugin-process", "dep:tauri-plugin-dialog", "dep:tauri-plugin-single-instance"]
+
+[build-dependencies]
+tauri-build = { version = "2", optional = true , features = [] }
+
 [dependencies]
+tauri = { version = "2", optional = true , features = [] }
+tauri-plugin-updater = { version = "2", optional = true }
+tauri-plugin-process = { version = "2", optional = true }
+tauri-plugin-dialog = { version = "2", optional = true }
+tauri-plugin-single-instance = { version = "2", optional = true }
+
 anyhow = "1"
 id3 = "1.16"
 image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"] }

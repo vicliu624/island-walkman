@@ -6,3 +6,5 @@ table th:nth-child(1){width:45px}table th:nth-child(2){width:245px}table th:nth-
 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.nav-item .count{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;min-width:24px;padding:0 4px;margin-left:10px}.nav-item .nav-label{display:inline-flex;align-items:center}@media(max-width:760px){.nav-item .nav-label,.nav-item .count{display:none}}
 .language-picker{display:flex;align-items:center;gap:.5rem;font-size:.8rem}.language-picker select{font:inherit;border:1px solid #c9d8c6;border-radius:10px;background:#fffdf4;color:#364e43;padding:.4rem .5rem;max-width:8rem}.topbar{flex-wrap:wrap;gap:.6rem}
+
+.brand-icon img{width:47px;height:47px;border-radius:18px}.release-notes{white-space:pre-wrap;overflow-wrap:anywhere}
