@@ -17,22 +17,41 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
-      - name: Download successful desktop build for this exact commit
+      - name: Test release metadata generation
+        run: python -m unittest discover -s tools -p "test_*.py"
+      - name: Download successful build with identical application inputs
+        id: build
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           run_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/build.yml/runs?head_sha=$GITHUB_SHA&status=success&event=push" --jq '[.workflow_runs[] | select(.head_branch == "main")][0].id')
           if [ -z "$run_id" ] || [ "$run_id" == null ]; then
-            echo 'A successful main-branch desktop build for this exact commit is required before tagging.'
-            exit 1
+            run_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/build.yml/runs?status=success&event=push" --jq '[.workflow_runs[] | select(.head_branch == "main")][0].id')
           fi
+          if [ -z "$run_id" ] || [ "$run_id" == null ]; then echo 'A successful desktop build is required'; exit 1; fi
           run_sha=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" --jq '.head_sha')
-          if [ "$run_sha" != "$GITHUB_SHA" ]; then echo 'Build commit does not match the release tag'; exit 1; fi
+          git merge-base --is-ancestor "$run_sha" "$GITHUB_SHA"
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/release.yml|tools/release-manifest.py|tools/test_release_manifest.py|docs/DISTRIBUTION.md|'') ;;
+              *) echo "Application build inputs changed after the successful build: $path"; exit 1 ;;
+            esac
+          done < <(git diff --name-only "$run_sha" "$GITHUB_SHA")
+          echo "source_commit=$run_sha" >> "$GITHUB_OUTPUT"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
           gh run download "$run_id" --dir release-assets
+      - name: Record artifact provenance
+        env:
+          BUILD_COMMIT: ${{ steps.build.outputs.source_commit }}
+          BUILD_RUN: ${{ steps.build.outputs.run_id }}
+        run: |
+          python -c "import json,os,pathlib; pathlib.Path('release-assets/build-provenance.json').write_text(json.dumps({'tag_commit':os.environ['GITHUB_SHA'],'native_build_commit':os.environ['BUILD_COMMIT'],'native_build_run':os.environ['BUILD_RUN']},indent=2)+'\n',encoding='utf-8')"
       - name: Generate complete signed updater feed
         env:
           RELEASE_TAG: ${{ github.ref_name }}

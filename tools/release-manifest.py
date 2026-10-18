@@ -6,6 +6,23 @@ import hashlib
 import json
 import urllib.parse
 import tomllib
+import re
+
+
+def normalize_asset_names(root):
+    # GitHub rewrites spaces and special characters during upload. Rename copies
+    # before generating URLs and checksums so the feed points at actual assets.
+    for file in sorted(root.rglob('*')):
+        if not file.is_file():
+            continue
+        name = re.sub(r'[^A-Za-z0-9._-]', '-', file.name).strip('.')
+        if not name:
+            raise ValueError(f'Invalid release asset name: {file.name}')
+        target = file.with_name(name)
+        if target != file:
+            if target.exists():
+                raise ValueError(f'Normalized release asset name collision: {name}')
+            file.rename(target)
 
 
 def manifest(root, version, repository):
@@ -39,6 +56,7 @@ if __name__ == '__main__':
     if any(version != args.version for version in versions):
         raise ValueError(f'Release tag and application versions disagree: {args.version}, {versions}')
     output = args.artifacts
+    normalize_asset_names(output)
     changelog = (repository_root/'CHANGELOG.md').read_text(encoding='utf-8')
     heading = f'## [{args.version}]'
     if heading not in changelog:

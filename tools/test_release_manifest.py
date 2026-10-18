@@ -33,6 +33,27 @@ class ReleaseManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Incomplete release'):
                 module.manifest(root, '0.2.0', 'owner/repo')
 
+    def test_upload_names_and_feed_urls_remain_identical(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.seed(root)
+            module.normalize_asset_names(root)
+            feed = module.manifest(root, '0.2.0', 'owner/repo')
+            for target in feed['platforms'].values():
+                name = target['url'].rsplit('/', 1)[1]
+                self.assertNotIn('%20', name)
+                self.assertTrue((root/name).is_file())
+                self.assertTrue((root/(name+'.sig')).is_file())
+            self.assertEqual((root/'Island-Walkman_0.2.0_x64-setup.exe').read_bytes(), b'fixture')
+
+    def test_normalized_name_collision_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root/'a b.exe').write_bytes(b'first')
+            (root/'a-b.exe').write_bytes(b'second')
+            with self.assertRaisesRegex(ValueError, 'name collision'):
+                module.normalize_asset_names(root)
+
     def test_duplicate_platform_rejected(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
