@@ -44,3 +44,11 @@ macOS builds validate packaging; physical macOS window and update behavior still
 ## Upstream dependency tracking
 
 The Linux GTK 3 dependency tree includes glib 0.18, covered by [GHSA-wrw7-89jp-8q8g](https://github.com/advisories/GHSA-wrw7-89jp-8q8g) concerning VariantStrIter. The application does not directly call that API; transitive exposure has not been audited. GTK 3 bindings constrain this dependency below the patched glib 0.20 line. The advisory remains open for upstream tracking rather than being dismissed as unaffected.
+
+## v0.2.0 verification record
+
+The [four-target native build](https://github.com/vicliu624/island-walkman/actions/runs/39085190643) passed for application commit `6437db3`. The [release workflow](https://github.com/vicliu624/island-walkman/actions/runs/39085944396) published [v0.2.0](https://github.com/vicliu624/island-walkman/releases/tag/v0.2.0) after verifying that subsequent changes were confined to the publisher and its documentation/tests. The release includes build-provenance.json and SHA256SUMS.
+
+On Windows, an isolated installation of the publicly downloaded setup passed strict installed-resource checks, native IPC and close-to-exit. A live invocation of the updater check through the desktop bridge reported the current release as up to date. The updater downloaded the actual public Windows artifact, accepted its signature, and rejected a byte-modified copy. The original test HTML was restored after the IPC probe. Installer update mode retained both enabled and disabled shortcut choices; temporary installations were removed afterwards.
+
+Debian CI installed and launched the DEB with strict resource checks under Xvfb. Both macOS architectures passed native compilation and packaging. Physical macOS updates, a version-to-version desktop upgrade, and full A918 transfers remain outside this verification record.
