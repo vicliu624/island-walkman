@@ -1186,8 +1186,14 @@ fn commit<O: DeviceOps>(
         observer,
     );
     if s.phase == Phase::Ready {
+        let current = current_original(s, root)?;
+        if current != s.original && normalization(s, &current, root)? {
+            s.phase = Phase::Preparing;
+            save(data, s)?;
+            return Ok(());
+        }
         ensure!(
-            current_original(s, root)? == s.original,
+            current == s.original,
             "Device changed before commit; verified files retained"
         );
         s.phase = Phase::Committing;
@@ -1431,6 +1437,13 @@ pub fn run<O: DeviceOps>(
             }
             if matches!(s.phase, Phase::Ready | Phase::Committing) {
                 commit(data, &mut s, &root, ops, observer)?;
+                if s.phase == Phase::Preparing {
+                    rebases += 1;
+                    ensure!(
+                        rebases <= 3,
+                        "Device metadata keeps changing; verified progress retained"
+                    );
+                }
             }
             if s.phase == Phase::Committed {
                 verify_final(&s, &root)?;
@@ -2128,6 +2141,22 @@ mod tests {
             true,
         ));
         assert_eq!(protocol::read_device(&f.root).unwrap().len(), 2);
+    }
+    #[test]
+    fn player_normalization_after_ready_pause_rebases_and_reuses_verified_audio() {
+        let f = fixture(1);
+        let s = create(&f.data, &f.root, f.selected.clone(), true).unwrap();
+        staged_fixture(&f.data, &s).unwrap();
+        let p = f.root.join("OMGAUDIO/00GTRLST.DAT");
+        let mut bytes = fs::read(&p).unwrap();
+        let last = bytes.len() - 1;
+        bytes[last] ^= 1;
+        fs::write(p, bytes).unwrap();
+        let mut ops = Ops::default();
+        complete(execute(&f, &s, &mut ops, true));
+        assert_eq!(protocol::read_device(&f.root).unwrap().len(), 2);
+        // Rebased metadata can change, but the already verified OMA stays staged.
+        assert!(ops.copies < load(&f.data, &s.id).unwrap().files_total);
     }
     #[test]
     fn a_different_device_at_the_same_path_is_not_written() {
