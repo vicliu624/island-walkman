@@ -32,7 +32,7 @@ Debian: install with `sudo apt install ./island-walkman-*.deb`, then launch Isla
 
 macOS: extract the archive and copy `Island Walkman.app` to Applications. CI apps are ad-hoc signed, not Apple-notarized; macOS may require approval through its normal security settings. Developer ID signing and notarization credentials are not configured. The app launches a local service and opens the system browser.
 
-The service binds only to `127.0.0.1`, normally port `18718`. Keep the application running while using its browser tab. Do not expose the local service through a proxy.
+The service binds only to `127.0.0.1`, normally port `18718`. If that default port is occupied, it selects a free loopback port and opens the correct URL. An explicitly supplied `--port` remains strict. Keep the application running while using its browser tab. Do not expose the local service through a proxy.
 
 ## Data and configuration
 

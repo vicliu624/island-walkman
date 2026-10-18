@@ -775,8 +775,14 @@ pub fn run() -> Result<()> {
         save(&app)?;
         return Ok(());
     }
-    let port = arg("--port").unwrap_or("18718".into());
-    let server = Server::http(format!("127.0.0.1:{port}")).map_err(|e| anyhow::anyhow!("{e}"))?;
+    let requested_port = arg("--port");
+    let port = requested_port
+        .as_deref()
+        .unwrap_or("18718")
+        .parse::<u16>()
+        .context("--port must be a number between 0 and 65535")?;
+    let listener = bind_loopback(port, requested_port.is_none())?;
+    let server = Server::from_listener(listener, None).map_err(|e| anyhow::anyhow!("{e}"))?;
     let url = format!("http://{}", server.server_addr());
     println!("Island Walkman {url}");
     if !args.contains(&"--no-open".into()) {
@@ -1412,5 +1418,29 @@ mod tests {
         let e = transfer(&app, true).unwrap_err();
         assert!(e.to_string().contains("Device writes are disabled"));
         assert_eq!(fs::read_dir(d.path()).unwrap().count(), 0);
+    }
+}
+
+// Explicit ports remain strict; only an occupied default gets a free port.
+fn bind_loopback(port: u16, fallback: bool) -> std::io::Result<std::net::TcpListener> {
+    match std::net::TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, port)) {
+        Err(error) if fallback && error.kind() == std::io::ErrorKind::AddrInUse => {
+            std::net::TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, 0))
+        }
+        result => result,
+    }
+}
+
+#[cfg(test)]
+mod startup_tests {
+    use super::bind_loopback;
+    #[test]
+    fn occupied_default_port_falls_back_to_loopback() {
+        let occupied = bind_loopback(0, false).unwrap();
+        let address = occupied.local_addr().unwrap();
+        let alternative = bind_loopback(address.port(), true).unwrap();
+        assert!(alternative.local_addr().unwrap().ip().is_loopback());
+        assert_ne!(alternative.local_addr().unwrap().port(), address.port());
+        assert!(bind_loopback(address.port(), false).is_err());
     }
 }

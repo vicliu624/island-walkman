@@ -4,6 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import queue
+import threading
 import socket
 import subprocess
 import tempfile
@@ -64,5 +66,38 @@ def main():
                 process.communicate(timeout=10)
 
 
+def check_occupied_default(executable):
+    with tempfile.TemporaryDirectory(prefix='island-startup-') as folder:
+        blocker = socket.socket()
+        try:
+            blocker.bind(('127.0.0.1', 18718))
+            blocker.listen()
+        except OSError:
+            blocker.close()  # An existing service already occupies the default.
+        process = subprocess.Popen([str(executable), '--no-open', '--data', folder],
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        lines = queue.Queue()
+        def read_output():
+            for line in process.stdout:
+                lines.put(line.decode(errors='replace'))
+            lines.put('')
+        threading.Thread(target=read_output, daemon=True).start()
+        try:
+            line = lines.get(timeout=15)
+            match = re.search(r'http://127\.0\.0\.1:(\d+)', line)
+            assert match, f'Startup failed: {line}'
+            assert int(match[1]) != 18718, 'Occupied default was not avoided'
+            with urllib.request.urlopen(match[0]+'/api/state', timeout=5) as response:
+                assert json.load(response)['device_write_enabled'] is False
+            print('Occupied-default startup regression passed.')
+        finally:
+            process.terminate()
+            process.communicate(timeout=10)
+            blocker.close()
+
+
 if __name__ == '__main__':
     main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--executable', required=True, type=Path)
+    check_occupied_default(parser.parse_args().executable.resolve())

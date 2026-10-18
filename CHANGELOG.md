@@ -24,6 +24,8 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ### Fixed
 
+- Desktop startup selects a free loopback port when the default is occupied, preventing an immediate exit when an earlier preview is running.
+
 - The controlled A918 artwork probe now selects its tree with `STD_TPE1_THUMBNAIL`.
 - Albums can use a cover supplied by a later song.
 - OMA readback preserves track totals and disc numbers/totals.
