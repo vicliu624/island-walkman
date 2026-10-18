@@ -4,6 +4,12 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [Unreleased]
 
+### Added
+
+- Read-only firmware research card with English, Chinese and Japanese UI, native USB inventory on Windows/Linux/macOS and bounded local A91x UPG container validation.
+- Firmware CLI inspection that exits before catalog loading and transfer recovery, plus independent synthetic-container smoke coverage in all four CI targets.
+- REA/Ghidra evidence for the original updater and an offline device-information command specification cross-checked against the device kernel. No vendor-command execution or firmware flashing is enabled.
+
 ## [0.3.0] - 2026-10-18
 
 ### Added

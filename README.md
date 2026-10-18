@@ -140,3 +140,11 @@ Desktop distribution uses Tauri packaging instead. Pushing a version tag publish
 - [Native transfer validation](docs/research/native-transfer-validation.md)
 
 Application code is [MIT licensed](LICENSE). Dependencies retain their licenses. Sony software, decompiled listings, user music, artwork and backups are not distributed. This project is independent and is not endorsed by Sony.
+
+## Firmware research preview (unreleased)
+
+A read-only Device firmware card inspects native USB identity and local A91x UPG
+containers. Windows, Debian and macOS share the Rust implementation. No firmware
+write, reset, vendor-command transport or Sony updater launch is enabled. Battery
+and installed firmware version remain unknown. See [Firmware research](docs/FIRMWARE_RESEARCH.md)
+for evidence, validation limits and the remaining work toward a native updater.

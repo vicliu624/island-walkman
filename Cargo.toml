@@ -28,6 +28,9 @@ tiny_http = "0.12"
 walkdir = "2"
 encoding_rs = "0.8"
 fs2 = "0.4"
+nusb = "0.2.8"
+des = "0.8"
+md5 = "0.8"
 
 [dev-dependencies]
 tempfile = "3"

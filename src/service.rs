@@ -1241,6 +1241,21 @@ fn handle(mut req: Request, app: &Arc<App>) {
             return Ok((b"{}".to_vec(), "application/json".into()));
         }
         match url.as_str() {
+            "/api/firmware/probe" => {
+                ensure_idle(app)?;
+                return Ok((
+                    serde_json::to_vec(&crate::firmware::probe()?)?,
+                    "application/json".into(),
+                ));
+            }
+            "/api/firmware/inspect" => {
+                ensure_idle(app)?;
+                let path = v["path"].as_str().context("Missing firmware path")?;
+                return Ok((
+                    serde_json::to_vec(&crate::firmware::inspect(Path::new(path))?)?,
+                    "application/json".into(),
+                ));
+            }
             "/api/browse" => {
                 ensure_idle(app)?;
                 let home = std::env::var("USERPROFILE")
