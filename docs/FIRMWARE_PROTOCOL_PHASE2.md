@@ -31,10 +31,11 @@ successful REA ARM analysis. The additional inputs are:
 | gemini-ICX1101 | `a5c94ce492fb7ec9cd7a740d30cb79a1c2b43ee782e2da036a72f57dabdcd177` |
 | Normal initrd component | `4c11d0c396dff18465ae1d24aa0692edd5ecb14ca5790232f7fdba92c8ae4252` |
 
-The stripped Gemini application's `FWUPDATE` string was investigated, but this
-attempt did not resolve a normal-application handler. Ghidra reported function
-recovery warnings. The normal Gemini-to-resident-installer chain remains
-unverified; absence of recovered references is not proof of absence of code.
+The stripped Gemini application's `FWUPDATE` string alone did not resolve the
+handler. Subsequent constant and device-path cross-references found partial
+normal-application evidence described below. Ghidra reported function recovery
+warnings in other parts of the binary. No complete normal-application-to-resident
+installer graph is claimed; missing recovered references are not absence proof.
 
 ## Device information and firmware version
 
@@ -115,7 +116,8 @@ It performs these checks in order:
 1. A drive-letter-only argument and an explicit USB serial are required.
 2. Exactly one enumerated Sony 054C:032A device must match that USB serial.
 3. The volume's STORAGE_DEVICE_DESCRIPTOR must identify USB storage and the
-   same serial. Missing, differently encoded or mismatched serials stop the
+   same serial. Descriptor size/version, bounds and termination are checked. Missing,
+   differently encoded or mismatched serials stop the
    operation; no heuristic binding is performed.
 4. The SCSI address is queried, and only LUN zero is accepted. The volume binding
    is rechecked before each fixed information query.
@@ -158,10 +160,31 @@ The evidence now establishes these separate pieces:
    updater failures. Those branches do not restore the formatted old root.
 
 Step 4 is a verified **helper path**, not proof that the normal stripped Gemini
-application uses an identical sequence. The resident loader/installer that
+application uses an identical sequence. Additional normal-application evidence:
+
+- Gemini `0x1a4ffc` opens `/dev/icx1087_nvp/9`, writes the same flag and requires
+  an exact four-byte write before setting a context request field.
+- Its caller `0x75c1c`, event case `0x58`, invokes this setter and sets that request
+  field again. This is not yet a demonstrated immediate reboot call.
+- Gemini `0x1d0f24` reads ioctl `0x80046701` but translates raw state 2 into its
+  own state 3. Receiver `0x1cd2b4` then maps that translated state to event `0x15`
+  and queues it through `0x1ced34`.
+- Factory `0x1a5918`, case `0x0c`, allocates an object with message ID `0x58`
+  using constructor `0x1a6100` and submits it through `0x1b24ac`.
+- Several state-dependent dispatch handlers (`0x1cf894`, `0x1cfa08`,
+  `0x1cfc70`, `0x1cfdc8`) map event `0x15` to callback argument `0x0c` at
+  interface offset 4. Registration `0x1ccd34` writes the factory pointer to a
+  callback slot. The active runtime dispatch mode and complete interface-object
+  binding have not been independently validated. These are separate conversion
+  layers, not a linear numeric offset or a complete verified install graph.
+
+The resident loader/installer that
 consumes the persisted flag has not been recovered or verified. The normal
 initrd image contains BusyBox and a small driver set; its existence does not
-establish a complete recovery installer. No NVP flag was changed, helper run,
+establish a complete recovery installer. The recovered normal kernel's embedded
+initramfs spans `0xc001fca0` to `0xc001fd26`: 134 compressed bytes, expanding to a
+512-byte CPIO. This small archive is not evidence of a resident recovery toolset.
+No NVP flag was changed, helper run,
 script executed or reboot requested on a player.
 
 The original Windows worker `0x00408450` polls disappearance/reappearance with
@@ -230,6 +253,24 @@ island-walkman --inspect-firmware-response devinfo /path/to/capture.bin
 island-walkman --inspect-firmware-response power /path/to/capture.bin
 ```
 
-They exit before application catalog loading or music-transfer recovery. Capture
+They exit before application catalog loading or music-transfer recovery.
+Multiple firmware operation flags are rejected before any device or file access. Capture
 results are explicitly labeled supplied_capture_not_live_device. Synthetic test
 captures are never presented as live measurements or safe-to-flash evidence.
+
+## Validation of this source revision
+
+Application source commit `8ac38d630c958df78e1736f18cd9a68ba4c6e293` passed all
+four jobs in [CI run 39120369850](https://github.com/vicliu624/island-walkman/actions/runs/39120369850):
+Windows x86_64, Debian x86_64, macOS ARM64 and macOS Intel. Windows has 20 firmware
+unit tests; the shared decoder/model tests run on the other platforms. Local
+Windows full Rust validation passed 90 tests with one intentionally ignored GUI
+fixture exporter. Eight Python packaging tests, the firmware CLI smoke, native
+desktop smoke, preparation/server smoke and an authenticated safety-API check
+also passed. UI translations remain the existing 214 complete message sets.
+
+CI and local smokes do not invoke the physical diagnostic command. Tests use
+synthetic captures and modeled faults. The absent-device attempt submitted no
+vendor command; the user chose to keep the player disconnected afterwards.
+There is no physical response, firmware installation, rollback or power-loss
+validation result in this stage. No new Release was published.
