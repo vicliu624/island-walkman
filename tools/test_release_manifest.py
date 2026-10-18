@@ -62,3 +62,13 @@ class ReleaseManifestTests(unittest.TestCase):
             (root/'other.exe.sig').write_text('signature-fixture')
             with self.assertRaisesRegex(ValueError, 'Duplicate updater target'):
                 module.manifest(root, '0.2.0', 'owner/repo')
+
+    def test_cached_previous_version_is_excluded(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.seed(root)
+            for suffix in ('.deb', '.deb.sig', '.dmg', '.exe', '.exe.sig'):
+                (root/('Island Walkman_0.1.9_x64'+suffix)).write_bytes(b'stale')
+            module.discard_cached_versions(root, '0.2.0')
+            self.assertFalse(any('0.1.9' in p.name for p in root.iterdir()))
+            self.assertEqual(len(module.manifest(root, '0.2.0', 'owner/repo')['platforms']), 5)

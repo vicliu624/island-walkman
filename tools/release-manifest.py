@@ -25,6 +25,16 @@ def normalize_asset_names(root):
             file.rename(target)
 
 
+def discard_cached_versions(root, version):
+    # Restored Rust target caches can contain bundles from older versions.
+    # Versionless macOS app archives are overwritten by the current build.
+    for file in root.rglob('*'):
+        if file.is_file():
+            match = re.search(r'_(\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?)_', file.name)
+            if match and match.group(1) != version:
+                file.unlink()
+
+
 def manifest(root, version, repository):
     platforms = {}
     for signature in root.rglob('*.sig'):
@@ -56,6 +66,7 @@ if __name__ == '__main__':
     if any(version != args.version for version in versions):
         raise ValueError(f'Release tag and application versions disagree: {args.version}, {versions}')
     output = args.artifacts
+    discard_cached_versions(output, args.version)
     normalize_asset_names(output)
     changelog = (repository_root/'CHANGELOG.md').read_text(encoding='utf-8')
     heading = f'## [{args.version}]'
