@@ -207,9 +207,12 @@ fn copy_tree_with_profile(
     Ok(())
 }
 fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
+    transfer_confirmed(app, covers, false)
+}
+fn transfer_confirmed(app: &Arc<App>, covers: bool, experimental_confirmed: bool) -> Result<()> {
     ensure!(
-        app.allow_device_write,
-        "Device writes are disabled pending independent format validation. Library, tags and artwork previews remain available."
+        app.allow_device_write || experimental_confirmed,
+        "Device writes are disabled until this experimental transfer is confirmed in the transfer dialog."
     );
     let state = app.state.lock().unwrap().clone();
     ensure!(!state.queue.is_empty(), "Transfer queue is empty");
@@ -1124,8 +1127,17 @@ fn handle(mut req: Request, app: &Arc<App>) {
             }
             "/api/transfer" => {
                 let covers = v["covers"].as_bool().unwrap_or(false);
+                let confirmed = v["experimental_confirmed"].as_bool().unwrap_or(false);
+                ensure!(
+                    app.allow_device_write || confirmed,
+                    "Device writes are disabled until this experimental transfer is confirmed in the transfer dialog."
+                );
                 launch(app.clone(), "Preparing transfer", move |a| {
-                    transfer(a, covers)
+                    if confirmed {
+                        transfer_confirmed(a, covers, true)
+                    } else {
+                        transfer(a, covers)
+                    }
                 })?;
             }
             "/api/prepare" => {
@@ -1530,6 +1542,70 @@ mod tests {
         let e = transfer(&app, true).unwrap_err();
         assert!(e.to_string().contains("Device writes are disabled"));
         assert_eq!(fs::read_dir(d.path()).unwrap().count(), 0);
+    }
+
+    #[test]
+    fn confirmed_ui_transfer_reaches_preflight_without_unlocking_later_requests() {
+        let (_temp, mut app, root, source) = virtual_player();
+        Arc::get_mut(&mut app).unwrap().allow_device_write = false;
+        let original = manifest(&root.join("OMGAUDIO")).unwrap();
+        let source_hash = metadata::hash_file(&source).unwrap();
+        app.state.lock().unwrap().queue.clear();
+        let error = transfer_confirmed(&app, true, true).unwrap_err();
+        assert_eq!(error.to_string(), "Transfer queue is empty");
+        assert_eq!(metadata::hash_file(&source).unwrap(), source_hash);
+        assert_eq!(
+            fs::read(root.join("OMGAUDIO/opaque.bin")).unwrap(),
+            b"preserve unknown device data"
+        );
+        assert_eq!(manifest(&root.join("OMGAUDIO")).unwrap(), original);
+        assert!(!app.allow_device_write);
+        let error = transfer(&app, true).unwrap_err();
+        assert!(error.to_string().contains("Device writes are disabled"));
+    }
+
+    #[test]
+    fn transfer_api_requires_a_boolean_confirmation_before_launch() {
+        let (_temp, mut app, root, _) = virtual_player();
+        Arc::get_mut(&mut app).unwrap().allow_device_write = false;
+        app.state.lock().unwrap().queue.clear();
+        let before = manifest(&root.join("OMGAUDIO")).unwrap();
+        for confirmation in [json!(null), json!(false), json!("true"), json!(true)] {
+            let server = Server::http("127.0.0.1:0").unwrap();
+            let address = server.server_addr().to_ip().unwrap();
+            let handler_app = app.clone();
+            let worker = std::thread::spawn(move || handle(server.recv().unwrap(), &handler_app));
+            let body = json!({"covers":true,"experimental_confirmed":confirmation}).to_string();
+            let mut client = std::net::TcpStream::connect(address).unwrap();
+            client
+                .set_read_timeout(Some(std::time::Duration::from_secs(3)))
+                .unwrap();
+            write!(client, "POST /api/transfer HTTP/1.0\r\nHost: {address}\r\nX-Island-Token: test\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}", body.len()).unwrap();
+            let mut response = String::new();
+            client.read_to_string(&mut response).unwrap();
+            worker.join().unwrap();
+            if confirmation == json!(true) {
+                assert!(response.starts_with("HTTP/1.0 200"), "{response}");
+                let deadline = std::time::Instant::now() + std::time::Duration::from_secs(3);
+                while app.state.lock().unwrap().job.running {
+                    assert!(std::time::Instant::now() < deadline);
+                    std::thread::sleep(std::time::Duration::from_millis(5));
+                }
+                assert!(
+                    app.state
+                        .lock()
+                        .unwrap()
+                        .job
+                        .message
+                        .contains("Transfer queue is empty")
+                );
+            } else {
+                assert!(response.starts_with("HTTP/1.0 400"), "{response}");
+                assert!(!app.state.lock().unwrap().job.running);
+            }
+        }
+        assert!(!app.allow_device_write);
+        assert_eq!(manifest(&root.join("OMGAUDIO")).unwrap(), before);
     }
 }
 

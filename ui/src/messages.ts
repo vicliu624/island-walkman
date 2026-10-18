@@ -1,6 +1,10 @@
 // Source keys preserve the original wording; values are [English, Japanese].
 // Track metadata and filesystem paths are never translated.
 export const messages: Record<string, readonly [string, string, string?]> = {
+"Experimental transfer":["Experimental transfer", "実験的な転送", "实验传输"],
+"Full A918 transfer validation is incomplete. The application backs up the existing library before writing. If an I/O error occurs, stop and inspect the connection before trying again.":["Full A918 transfer validation is incomplete. The application backs up the existing library before writing. If an I/O error occurs, stop and inspect the connection before trying again.", "A918 への完全な転送は検証中です。書き込み前に既存の曲庫をバックアップします。I/O エラーが発生したら、再試行する前に接続を確認してください。", "A918 完整传输尚未验证完成。应用会先备份现有曲库，再写入设备。如果出现 I/O 错误，请停止操作并检查连接后再试。"],
+"I understand and allow this experimental transfer.":["I understand and allow this experimental transfer.", "確認のうえ、今回の実験的な転送を許可します。", "我已了解，并允许本次实验传输。"],
+"Experimental transfers are available. Choose Start transfer, then confirm this transfer in the dialog. Local preparation does not write to the player.":["Experimental transfers are available. Choose Start transfer, then confirm this transfer in the dialog. Local preparation does not write to the player.", "実験的な転送を利用できます。「転送を開始」を選び、確認画面で今回の転送を許可してください。ローカル生成では機器に書き込みません。", "现可进行实验传输。点击“开始传输”，在确认窗口中允许本次传输。本地预演不会写入播放器。"],
 "任务运行时暂停读取设备封面":["Device artwork reads are paused while a task is running", "処理中は機器のジャケット読み取りを停止します"],
 "软件更新":["Software updates", "ソフトウェアの更新"],
 "检查更新":["Check for updates", "更新を確認"],
@@ -57,14 +61,14 @@ export const messages: Record<string, readonly [string, string, string?]> = {
 "设备列表字段最多使用 60 个 UTF-16 单位，预留结束符；中文和特殊字符不会从中间切断。完整文本写入 OMA 标签。":["Device index text is limited to 60 UTF-16 code units with a terminator. Surrogate pairs stay intact. Full text is retained in OMA tags.","機器の索引は終端を除き最大60 UTF-16コード単位です。サロゲートペアを分割せず、全文は OMA タグに保持します。"],
 "传输与备份":["Transfers & backups","転送とバックアップ"],
 "先准备，独立验证后再开放写入":["Prepare locally before device validation","ローカルで準備してから実機で検証"],
-"设备写入默认关闭；Sony 格式独立验证完成前，仅在显式启用实验模式时允许测试传输。":["Device writes are disabled by default. Experimental transfers require an explicit startup flag until full device validation is complete.","機器への書き込みは初期状態で無効です。実機検証が完了するまでは、起動時の明示的なオプションが必要です。"],
+"设备写入默认关闭；Sony 格式独立验证完成前，仅在显式启用实验模式时允许测试传输。":["Start transfer opens a confirmation dialog. Each experimental transfer needs your confirmation; no startup flag is required.","「転送を開始」で確認画面が開きます。実験的な転送は毎回の確認が必要です。起動オプションは不要です。","点击“开始传输”即可打开确认窗口。每次实验传输均需确认，无需命令行启动参数。"],
 "本地生成音频与数据库，回读验证、备份旧曲库、逐文件校验，再提交到设备。本地保存校验备份，设备上的 ISLAND-BACKUP-* 目录保留原曲库，暂不自动清理。":["A complete backup is kept on the computer. When player space is low, only changed files are copied and unchanged files are moved during commit. In that mode ISLAND-BACKUP-* is partial; use the complete computer backup for recovery.","完全なバックアップはパソコンに保持します。機器の空き容量が少ない場合は変更ファイルのみコピーし、確定時に未変更ファイルを移動します。この場合 ISLAND-BACKUP-* は部分的なため、復旧にはパソコン側の完全なバックアップを使用してください。","电脑端始终保留完整备份。播放器空间不足时，仅复制变化文件，未变文件在提交时同盘移动；此模式下 ISLAND-BACKUP-* 只是部分备份，恢复时应使用电脑端完整备份。"],
 "本版直接导入 MP3。FLAC、WAV 等格式请先转成 MP3。此版本不会移除设备中的已有歌曲。":["This version imports MP3. Convert FLAC or WAV before importing. Existing device songs are retained. Devices with playlists are protected from unsupported index rebuilding.","この版は MP3 の取り込みに対応します。FLAC や WAV は事前に変換してください。既存の曲は保持され、プレイリストがある機器では未対応の索引再構築を停止します。"],
 "封面兼容性":["Artwork compatibility","ジャケットの互換性"],
 "封面显示已通过 A918 实机验证":["Artwork probe verified on an A918","A918 実機でジャケット表示を確認"],
 "优先使用 ID3 的正面封面，支持 JPEG、PNG、WebP。可手动替换封面，原始文件不变。已通过 Sony 固件与 SonicStage 的 REA 分析定位封面索引规则，实机补丁已显示封面。完整新版传输仍在验证。":["Prefers front-cover ID3 artwork and supports JPEG, PNG and WebP. Replacements leave source files intact. Firmware and SonicStage analysis identified the artwork tree; a controlled probe displayed correctly. Full native transfer validation remains incomplete.","ID3 の表ジャケットを優先し、JPEG・PNG・WebP に対応します。画像を変更しても元ファイルは変わりません。ファームウェアと SonicStage の解析で索引規則を確認し、実機テストで表示できました。新転送処理全体は検証中です。"],
 "传输专辑封面":["Transfer album artwork","アルバムジャケットを転送"],
-"关于唱片小岛 · 0.2.1":["About Island Walkman · 0.2.1","Island Walkman について · 0.2.1"],
+"关于唱片小岛 · 0.2.2":["About Island Walkman · 0.2.2","Island Walkman について · 0.2.2"],
 "Rust 音频与传输核心 · React + Animal Island UI。面向 Windows 与 Linux；已通过 Debian 12 本地运行与曲库生成验证，USB 实机传输仍在验证。初版 OMGAUDIO 实现参考 JSymphonic（GPL-3.0-or-later）；正在使用 REA 对 Sony 二进制独立验证协议，尚不能保证完整兼容。运行时不需要 Java。":["Tauri 2 desktop application with a Rust music core, React and Animal Island UI. Supports Windows, Debian and macOS. Local preparation is verified; full A918 transfers remain under investigation. The independent Sony format implementation is documented in the protocol notes. No Java runtime is required.", "Tauri 2、Rust、React と Animal Island UI によるデスクトップアプリです。Windows・Debian・macOS に対応します。ローカル生成は検証済みですが、A918 への完全な転送は調査中です。独立した Sony 形式の実装はプロトコル文書で説明しています。Java は不要です。", "Tauri 2 桌面应用，使用 Rust 音乐核心、React 和 Animal Island UI，支持 Windows、Debian 与 macOS。本地曲库生成已验证，A918 完整传输仍在验证。独立实现的 Sony 格式见协议文档。运行时不需要 Java。"],
 "首":[" tracks"," 曲"],"小岛收藏":["Songs in your library","曲庫の曲"],"张":[" albums"," 枚"],"珍藏专辑":["Albums collected","コレクションのアルバム"],"分钟":[" min"," 分"],"陪伴你的时光":["Listening time","再生時間"],
 " 首歌曲 · ":[" tracks · "," 曲 · "]," 音频":[" audio"," 音声"],"已连接":["Connected","接続済み"],"请连接设备":["Connect a device","機器を接続してください"],"设备根目录":["Device root directory","機器のルートディレクトリ"],

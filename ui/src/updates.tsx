@@ -8,7 +8,7 @@ import { tr, useLanguage } from './i18n';
 
 export function Updates({ locked, onWorking }: { locked: boolean; onWorking: (value: boolean) => void }) {
     useLanguage();
-    const [version, setVersion] = useState('0.2.1');
+    const [version, setVersion] = useState('0.2.2');
     const [update, setUpdate] = useState<Update | null>(null);
     const [phase, setPhase] = useState<'idle' | 'checking' | 'current' | 'available' | 'downloading' | 'installing' | 'error'>('idle');
     const [percent, setPercent] = useState(0);

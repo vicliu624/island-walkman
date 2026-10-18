@@ -738,5 +738,10 @@
     "Cannot verify device file: {path}",
     "機器のファイルを検証できません：{path}",
     "无法校验设备文件：{path}"
+  ],
+  [
+    "Device writes are disabled until this experimental transfer is confirmed in the transfer dialog.",
+    "確認画面で今回の実験的な転送を許可してください。",
+    "请在传输确认窗口中允许本次实验传输。"
   ]
 ]

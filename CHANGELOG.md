@@ -4,6 +4,14 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-18
+
+### Fixed
+
+- Start transfer no longer stays disabled in normally launched desktop installations. A connected device and a nonempty queue now open the transfer confirmation dialog. Confirm the experimental transfer there, then start the backup and transfer without a startup flag.
+- The backend accepts an explicit boolean confirmation for one transfer request. Missing, false or string-valued confirmations remain blocked before a job starts. Confirmation does not persist or unlock subsequent transfers.
+- Transfer confirmation resets when the dialog closes. English, Chinese and Japanese instructions explain the available workflow. Backups, file verification, target validation and compatible I/O remain in place. Full physical A918 transfer reliability remains unverified.
+
 ## [0.2.1] - 2026-10-18
 
 The compatible I/O profile is experimental. Device writes remain disabled by default; physical A918 reliability improvement has not been established.
