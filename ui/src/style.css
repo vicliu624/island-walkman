@@ -8,3 +8,5 @@ table th:nth-child(1){width:45px}table th:nth-child(2){width:245px}table th:nth-
 .language-picker{display:flex;align-items:center;gap:.5rem;font-size:.8rem}.language-picker select{font:inherit;border:1px solid #c9d8c6;border-radius:10px;background:#fffdf4;color:#364e43;padding:.4rem .5rem;max-width:8rem}.topbar{flex-wrap:wrap;gap:.6rem}
 
 .brand-icon img{width:47px;height:47px;border-radius:18px}.release-notes{white-space:pre-wrap;overflow-wrap:anywhere}
+
+.transfer-recovery{margin-bottom:20px}.transfer-recovery>.row{justify-content:space-between;flex-wrap:wrap}.transfer-recovery p{font-size:13px;line-height:1.65}

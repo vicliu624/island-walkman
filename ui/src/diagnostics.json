@@ -743,5 +743,115 @@
     "Device writes are disabled until this experimental transfer is confirmed in the transfer dialog.",
     "確認画面で今回の実験的な転送を許可してください。",
     "请在传输确认窗口中允许本次实验传输。"
+  ],
+  [
+    "Verified transfer progress is available to resume",
+    "検証済みの転送を再開できます",
+    "可继续已保存并校验的传输任务"
+  ],
+  [
+    "Connection interrupted; restoring verified progress",
+    "接続が中断されました。検証済みの進捗を復元中です",
+    "连接中断，正在恢复已校验的进度"
+  ],
+  [
+    "Checking saved transfer files",
+    "保存済みの転送ファイルを確認中",
+    "正在检查已保存的传输文件"
+  ],
+  [
+    "Backing up and preparing the append",
+    "バックアップと追加転送を準備中",
+    "正在备份并准备追加传输"
+  ],
+  [
+    "Copying and verifying: {path}",
+    "コピーと検証中：{path}",
+    "正在复制并校验：{path}"
+  ],
+  [
+    "Verified files: {done} / {total}",
+    "検証済みファイル：{done} / {total}",
+    "已校验文件：{done} / {total}"
+  ],
+  [
+    "Finishing the verified transfer; keep the device connected",
+    "検証済みの転送を完了しています。機器を接続したままにしてください",
+    "正在完成已校验的传输，请保持设备连接"
+  ],
+  [
+    "Transfer complete; safely eject and verify playback",
+    "転送完了。安全に取り外して再生を確認してください",
+    "传输完成，请安全弹出后验证播放"
+  ],
+  [
+    "Expected device is not connected",
+    "対象の機器が接続されていません",
+    "预期的设备未连接"
+  ],
+  [
+    "Readback mismatch; check the connection before resuming",
+    "読み戻しが一致しません。接続を確認してから再開してください",
+    "回读内容不一致，请检查连接后再继续"
+  ],
+  [
+    "Existing device library changed; no write attempted",
+    "既存の曲庫が変更されました。書き込みは実行していません",
+    "现有设备曲库发生变化，尚未尝试写入"
+  ],
+  [
+    "Existing device library changed; no commit attempted",
+    "既存の曲庫が変更されました。確定処理は実行していません",
+    "现有设备曲库发生变化，尚未尝试提交"
+  ],
+  [
+    "No pending transfer to resume",
+    "再開する転送はありません",
+    "没有可继续的传输任务"
+  ],
+  [
+    "No transfer is running",
+    "実行中の転送はありません",
+    "当前没有运行中的传输任务"
+  ],
+  [
+    "Another transfer is using this device",
+    "別の転送がこの機器を使用しています",
+    "另一个传输任务正在使用此设备"
+  ],
+  [
+    "Device metadata keeps changing; verified progress retained",
+    "機器の情報が変更され続けています。検証済みの進捗は保持されています",
+    "设备索引持续变化，已保留校验通过的进度"
+  ],
+  [
+    "Prepared files changed on the computer; backups preserved",
+    "パソコン上の準備済みファイルが変更されました。バックアップは保持されています",
+    "电脑上的已准备文件发生变化，备份已保留"
+  ],
+  [
+    "Not enough space to resume safely; verified files retained",
+    "安全な再開に必要な空き容量がありません。検証済みファイルは保持されています",
+    "没有足够空间安全续传，已校验文件已保留"
+  ],
+  [
+    "Pending transfer discarded; staged files and backups retained",
+    "転送タスクを終了しました。準備済みファイルとバックアップは保持されています",
+    "待传任务已结束，暂存文件和备份已保留"
+  ],
+  [
+    "Source changed before commit; restore it or discard this transfer: {title}",
+    "確定前に元ファイルが変更されました。復元するか転送タスクを終了してください：{title}",
+    "源文件在提交前发生变化，请恢复源文件或结束此任务：{title}"
+  ],
+  [
+    "Source changed; restore it or discard this transfer: {title}",
+    "元ファイルが変更されました。復元するか転送タスクを終了してください：{title}",
+    "源文件发生变化，请恢复源文件或结束此任务：{title}"
+  ],
+  [
+    "Resume the saved transfer before reading the device library",
+    "機器の曲庫を読み込む前に保存済みの転送を復旧してください",
+    "请先恢复已保存的传输，再读取设备曲库"
   ]
 ]

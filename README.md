@@ -2,7 +2,7 @@
 
 A native desktop music library and transfer application for Sony NW-A918, built with Tauri 2, Rust, React and Animal Island UI. No Java runtime or cloud music service is required.
 
-**Development preview:** library management and local preparation work. A controlled A918 artwork probe succeeded. Full native transfers remain under investigation after reproducible device I/O errors. Device writes are disabled by default. See [hardware validation](docs/research/native-transfer-validation.md).
+**Development preview:** an eight-song append was confirmed on a physical A918, bringing its library to nine playable songs. Version 0.3.0 integrates that append strategy with durable recovery. Restart and reconnection paths are tested on simulated devices; the player's intermittent USB/storage fault has not been isolated or eliminated. See [the physical transfer record](docs/research/single-song-transfer-2026-10-18.md) and [recovery behavior](docs/TRANSFER_RECOVERY.md).
 
 ## Features
 
@@ -12,7 +12,8 @@ A native desktop music library and transfer application for Sony NW-A918, built 
 - Extract front-cover artwork, replace it locally and prepare Sony JPEG descriptors and artwork indexes.
 - Preview source MP3 audio in the application; queue songs and prepare a local library without a connected player.
 - Detect mounted players and read existing songs and artwork.
-- Stage transfers with host backups, per-file flush/checks, SHA-256 manifests and a recovery journal.
+- Append without rewriting existing audio; preserve complete computer backups, short staging names, per-file SHA-256 verification and two-generation recovery journals.
+- Pause, resume verified files, recover interrupted commits and automatically reconnect to the same identified player.
 - English, Simplified Chinese and Japanese interface. **English is the default**, independent of OS language. The language picker saves your choice locally. Song metadata is never translated.
 
 ## Installation
@@ -56,8 +57,6 @@ Use `--data <directory>` to select another library. Data and backups live outsid
 --headless                Run the optional local HTTP interface
 --no-open                 Do not open a browser in headless mode
 --port 18719              Use another local port
---device-io compatible    Conservative experimental device copy (v0.2.1 and later)
---device-io standard      Previous copy strategy for controlled comparisons
 --data <directory>        Choose the application data directory
 --import <file-or-folder> Import local MP3 files at startup
 --prepare                 Generate and verify a local library, then exit
@@ -77,17 +76,21 @@ Connect the A918 in USB storage mode. Typical roots are `F:/`, `/media/user/WALK
 
 Device roots are resolved before validation. Windows targets must use a local drive letter and cannot be on the current system drive, including verbatim path forms. Unix filesystem-root aliases are rejected. These checks apply to player targets; source music and application data can remain on the system drive.
 
-In v0.2.2 and later, choose **Start transfer**, acknowledge the experimental transfer in the confirmation dialog, then choose **Back up and transfer**. No command-line flag is needed. Confirmation applies only to that request and resets when the dialog closes. The explicit `--allow-experimental-device-write` development flag remains available. Neither path is a compatibility guarantee. The available player currently produces lower-level I/O errors during full transfers. Passing unit tests and the separate successful artwork probe do not establish full native transfer support.
+Choose **Start transfer**, acknowledge the experimental operation and choose **Back up and transfer**. The saved task retains that authorization, so **Resume transfer** does not ask you to select or confirm its songs again. A new task still requires its own confirmation. The explicit `--allow-experimental-device-write` development flag remains available.
 
-Version 0.2.1 adds a default compatible copy profile: 32 KiB application writes, at most 1 MiB/s of application-issued payload, one final flush per file, a 100 ms settling interval and paced SHA-256 readback. It fails on a device I/O error rather than automatically replaying writes; existing staging files are never truncated in compatible mode. Background device enumeration and device artwork reads are blocked during jobs. These controls do not change USB packet sizes or bypass the host controller. They remain unverified on the physical A918. Unconfirmed device writes remain blocked by default; the desktop confirmation dialog authorizes one experimental transfer.
+Version 0.3.0 copies new audio one file at a time using ordinary Windows CopyFileW, or flushed buffered copies on Debian/macOS. It waits after copies and checks their SHA-256 hashes. Existing audio is retained and moved by directory during a short final transaction. New indexes and artwork are staged before commit; the player is never formatted or repaired automatically. The older `--device-io` profiles are retained for diagnostic compatibility and do not select the normal resumable engine.
 
-Before commit the program stages and hashes new files, verifies the original library and retains a complete host backup. A host `transaction.json` records paths, manifests and commit phase. An incomplete `ISLAND-NEW-*` folder does not mean a transfer committed.
+Progress is saved under `<data>/transfers/<session-id>/`, including a complete `before/OMGAUDIO` backup, prepared files, frozen artwork, and two checksummed journal generations. Verified files are rechecked and reused after interruption. Resume is **file-level**: an incomplete current file can be quarantined and recopied, while complete verified songs are not transferred again. Pausing takes effect after the current file; an active commit finishes or retains a recoverable intent.
 
-When enough space is available, the player receives a complete staged library and `ISLAND-BACKUP-*` retains the previous library. With less free space, only new/changed files are copied; unchanged files are moved on the same volume during commit. The journal records `mode: reuse_unchanged` and the reuse paths. In this mode the device backup is **partial**, and the verified computer backup is the complete recovery source. An interruption can leave files split between incoming and backup directories; do not delete either until recovery is resolved. Unfinished commits block a new transfer instead of being silently retried.
+Transient transport errors receive at most three automatic retries with waits of 2, 5 and 10 seconds. Each attempt opens fresh handles and checks the expected device identity. A missing device waits for reconnection; the idle monitor resumes when the matching player returns. Persistent I/O errors while it remains connected, checksum mismatches, changed imported sources, unknown library changes and damaged journals require review. Use **Retry after checking** after addressing the reported problem. A manually paused or review-required task never restarts automatically.
 
-Space estimates reserve up to 64 KiB per copied file and destination directory, plus a 1 MiB margin. Reused files still require destination directory entries. Host backups contain the full library, so the computer also needs sufficient disk space. Low-space commit and rollback are covered by simulated filesystem tests; physical disconnect and FAT32 power-loss behavior remain unverified.
+Unexpected application termination resumes an authorized saved task on startup when the identified player is available. A committed task updates the desktop catalog before its journal is acknowledged, so a restart cannot append it again. Later queue additions are retained for the next task. Source MP3s are not modified; edits and artwork choices are frozen for each saved task.
 
-Safely eject the player and check playback after a successful transfer. On I/O errors, stop writing and inspect the connection and filesystem. Automatic filesystem repair, formatting and firmware changes are outside the application.
+The player stores `IWIDENT.DAT` as a random identity marker; Windows also checks its volume serial. A drive letter alone does not authorize recovery. Short `IWxxxxxx`, `IBxxxxxx` and `IQxxxxxx` directories hold incoming data, retained metadata and quarantined copies. The on-player backup can be **partial** after audio directories move; the computer backup is the complete recovery source. Retain recovery directories until the task is resolved. Previous 0.2.x journals are not silently converted into new recovery sessions.
+
+Only the observed system/history-table set can be treated as player normalization, and only when all other file hashes and the original song, audio and artwork identities still match. This regenerates the candidate from current device state. Unknown changes stop the commit instead of being overwritten.
+
+Space checks account for new audio, staged metadata/artwork, destination directories and a reserve. Existing audio does not need a second device copy. The computer needs space for a complete backup and prepared library. Safe removal and physical playback verification remain necessary after successful transfer. See [the detailed state machine and limits](docs/TRANSFER_RECOVERY.md).
 
 ## Build from source
 

@@ -4,6 +4,28 @@ All notable changes are recorded here. Versions follow Semantic Versioning. Unre
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-18
+
+### Added
+
+- Durable append sessions with two checksummed journal generations, complete computer backups, frozen metadata/artwork selection, per-file SHA-256 verification and file-level resume across application restarts.
+- Automatic recovery from bounded transient transport failures. Disconnected sessions wait for the same device; repeated I/O errors while it remains connected require review instead of infinite background retries.
+- Three-language recovery progress, pause-after-current-file, resume, retry-after-checking and discard-task-with-files-retained controls. Existing confirmation authorizes the saved task; resuming does not require selecting its songs again.
+- Device identity markers, Windows volume serial verification, strict recovery path validation, directory ownership checks and safeguards against another device taking the same drive letter.
+
+### Changed
+
+- Windows transfer copies use ordinary CopyFileW, the successful physical diagnostic strategy, with settling intervals and readback verification. POSIX copies retain flush and verification. Existing audio is moved by directory during the final transaction instead of being rewritten.
+- Incoming and retained metadata directories use 8.3 names. Saved intents make interrupted directory moves idempotent; completion updates the desktop queue before acknowledging the journal, preventing duplicate appends after a restart.
+- Observed system/history-table normalization can regenerate a candidate only when the original track, audio and artwork identities and every other file remain unchanged. Other changes and repeated checksum failures pause for review.
+- Cached older installer versions are excluded from staged build artifacts and installed-package CI tests select the current application version explicitly.
+
+### Validation and limits
+
+- The preceding controlled append added eight songs to the physical A918; the user confirmed all nine songs appear and new songs play. This release integrates that strategy, while recovery paths are validated using simulated devices and injected faults. Physical USB reliability is not established by those tests.
+- Tests cover transient and persistent errors, partial files, renamed mount paths, wrong-device refusal, checksum mismatches, frozen artwork, changed sources, journal corruption, interruption at every commit boundary and queue preservation on application reconstruction.
+- Resume is at verified file boundaries. An incomplete current file may be quarantined and recopied. Automatic CHKDSK, formatting, firmware changes and unbounded write retries are not performed.
+
 ## [0.2.2] - 2026-10-18
 
 ### Fixed

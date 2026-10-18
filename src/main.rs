@@ -5,6 +5,7 @@ mod desktop;
 mod device_io;
 mod metadata;
 mod protocol;
+mod reliable_transfer;
 mod service;
 mod sony_artwork;
 mod space;

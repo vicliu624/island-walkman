@@ -96,12 +96,17 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $installer = Get-ChildItem target/${{ matrix.target }}/release/bundle/nsis/*-setup.exe | Select-Object -First 1
-          ./tools/test-windows-install.ps1 -Installer $installer.FullName
+          $version = (Get-Content tauri.conf.json -Raw | ConvertFrom-Json).version
+          $installers = @(Get-ChildItem target/${{ matrix.target }}/release/bundle/nsis/*-setup.exe | Where-Object { $_.Name -like "*_${version}_*-setup.exe" })
+          if ($installers.Count -ne 1) { throw 'Exactly one installer matching the current version is required' }
+          ./tools/test-windows-install.ps1 -Installer ($installers[0].FullName)
       - name: Test installed Debian application
         if: runner.os == 'Linux'
         run: |
-          sudo dpkg -i target/${{ matrix.target }}/release/bundle/deb/*.deb
+          version=$(python -c "import json; print(json.load(open('tauri.conf.json'))['version'])")
+          packages=(target/${{ matrix.target }}/release/bundle/deb/*_"${version}"_*.deb)
+          test "${#packages[@]}" -eq 1
+          sudo dpkg -i "${packages[0]}"
           xvfb-run -a python tools/desktop-smoke.py --installed --executable /usr/bin/island-walkman
       - name: Stage release assets
         run: python tools/stage-release.py --bundle target/${{ matrix.target }}/release/bundle --arch ${{ matrix.arch }}

@@ -1,6 +1,6 @@
 use crate::{
     metadata::{self, Track},
-    protocol,
+    protocol, reliable_transfer as reliable,
 };
 use anyhow::{Context, Result, bail, ensure};
 use serde::{Deserialize, Serialize};
@@ -9,18 +9,29 @@ use std::{
     fs::{self, File, OpenOptions},
     io::{Read, Write},
     path::{Path, PathBuf},
-    sync::{Arc, Mutex},
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicBool, Ordering},
+    },
     time::{SystemTime, UNIX_EPOCH},
 };
 use tiny_http::{Header, Request, Response, Server, StatusCode};
 
 #[derive(Clone, Default, Serialize, Deserialize)]
+#[serde(default)]
 struct Job {
     running: bool,
     percent: u8,
     message: String,
     logs: Vec<String>,
     backup: Option<String>,
+    transfer_phase: String,
+    resume_available: bool,
+    needs_review: bool,
+    files_done: usize,
+    files_total: usize,
+    can_discard: bool,
+    commit_in_progress: bool,
 }
 #[derive(Clone, Default, Serialize, Deserialize)]
 struct State {
@@ -39,6 +50,8 @@ struct App {
     token: String,
     allow_device_write: bool,
     device_io_profile: crate::device_io::Profile,
+    reuse_unchanged: bool,
+    transfer_pause: AtomicBool,
 }
 fn stamp() -> String {
     SystemTime::now()
@@ -85,6 +98,7 @@ fn launch(
     {
         let mut s = app.state.lock().unwrap();
         ensure!(!s.job.running, "Another task is already running");
+        app.transfer_pause.store(false, Ordering::Relaxed);
         s.job = Job {
             running: true,
             message: name.into(),
@@ -93,9 +107,13 @@ fn launch(
     }
     std::thread::spawn(move || {
         let result = work(&app);
+        if app.state.lock().unwrap().job.transfer_phase.is_empty() {
+            let _ = recovery_state(&app);
+        }
         let mut s = app.state.lock().unwrap();
         s.job.running = false;
         match result {
+            Ok(()) if s.job.resume_available => {}
             Ok(()) => {
                 s.job.percent = 100;
                 s.job.message = "Completed".into();
@@ -219,16 +237,160 @@ fn transfer_confirmed(app: &Arc<App>, covers: bool, experimental_confirmed: bool
     let root = PathBuf::from(&state.device_root).canonicalize()?;
     protocol::validate_device(&root)?;
     protocol::validate_rebuild_supported(&root)?;
-    if app.device_io_profile == crate::device_io::Profile::Compatible {
-        log(
-            app,
-            0,
-            "Compatible device I/O: 32 KiB chunks, 1 MiB/s cap and paced verification",
-        );
+    ensure_recovery_safe(&app.data, &root)?;
+    let selected = state
+        .queue
+        .iter()
+        .map(|key| {
+            state
+                .tracks
+                .iter()
+                .find(|t| &t.key == key)
+                .cloned()
+                .context("A queued track was removed from the library")
+        })
+        .collect::<Result<Vec<_>>>()?;
+    reliable::create(&app.data, &root, selected, covers)?;
+    resume_transfer(app, true)
+}
+
+fn display_device_root(root: &Path) -> String {
+    #[cfg(windows)]
+    {
+        let text = root.to_string_lossy().replace('\\', "/");
+        text.strip_prefix("//?/").unwrap_or(&text).into()
     }
-    transfer_staged(app, covers, &root, state, |source, destination| {
-        copy_tree_with_profile(source, destination, app.device_io_profile)
-    })
+    #[cfg(not(windows))]
+    {
+        root.to_string_lossy().into()
+    }
+}
+fn recovery_state(app: &Arc<App>) -> Result<Option<reliable::Session>> {
+    let session = reliable::pending(&app.data)?;
+    if let Some(pending) = &session {
+        let mut state = app.state.lock().unwrap();
+        state.device_root = display_device_root(&pending.root_hint);
+        state.job.resume_available = true;
+        state.job.needs_review = pending.status == reliable::Status::NeedsReview;
+        state.job.percent = pending.percent;
+        state.job.files_done = pending.files_done;
+        state.job.files_total = pending.files_total;
+        state.job.can_discard = matches!(
+            pending.phase,
+            reliable::Phase::Preparing | reliable::Phase::Copying | reliable::Phase::Ready
+        );
+        state.job.commit_in_progress = pending.phase == reliable::Phase::Committing;
+        state.job.backup = Some(
+            app.data
+                .join("transfers")
+                .join(&pending.id)
+                .to_string_lossy()
+                .into(),
+        );
+        state.job.transfer_phase = match pending.status {
+            reliable::Status::UserPaused => "paused",
+            reliable::Status::NeedsReview => "needs_review",
+            reliable::Status::WaitingDevice => "waiting_device",
+            reliable::Status::Active => "recovering",
+        }
+        .into();
+        state.job.message = if pending.error.is_empty() {
+            "Verified transfer progress is available to resume".into()
+        } else {
+            pending.error.clone()
+        };
+    }
+    Ok(session)
+}
+
+fn resume_transfer(app: &Arc<App>, explicit: bool) -> Result<()> {
+    let pending = reliable::pending(&app.data)?.context("No pending transfer to resume")?;
+    let mut observer = |update: reliable::Update| {
+        log(app, update.percent, &update.message);
+        let mut state = app.state.lock().unwrap();
+        state.job.transfer_phase = update.phase;
+        state.device_root = display_device_root(&update.root);
+        state.job.files_done = update.done;
+        state.job.files_total = update.total;
+        state.job.commit_in_progress = update.commit_in_progress;
+        state.job.backup = Some(
+            app.data
+                .join("transfers")
+                .join(&pending.id)
+                .to_string_lossy()
+                .into(),
+        );
+    };
+    let result = reliable::run(
+        &app.data,
+        &pending.id,
+        || detect().into_iter().map(PathBuf::from).collect(),
+        explicit,
+        &app.transfer_pause,
+        &mut reliable::Native,
+        &mut observer,
+    );
+    let result = match result {
+        Ok(outcome) => outcome,
+        Err(error) => {
+            let _ = recovery_state(app);
+            let mut state = app.state.lock().unwrap();
+            state.job.needs_review = true;
+            state.job.transfer_phase = "needs_review".into();
+            return Err(error);
+        }
+    };
+    match result {
+        reliable::Outcome::Complete(session) => {
+            let tracks = protocol::read_device(&session.root_hint)?;
+            {
+                let mut state = app.state.lock().unwrap();
+                state
+                    .queue
+                    .retain(|key| !session.selected.iter().any(|t| &t.key == key));
+                state.device_root = display_device_root(&session.root_hint);
+                state.device_tracks = tracks;
+                state.job.resume_available = false;
+                state.job.needs_review = false;
+                state.job.transfer_phase = "completed".into();
+                state.job.commit_in_progress = false;
+            }
+            save(app)?;
+            reliable::acknowledge(&app.data, &session.id)?;
+        }
+        reliable::Outcome::Paused(session) => {
+            app.state.lock().unwrap().device_root = display_device_root(&session.root_hint);
+            recovery_state(app)?;
+        }
+    }
+    Ok(())
+}
+
+fn start_recovery_monitor(app: &Arc<App>) {
+    let app = app.clone();
+    std::thread::spawn(move || {
+        loop {
+            std::thread::sleep(std::time::Duration::from_secs(5));
+            let Ok(_guard) = app.requests.try_lock() else {
+                continue;
+            };
+            if app.state.lock().unwrap().job.running {
+                continue;
+            }
+            let Ok(Some(pending)) = reliable::pending(&app.data) else {
+                continue;
+            };
+            if pending.status != reliable::Status::WaitingDevice {
+                continue;
+            }
+            let roots = detect().into_iter().map(PathBuf::from).collect::<Vec<_>>();
+            if reliable::connected(&pending, &roots).unwrap_or(false) {
+                let _ = launch(app.clone(), "Resuming verified transfer", |a| {
+                    resume_transfer(a, false)
+                });
+            }
+        }
+    });
 }
 
 // The public operation enforces policy above; this private core accepts an I/O
@@ -360,7 +522,7 @@ fn transfer_with_capacity(
     let generated = manifest(&stage)?;
     let full_required = crate::space::required_bytes(&stage, &generated)?;
     let free = available_space()?;
-    let reuse_mode = free < full_required;
+    let reuse_mode = free < full_required || app.reuse_unchanged;
     let plan = crate::space::plan(&stage, &original, &generated)?;
     let needed = if reuse_mode {
         plan.required_bytes
@@ -720,6 +882,9 @@ fn manifest(root: &Path) -> Result<BTree> {
 }
 type BTree = std::collections::BTreeMap<String, String>;
 fn detect() -> Vec<String> {
+    if std::env::args().any(|arg| arg == "--desktop-smoke") {
+        return vec![];
+    }
     let mut roots = vec![];
     #[cfg(windows)]
     for c in b'D'..=b'Z' {
@@ -792,6 +957,8 @@ fn run_inner(
         token: stamp(),
         allow_device_write: args.contains(&"--allow-experimental-device-write".into()),
         device_io_profile: crate::device_io::Profile::parse(arg("--device-io").as_deref())?,
+        reuse_unchanged: args.contains(&"--reuse-unchanged".into()),
+        transfer_pause: AtomicBool::new(false),
     });
     if let Some(path) = arg("--import") {
         import(&app, vec![path])?;
@@ -814,6 +981,42 @@ fn run_inner(
         save(&app)?;
         return Ok(());
     }
+    if let Some(path) = arg("--inspect-device") {
+        let root = PathBuf::from(path).canonicalize()?;
+        protocol::validate_device(&root)?;
+        println!("{}", serde_json::to_string(&protocol::read_device(&root)?)?);
+        return Ok(());
+    }
+    if args.contains(&"--prepare-append".into()) {
+        let state = app.state.lock().unwrap().clone();
+        ensure!(!state.queue.is_empty(), "Transfer queue is empty");
+        let root = PathBuf::from(&state.device_root).canonicalize()?;
+        protocol::validate_device(&root)?;
+        protocol::validate_rebuild_supported(&root)?;
+        let outcome = transfer_staged(&app, true, &root, state, |_, _| {
+            bail!("Local append candidate prepared; no device copy requested")
+        });
+        match outcome {
+            Err(error)
+                if error.to_string()
+                    == "Local append candidate prepared; no device copy requested" =>
+            {
+                save(&app)?;
+                println!(
+                    "{}",
+                    app.state
+                        .lock()
+                        .unwrap()
+                        .job
+                        .backup
+                        .as_deref()
+                        .unwrap_or("")
+                );
+                return Ok(());
+            }
+            other => return other,
+        }
+    }
     let requested_port = arg("--port");
     let port = requested_port
         .as_deref()
@@ -832,6 +1035,21 @@ fn run_inner(
     } else if !args.contains(&"--no-open".into()) {
         open_browser(&url);
     }
+    match recovery_state(&app) {
+        Ok(Some(pending)) if pending.auto_resume() => {
+            launch(app.clone(), "Resuming verified transfer", |a| {
+                resume_transfer(a, false)
+            })?;
+        }
+        Err(error) => {
+            let mut s = app.state.lock().unwrap();
+            s.job.message = format!("{error:#}");
+            s.job.needs_review = true;
+            s.job.transfer_phase = "needs_review".into();
+        }
+        _ => {}
+    }
+    start_recovery_monitor(&app);
     for req in server.incoming_requests() {
         let app = app.clone();
         std::thread::spawn(move || {
@@ -938,7 +1156,7 @@ fn handle(mut req: Request, app: &Arc<App>) {
                 let s = app.state.lock().unwrap().clone();
                 return Ok((
                     serde_json::to_vec(
-                        &json!({"state":s,"token":app.token,"device_write_enabled":app.allow_device_write,"device_io_profile":app.device_io_profile.name()}),
+                        &json!({"state":s,"token":app.token,"device_write_enabled":app.allow_device_write,"device_io_profile":"resumable_append","diagnostic_copy_profile":app.device_io_profile.name()}),
                     )?,
                     "application/json".into(),
                 ));
@@ -961,7 +1179,7 @@ fn handle(mut req: Request, app: &Arc<App>) {
                     .find(|t| t.key == key)
                     .context("Track does not exist")?;
                 ensure!(
-                    t.device_id.is_none() || !s.job.running,
+                    t.device_id.is_none() || (!s.job.running && !s.job.commit_in_progress),
                     "A task is running; try again later"
                 );
                 return Ok((
@@ -1067,6 +1285,10 @@ fn handle(mut req: Request, app: &Arc<App>) {
             }
             "/api/connect" => {
                 ensure_idle(app)?;
+                ensure!(
+                    !app.state.lock().unwrap().job.commit_in_progress,
+                    "Resume the saved transfer before reading the device library"
+                );
                 let root = v["path"].as_str().context("Missing device path")?;
                 protocol::validate_device(Path::new(root))?;
                 let tracks = protocol::read_device(Path::new(root))?;
@@ -1142,6 +1364,38 @@ fn handle(mut req: Request, app: &Arc<App>) {
             }
             "/api/prepare" => {
                 launch(app.clone(), "Preparing local library", prepare)?;
+            }
+            "/api/transfer/resume" => {
+                ensure_idle(app)?;
+                ensure!(
+                    reliable::pending(&app.data)?.is_some(),
+                    "No pending transfer to resume"
+                );
+                launch(app.clone(), "Resuming verified transfer", |a| {
+                    resume_transfer(a, true)
+                })?;
+            }
+            "/api/transfer/pause" => {
+                ensure!(
+                    {
+                        let state = app.state.lock().unwrap();
+                        state.job.running && !state.job.transfer_phase.is_empty()
+                    },
+                    "No transfer is running"
+                );
+                app.transfer_pause.store(true, Ordering::Relaxed);
+            }
+            "/api/transfer/discard" => {
+                ensure_idle(app)?;
+                let pending =
+                    reliable::pending(&app.data)?.context("No pending transfer to discard")?;
+                reliable::discard(&app.data, &pending.id)?;
+                let mut state = app.state.lock().unwrap();
+                state.job.resume_available = false;
+                state.job.needs_review = false;
+                state.job.transfer_phase.clear();
+                state.job.message =
+                    "Pending transfer discarded; staged files and backups retained".into();
             }
             _ => bail!("Unknown endpoint"),
         }
@@ -1341,6 +1595,8 @@ mod tests {
             token: "test".into(),
             allow_device_write: true,
             device_io_profile: crate::device_io::Profile::Standard,
+            reuse_unchanged: false,
+            transfer_pause: AtomicBool::new(false),
         });
         import(&app, vec![source.to_string_lossy().into_owned()]).unwrap();
         {
@@ -1459,6 +1715,32 @@ mod tests {
     }
 
     #[test]
+    fn explicit_reuse_mode_avoids_old_audio_with_ample_free_space() {
+        let (_temp, mut app, root, source) = virtual_player();
+        Arc::get_mut(&mut app).unwrap().reuse_unchanged = true;
+        let source_hash = metadata::hash_file(&source).unwrap();
+        let snapshot = app.state.lock().unwrap().clone();
+        transfer_with_capacity(
+            &app,
+            true,
+            &root,
+            snapshot,
+            |delta, incoming| {
+                assert!(!delta.join("opaque.bin").exists());
+                copy_tree(delta, incoming)
+            },
+            || Ok(100 * 1024 * 1024),
+        )
+        .unwrap();
+        assert_eq!(protocol::read_device(&root).unwrap().len(), 1);
+        assert_eq!(metadata::hash_file(&source).unwrap(), source_hash);
+        assert_eq!(
+            fs::read(root.join("OMGAUDIO/opaque.bin")).unwrap(),
+            b"preserve unknown device data"
+        );
+    }
+
+    #[test]
     fn long_artist_and_album_tags_keep_artwork_after_device_readback() {
         let (_temp, app, root, _source) = virtual_player();
         let artist = "艺术家 🎸 ".repeat(15);
@@ -1538,6 +1820,8 @@ mod tests {
             token: "test".into(),
             allow_device_write: false,
             device_io_profile: crate::device_io::Profile::Compatible,
+            reuse_unchanged: false,
+            transfer_pause: AtomicBool::new(false),
         });
         let e = transfer(&app, true).unwrap_err();
         assert!(e.to_string().contains("Device writes are disabled"));
@@ -1606,6 +1890,92 @@ mod tests {
         }
         assert!(!app.allow_device_write);
         assert_eq!(manifest(&root.join("OMGAUDIO")).unwrap(), before);
+    }
+    #[test]
+    fn a_rebuilt_application_finishes_a_ready_session_and_keeps_later_queue_items() {
+        let (_temp, app, root, _) = virtual_player();
+        let selected = app.state.lock().unwrap().tracks.clone();
+        let session = reliable::create(&app.data, &root, selected.clone(), true).unwrap();
+        reliable::staged_fixture(&app.data, &session).unwrap();
+        {
+            let mut state = app.state.lock().unwrap();
+            state.job.running = true;
+            state.queue.push("queued-after-the-saved-task".into());
+        }
+        save(&app).unwrap();
+        let mut persisted: State =
+            serde_json::from_slice(&fs::read(app.data.join("catalog.json")).unwrap()).unwrap();
+        persisted.job.running = false;
+        let rebuilt = Arc::new(App {
+            state: Mutex::new(persisted),
+            persist: Mutex::new(()),
+            requests: Mutex::new(()),
+            data: app.data.clone(),
+            ui: app.ui.clone(),
+            token: "restarted".into(),
+            allow_device_write: false,
+            device_io_profile: crate::device_io::Profile::Compatible,
+            reuse_unchanged: false,
+            transfer_pause: AtomicBool::new(false),
+        });
+        assert!(recovery_state(&rebuilt).unwrap().unwrap().auto_resume());
+        resume_transfer(&rebuilt, false).unwrap();
+        let state = rebuilt.state.lock().unwrap();
+        assert_eq!(state.queue, vec!["queued-after-the-saved-task"]);
+        assert_eq!(state.device_tracks.len(), 1);
+        assert!(!state.job.resume_available);
+        assert!(reliable::pending(&rebuilt.data).unwrap().is_none());
+    }
+
+    #[test]
+    #[ignore = "Creates an isolated GUI recovery fixture only when explicitly requested"]
+    fn export_recovery_ui_fixture() {
+        let target = PathBuf::from(
+            std::env::var("ISLAND_RECOVERY_FIXTURE").expect("ISLAND_RECOVERY_FIXTURE is required"),
+        );
+        let project = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        assert!(
+            target.is_absolute() && target.starts_with(project.join("data")) && !target.exists()
+        );
+        let (temp, old_app, _, _) = virtual_player();
+        copy_tree(temp.path(), &target).unwrap();
+        let mut state = old_app.state.lock().unwrap().clone();
+        let old_prefix = temp.path().to_string_lossy().into_owned();
+        let new_prefix = target.to_string_lossy().into_owned();
+        state.device_root = target.join("player").to_string_lossy().into();
+        for track in &mut state.tracks {
+            track.path = track.path.replace(&old_prefix, &new_prefix);
+            track.cover = track
+                .cover
+                .as_ref()
+                .map(|p| p.replace(&old_prefix, &new_prefix));
+            track.title = "Resume test song".into();
+            track.artist = "Test artist".into();
+            track.album = "Recovery test album".into();
+        }
+        let app = Arc::new(App {
+            state: Mutex::new(state),
+            persist: Mutex::new(()),
+            requests: Mutex::new(()),
+            data: target.join("app"),
+            ui: project.join("ui/dist"),
+            token: "fixture".into(),
+            allow_device_write: false,
+            device_io_profile: crate::device_io::Profile::Compatible,
+            reuse_unchanged: false,
+            transfer_pause: AtomicBool::new(false),
+        });
+        let session = reliable::create(
+            &app.data,
+            &target.join("player"),
+            app.state.lock().unwrap().tracks.clone(),
+            true,
+        )
+        .unwrap();
+        reliable::paused_fixture(&app.data, &session).unwrap();
+        recovery_state(&app).unwrap();
+        save(&app).unwrap();
+        println!("GUI recovery fixture: {}", app.data.display());
     }
 }
 

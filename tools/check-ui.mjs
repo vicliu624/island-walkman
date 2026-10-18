@@ -23,7 +23,7 @@ function visit(node){
     if(ts.isJsxText(node)&&node.parent.openingElement?.tagName.getText(source)!=='option') assert(!/\p{Script=Han}/u.test(node.text),`Untranslated JSX text: ${node.text}`);
     ts.forEachChild(node,visit);
 }
-for (const file of ['main.tsx', 'updates.tsx', 'transfer-confirmation.tsx']) { source=ts.createSourceFile(file, fs.readFileSync(path.join(root,'ui/src',file),'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX); visit(source); }
+for (const file of ['main.tsx', 'updates.tsx', 'transfer-confirmation.tsx', 'transfer-recovery.tsx']) { source=ts.createSourceFile(file, fs.readFileSync(path.join(root,'ui/src',file),'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX); visit(source); }
 assert(fs.readFileSync(path.join(root,'ui/index.html'),'utf8').includes('lang="en"'));
 const diagnostics=JSON.parse(fs.readFileSync(path.join(root,'ui/src/diagnostics.json'),'utf8'));
 for(const row of diagnostics){
