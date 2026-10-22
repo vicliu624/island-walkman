@@ -31,3 +31,6 @@ __pycache__/
 /docs/audits/**/static/*.txt
 /docs/audits/**/wrldr-arm.txt
 /docs/audits/**/decompilation/
+
+/docs/audits/**/*.txt
+!/docs/audits/**/official-source/**/*.txt

@@ -239,6 +239,12 @@ class DeviceInstallBoundaryTests(unittest.TestCase):
         self.assertTrue(facts['powerfail_references'])
         self.assertEqual([row['path']for row in facts['kernel_embedded_initramfs']['entries']],['/dev','/dev/console','/root'])
         self.assertNotIn('fWUp',facts['raw_kernel_literal_hits'])
+
+    def test_private_export_hashes_when_local_evidence_is_available(self):
+        area=Path(__file__).resolve().parents[1]/'docs/audits/device-install-2026-10-19/static'
+        facts=json.loads((area/'facts.json').read_text(encoding='utf-8'))
+        if not all((area/row['file']).is_file() for row in facts['static_exports']):
+            self.skipTest('Private Sony analysis exports are not distributed; hash replay not run')
         for row in facts['static_exports']:
             self.assertEqual(hashlib.sha256((area/row['file']).read_bytes()).hexdigest(),row['sha256'])
 

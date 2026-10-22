@@ -61,6 +61,13 @@ class OfficialFlowReplayTests(unittest.TestCase):
             self.assertEqual(file_error(error), int(expected, 16))
         self.assertIn('same version', facts['version_confirmations_en_US']['203'].lower())
         self.assertIn('older version', facts['version_confirmations_en_US']['204'].lower())
+
+    def test_private_export_hashes_when_local_evidence_is_available(self):
+        import hashlib
+        evidence = Path(__file__).resolve().parents[1] / 'docs/audits/fwupdater-flow-2026-10-19/static-expanded'
+        facts = json.loads((evidence / 'facts.json').read_text(encoding='utf-8'))
+        if not all((evidence/row['file']).is_file() for row in facts['disassembly']):
+            self.skipTest('Private Sony analysis exports are not distributed; hash replay not run')
         for row in facts['disassembly']:
             self.assertEqual(hashlib.sha256((evidence / row['file']).read_bytes()).hexdigest(), row['sha256'])
 
