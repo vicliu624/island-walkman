@@ -1,0 +1,15 @@
+{
+  "offline_only": true,
+  "archive_verifier": "Passed: all 3 pinned archives; 8 retained U-Boot file hashes",
+  "python_unittest": {
+    "passed": 60,
+    "failed": 0
+  },
+  "version_check": "0.4.0-alpha.5 consistent",
+  "documentation_checks": "Tracked docs checker passed; new report and device audit relative links checked explicitly",
+  "source_anchor_checks": "Kernel-before-initrd, XOR32, retry=5, fatal loop, resident init literal, RAM-marker clear matched retained source",
+  "device_access": false,
+  "sony_target_execution": false,
+  "flashing_enabled": false,
+  "limits": "Source assertions and existing tests are not a bootloader emulator or hardware/power-loss qualification."
+}

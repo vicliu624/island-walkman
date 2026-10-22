@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "required_firmware": "R14 disk-app launcher ABI 1",
+  "apps": [
+    {
+      "id": "tetris",
+      "name": "TETRIS",
+      "version": "0.1.0-alpha.3",
+      "api": 1,
+      "target": "sony-a918-armv5-oabi",
+      "status": "experimental",
+      "description": "Instant Tetris. Direction keys play; center exits.",
+      "files": [
+        {
+          "path": "app",
+          "bytes": 25664,
+          "sha256": "96e93e47e467e3f20e0f43ca26f10c3b8cd50df8290c4d2367d2f35d4fa9a01b"
+        },
+        {
+          "path": "app.ini",
+          "bytes": 86,
+          "sha256": "4da684281c302dd24827dace58cb6f1fe149051ac4dd0ee97ae4bd1d5957fede"
+        }
+      ]
+    },
+    {
+      "id": "tamagotchi-id",
+      "name": "TAMAGOTCHI ID",
+      "version": "0.1.0-alpha.3",
+      "api": 1,
+      "target": "sony-a918-armv5-oabi",
+      "status": "experimental",
+      "description": "Native 128x128 color iD emulator. DOWN opens the game menu.",
+      "files": [
+        {
+          "path": "app",
+          "bytes": 67680,
+          "sha256": "f425d4e09fb4696b6f66ea43f6e92cf484f658979bfa4b474cade81d2349ccf0"
+        },
+        {
+          "path": "app.ini",
+          "bytes": 100,
+          "sha256": "5ca61cf6b083effe45536571eee240d30f756089b2a66c5d38344157ab96f0e4"
+        }
+      ]
+    }
+  ]
+}

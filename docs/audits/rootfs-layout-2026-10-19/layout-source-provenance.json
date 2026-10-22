@@ -1,0 +1,10 @@
+{
+  "official_archive_sha256": "682f6ae908e1ebfb93ee89ccb81c57ca6895d57eca6c31a8fd9772ab5171de6f",
+  "member": "./board/mp201xx/icx1087/nand_config.h",
+  "retained": "official-source/nand_config.h.txt",
+  "sha256": "b779a7d3cf7514f76af74034a876912bbfc5ccab4aa241e4384b79459706e81a",
+  "license": "GPL-2.0-or-later; original Sony notice retained",
+  "other_model_source_hits_excluded": [
+    "./board/mpl/vcma9/cmd_vcma9.c"
+  ]
+}

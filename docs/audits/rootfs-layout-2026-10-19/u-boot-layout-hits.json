@@ -1,0 +1,257 @@
+[
+  {
+    "file": "./common/cmd_icx1087_nand.c",
+    "line": 53,
+    "text": "int do_fwupboot ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[] )"
+  },
+  {
+    "file": "./common/cmd_icx1087_nand.c",
+    "line": 60,
+    "text": "    fwupboot,  1,  0,  do_fwupboot,"
+  },
+  {
+    "file": "./common/cmd_icx1087_nand.c",
+    "line": 61,
+    "text": "    \"fwupboot- Boot Linux from NAND in emergency F/W update mode\\n\","
+  },
+  {
+    "file": "./common/cmd_icx1087_nand.c",
+    "line": 298,
+    "text": "\t\trc = nandWritePage(0, adr, (void *)src, extbuf);"
+  },
+  {
+    "file": "./common/cmd_icx1087_nand.c",
+    "line": 395,
+    "text": "\t\trc = nandEraseBlock(0, adr);"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 40,
+    "text": "#define NAND_BLK_LOADER_START\t1"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 43,
+    "text": "#define NAND_BLK_LOADER_END_P2K\t\t40\t"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 48,
+    "text": "#define NAND_BLK_LOADER_END_P4K\t\t24\t"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 53,
+    "text": "#define NAND_BLK_LOADER_END     40"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 58,
+    "text": "#define\tNAND_BLK_LOADER_LMT\t\t(NAND_BLK_LOADER_END + NAND_BLK_BAD_LIMIT)"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 67,
+    "text": "#define TBL_SIG_FUKRNL\t\t\t0x744B5566\t\t/* \"fUKt\" */"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 68,
+    "text": "#define TBL_SIG_FUINRD\t\t\t0x74525566\t\t/* \"fURt\" */"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 79,
+    "text": "#define CFG_USER_BOOTARGS\t\"root=/dev/ram init=/linuxrc_fwup mem=23M rw devfs=mount video=qfb: ip=none\""
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 166,
+    "text": "static unsigned int nand_blk_loader_end;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 169,
+    "text": "#define\tNAND_BLK_LOADER_LMT\t\t(nand_blk_loader_end + nand_blk_bad_limit)"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 345,
+    "text": "\t\tif( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 408,
+    "text": "\t\tnand_blk_loader_end = NAND_BLK_LOADER_END_P4K;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 414,
+    "text": "\t\tnand_blk_loader_end = NAND_BLK_LOADER_END_P2K;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 457,
+    "text": "\telse if( ICX1087_CHK_FWUP() )"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 469,
+    "text": "\t\t\tif( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 470,
+    "text": "\t\t\t\t \t  \t\t\tMNG_SIG_LOADER, TBL_SIG_FUKRNL, (void *)&ktbl, 1) ) {"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 473,
+    "text": "\t\t\tif( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 474,
+    "text": "\t\t\t\t \t  \t\t\tMNG_SIG_LOADER, TBL_SIG_FUINRD, (void *)&itbl, 1) ) {"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 489,
+    "text": "\t\t\tif( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_nand.c",
+    "line": 625,
+    "text": "\t\t\t\ticx1087_set_val.fwup = NAND_EXTRACT_FWUP(nandbuf, NAND_PAGE_SIZE_2K);"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_pm.c",
+    "line": 532,
+    "text": "\t\tif (ICX1087_CHK_FWUP())"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_pm.c",
+    "line": 533,
+    "text": "\t\t\ticx1087_vbat_low = VBAT_THRESHOLD_FWUP_DSY;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_pm.c",
+    "line": 542,
+    "text": "\t\tif (ICX1087_CHK_FWUP())"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_pm.c",
+    "line": 543,
+    "text": "\t\t\ticx1087_vbat_low = VBAT_THRESHOLD_FWUP_V3;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_pm.c",
+    "line": 550,
+    "text": "\t\tif (ICX1087_CHK_FWUP())"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087_pm.c",
+    "line": 551,
+    "text": "\t\t\ticx1087_vbat_low = VBAT_THRESHOLD_FWUP;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 159,
+    "text": "/* #define\tVBAT_THRESHOLD_FWUP\t\t0xB4 */"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 162,
+    "text": "/* #define\tVBAT_THRESHOLD_FWUP_V3\t0xB7 */"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 165,
+    "text": "#define\tVBAT_THRESHOLD_FWUP\t\t0xBA"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 168,
+    "text": "#define\tVBAT_THRESHOLD_FWUP_V3\t0xBE"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 172,
+    "text": "#define\tVBAT_THRESHOLD_FWUP_DSY\t0xC2"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 248,
+    "text": "#define\tFLG_BOOT_FWUP\t\t0x70555766"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 252,
+    "text": "#define\tNAND_EXTRACT_FWUP(b, s)\t(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32))))\t"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 262,
+    "text": "\tUINT32\tfwup;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 271,
+    "text": "\tUINT32\tfwup;"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/icx1087.h",
+    "line": 289,
+    "text": "#define\tICX1087_CHK_FWUP()\t(icx1087_set_val.fwup == FLG_BOOT_FWUP)"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/bios_nand.c",
+    "line": 429,
+    "text": "int nandWritePage("
+  },
+  {
+    "file": "./board/mp201xx/icx1087/bios_nand.c",
+    "line": 528,
+    "text": "int nandEraseBlock("
+  },
+  {
+    "file": "./board/mp201xx/icx1087/bios_nand.h",
+    "line": 34,
+    "text": "int nandWritePage(unsigned char ce, unsigned long page, void *dest, unsigned char *ext);"
+  },
+  {
+    "file": "./board/mp201xx/icx1087/bios_nand.h",
+    "line": 35,
+    "text": "int nandEraseBlock(unsigned char ce, unsigned long page);"
+  },
+  {
+    "file": "./board/mpl/vcma9/cmd_vcma9.c",
+    "line": 46,
+    "text": "extern int vcma9_nanderase(void);"
+  },
+  {
+    "file": "./board/mpl/vcma9/cmd_vcma9.c",
+    "line": 48,
+    "text": "extern int vcma9_nandwrite(ulong);"
+  },
+  {
+    "file": "./board/mpl/vcma9/cmd_vcma9.c",
+    "line": 142,
+    "text": "\tif (strcmp(argv[1], \"nanderase\") == 0) {"
+  },
+  {
+    "file": "./board/mpl/vcma9/cmd_vcma9.c",
+    "line": 143,
+    "text": "\t\tvcma9_nanderase();"
+  },
+  {
+    "file": "./board/mpl/vcma9/cmd_vcma9.c",
+    "line": 155,
+    "text": "\tif (strcmp(argv[1], \"nandwrite\") == 0) {"
+  },
+  {
+    "file": "./board/mpl/vcma9/cmd_vcma9.c",
+    "line": 161,
+    "text": "\t\tvcma9_nandwrite(offset);"
+  }
+]

@@ -1,0 +1,444 @@
+
+C:\Users\VicLi\Documents\Projects\island-walkman\data\firmware-analysis\FWUpdaterCom.dll:	file format coff-i386
+
+Disassembly of section .text:
+
+10006d70 <DllUnregisterServer>:
+10009100: 55                           	pushl	%ebp
+10009101: 8d ac 24 ec fe ff ff         	leal	-276(%esp), %ebp
+10009108: 81 ec 14 01 00 00            	subl	$276, %esp              # imm = 0x114
+1000910e: 6a ff                        	pushl	$-1
+10009110: 68 b0 d1 02 10               	pushl	$268620208              # imm = 0x1002D1B0
+10009115: 64 a1 00 00 00 00            	movl	%fs:0, %eax
+1000911b: 50                           	pushl	%eax
+1000911c: 83 ec 58                     	subl	$88, %esp
+1000911f: a1 08 94 03 10               	movl	268669960, %eax
+10009124: 33 c5                        	xorl	%ebp, %eax
+10009126: 89 85 10 01 00 00            	movl	%eax, 272(%ebp)
+1000912c: 53                           	pushl	%ebx
+1000912d: 56                           	pushl	%esi
+1000912e: 57                           	pushl	%edi
+1000912f: 50                           	pushl	%eax
+10009130: 8d 45 f4                     	leal	-12(%ebp), %eax
+10009133: 64 a3 00 00 00 00            	movl	%eax, %fs:0
+10009139: 89 65 f0                     	movl	%esp, -16(%ebp)
+1000913c: 8b 85 1c 01 00 00            	movl	284(%ebp), %eax
+10009142: 8b 95 24 01 00 00            	movl	292(%ebp), %edx
+10009148: 8b bd 28 01 00 00            	movl	296(%ebp), %edi
+1000914e: 8b 9d 2c 01 00 00            	movl	300(%ebp), %ebx
+10009154: 89 4d e0                     	movl	%ecx, -32(%ebp)
+10009157: 8b 8d 20 01 00 00            	movl	288(%ebp), %ecx
+1000915d: 89 45 00                     	movl	%eax, (%ebp)
+10009160: 8b 85 30 01 00 00            	movl	304(%ebp), %eax
+10009166: 89 4d 04                     	movl	%ecx, 4(%ebp)
+10009169: 8b 8d 38 01 00 00            	movl	312(%ebp), %ecx
+1000916f: 89 55 08                     	movl	%edx, 8(%ebp)
+10009172: 89 45 d4                     	movl	%eax, -44(%ebp)
+10009175: 89 4d dc                     	movl	%ecx, -36(%ebp)
+10009178: ff 15 e8 93 03 10            	calll	*268669928
+1000917e: 83 bd 34 01 00 00 01         	cmpl	$1, 308(%ebp)
+10009185: 89 45 e8                     	movl	%eax, -24(%ebp)
+10009188: c7 45 ec 00 00 00 00         	movl	$0, -20(%ebp)
+1000918f: 0f 87 7b 04 00 00            	ja	0x10009610 <DllUnregisterServer+0x28a0>
+10009195: 85 ff                        	testl	%edi, %edi
+10009197: 0f 84 73 04 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+1000919d: 57                           	pushl	%edi
+1000919e: ff 15 70 e0 02 10            	calll	*268623984
+100091a4: 83 c0 01                     	addl	$1, %eax
+100091a7: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+100091ac: 7e 04                        	jle	0x100091b2 <DllUnregisterServer+0x2442>
+100091ae: 33 c0                        	xorl	%eax, %eax
+100091b0: eb 1b                        	jmp	0x100091cd <DllUnregisterServer+0x245d>
+100091b2: 8d 34 00                     	leal	(%eax,%eax), %esi
+100091b5: 8b c6                        	movl	%esi, %eax
+100091b7: e8 24 2c 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+100091bc: 8b 55 e8                     	movl	-24(%ebp), %edx
+100091bf: 89 65 f0                     	movl	%esp, -16(%ebp)
+100091c2: 8b c4                        	movl	%esp, %eax
+100091c4: 52                           	pushl	%edx
+100091c5: 56                           	pushl	%esi
+100091c6: 57                           	pushl	%edi
+100091c7: 50                           	pushl	%eax
+100091c8: e8 d3 96 ff ff               	calll	0x100028a0 <.text+0x18a0>
+100091cd: 8d 50 01                     	leal	1(%eax), %edx
+100091d0: 8a 08                        	movb	(%eax), %cl
+100091d2: 83 c0 01                     	addl	$1, %eax
+100091d5: 84 c9                        	testb	%cl, %cl
+100091d7: 75 f7                        	jne	0x100091d0 <DllUnregisterServer+0x2460>
+100091d9: 2b c2                        	subl	%edx, %eax
+100091db: 0f 84 2f 04 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+100091e1: 85 db                        	testl	%ebx, %ebx
+100091e3: 74 40                        	je	0x10009225 <DllUnregisterServer+0x24b5>
+100091e5: 53                           	pushl	%ebx
+100091e6: ff 15 70 e0 02 10            	calll	*268623984
+100091ec: 83 c0 01                     	addl	$1, %eax
+100091ef: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+100091f4: 7e 04                        	jle	0x100091fa <DllUnregisterServer+0x248a>
+100091f6: 33 c0                        	xorl	%eax, %eax
+100091f8: eb 1b                        	jmp	0x10009215 <DllUnregisterServer+0x24a5>
+100091fa: 8d 34 00                     	leal	(%eax,%eax), %esi
+100091fd: 8b c6                        	movl	%esi, %eax
+100091ff: e8 dc 2b 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+10009204: 8b 4d e8                     	movl	-24(%ebp), %ecx
+10009207: 89 65 f0                     	movl	%esp, -16(%ebp)
+1000920a: 8b c4                        	movl	%esp, %eax
+1000920c: 51                           	pushl	%ecx
+1000920d: 56                           	pushl	%esi
+1000920e: 53                           	pushl	%ebx
+1000920f: 50                           	pushl	%eax
+10009210: e8 8b 96 ff ff               	calll	0x100028a0 <.text+0x18a0>
+10009215: 8d 50 01                     	leal	1(%eax), %edx
+10009218: 8a 08                        	movb	(%eax), %cl
+1000921a: 83 c0 01                     	addl	$1, %eax
+1000921d: 84 c9                        	testb	%cl, %cl
+1000921f: 75 f7                        	jne	0x10009218 <DllUnregisterServer+0x24a8>
+10009221: 2b c2                        	subl	%edx, %eax
+10009223: 75 52                        	jne	0x10009277 <DllUnregisterServer+0x2507>
+10009225: 8b 45 d4                     	movl	-44(%ebp), %eax
+10009228: 85 c0                        	testl	%eax, %eax
+1000922a: 0f 84 e0 03 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+10009230: 50                           	pushl	%eax
+10009231: ff 15 70 e0 02 10            	calll	*268623984
+10009237: 83 c0 01                     	addl	$1, %eax
+1000923a: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+1000923f: 7e 04                        	jle	0x10009245 <DllUnregisterServer+0x24d5>
+10009241: 33 c0                        	xorl	%eax, %eax
+10009243: eb 1e                        	jmp	0x10009263 <DllUnregisterServer+0x24f3>
+10009245: 8d 34 00                     	leal	(%eax,%eax), %esi
+10009248: 8b c6                        	movl	%esi, %eax
+1000924a: e8 91 2b 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+1000924f: 8b 55 e8                     	movl	-24(%ebp), %edx
+10009252: 8b 4d d4                     	movl	-44(%ebp), %ecx
+10009255: 89 65 f0                     	movl	%esp, -16(%ebp)
+10009258: 8b c4                        	movl	%esp, %eax
+1000925a: 52                           	pushl	%edx
+1000925b: 56                           	pushl	%esi
+1000925c: 51                           	pushl	%ecx
+1000925d: 50                           	pushl	%eax
+1000925e: e8 3d 96 ff ff               	calll	0x100028a0 <.text+0x18a0>
+10009263: 8d 50 01                     	leal	1(%eax), %edx
+10009266: 8a 08                        	movb	(%eax), %cl
+10009268: 83 c0 01                     	addl	$1, %eax
+1000926b: 84 c9                        	testb	%cl, %cl
+1000926d: 75 f7                        	jne	0x10009266 <DllUnregisterServer+0x24f6>
+1000926f: 2b c2                        	subl	%edx, %eax
+10009271: 0f 84 99 03 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+10009277: 33 f6                        	xorl	%esi, %esi
+10009279: 57                           	pushl	%edi
+1000927a: 89 75 fc                     	movl	%esi, -4(%ebp)
+1000927d: ff 15 70 e0 02 10            	calll	*268623984
+10009283: 83 c0 01                     	addl	$1, %eax
+10009286: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+1000928b: 7e 05                        	jle	0x10009292 <DllUnregisterServer+0x2522>
+1000928d: 89 75 e4                     	movl	%esi, -28(%ebp)
+10009290: eb 1e                        	jmp	0x100092b0 <DllUnregisterServer+0x2540>
+10009292: 8d 34 00                     	leal	(%eax,%eax), %esi
+10009295: 8b c6                        	movl	%esi, %eax
+10009297: e8 44 2b 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+1000929c: 8b 55 e8                     	movl	-24(%ebp), %edx
+1000929f: 89 65 f0                     	movl	%esp, -16(%ebp)
+100092a2: 8b c4                        	movl	%esp, %eax
+100092a4: 52                           	pushl	%edx
+100092a5: 56                           	pushl	%esi
+100092a6: 57                           	pushl	%edi
+100092a7: 50                           	pushl	%eax
+100092a8: e8 f3 95 ff ff               	calll	0x100028a0 <.text+0x18a0>
+100092ad: 89 45 e4                     	movl	%eax, -28(%ebp)
+100092b0: 8b 7d e0                     	movl	-32(%ebp), %edi
+100092b3: 8b 4d e4                     	movl	-28(%ebp), %ecx
+100092b6: 8b 87 cc 01 00 00            	movl	460(%edi), %eax
+100092bc: 51                           	pushl	%ecx
+100092bd: 8b cf                        	movl	%edi, %ecx
+100092bf: 89 87 d0 01 00 00            	movl	%eax, 464(%edi)
+100092c5: e8 76 e4 ff ff               	calll	0x10007740 <DllUnregisterServer+0x9d0>
+100092ca: 8b 55 dc                     	movl	-36(%ebp), %edx
+100092cd: 8b f0                        	movl	%eax, %esi
+100092cf: 83 fe ff                     	cmpl	$-1, %esi
+100092d2: 89 32                        	movl	%esi, (%edx)
+100092d4: 75 19                        	jne	0x100092ef <DllUnregisterServer+0x257f>
+100092d6: b8 03 70 04 80               	movl	$2147774467, %eax       # imm = 0x80047003
+100092db: 89 45 ec                     	movl	%eax, -20(%ebp)
+100092de: 89 45 c4                     	movl	%eax, -60(%ebp)
+100092e1: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+100092e6: 8d 45 c4                     	leal	-60(%ebp), %eax
+100092e9: 50                           	pushl	%eax
+100092ea: e8 f6 24 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+100092ef: 8b 8f d8 00 00 00            	movl	216(%edi), %ecx
+100092f5: 68 d4 f9 02 10               	pushl	$268630484              # imm = 0x1002F9D4
+100092fa: 83 c1 41                     	addl	$65, %ecx
+100092fd: 51                           	pushl	%ecx
+100092fe: 8d 55 0c                     	leal	12(%ebp), %edx
+10009301: 68 cc f9 02 10               	pushl	$268630476              # imm = 0x1002F9CC
+10009306: 52                           	pushl	%edx
+10009307: ff 15 34 e2 02 10            	calll	*268624436
+1000930d: 83 c4 10                     	addl	$16, %esp
+10009310: 8d 45 a4                     	leal	-92(%ebp), %eax
+10009313: 50                           	pushl	%eax
+10009314: 8d 4d 9c                     	leal	-100(%ebp), %ecx
+10009317: 51                           	pushl	%ecx
+10009318: 8d 55 ac                     	leal	-84(%ebp), %edx
+1000931b: 52                           	pushl	%edx
+1000931c: 8d 45 0c                     	leal	12(%ebp), %eax
+1000931f: 50                           	pushl	%eax
+10009320: ff 15 c4 e0 02 10            	calll	*268624068
+10009326: 85 c0                        	testl	%eax, %eax
+10009328: 75 39                        	jne	0x10009363 <DllUnregisterServer+0x25f3>
+1000932a: ff 15 60 e0 02 10            	calll	*268623968
+10009330: 83 f8 70                     	cmpl	$112, %eax
+10009333: 75 0a                        	jne	0x1000933f <DllUnregisterServer+0x25cf>
+10009335: b8 08 70 04 80               	movl	$2147774472, %eax       # imm = 0x80047008
+1000933a: 89 45 ec                     	movl	%eax, -20(%ebp)
+1000933d: eb 13                        	jmp	0x10009352 <DllUnregisterServer+0x25e2>
+1000933f: 33 c9                        	xorl	%ecx, %ecx
+10009341: 83 f8 05                     	cmpl	$5, %eax
+10009344: 0f 94 c1                     	sete	%cl
+10009347: 81 c1 06 70 04 80            	addl	$2147774470, %ecx       # imm = 0x80047006
+1000934d: 8b c1                        	movl	%ecx, %eax
+1000934f: 89 4d ec                     	movl	%ecx, -20(%ebp)
+10009352: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+10009357: 8d 55 b4                     	leal	-76(%ebp), %edx
+1000935a: 52                           	pushl	%edx
+1000935b: 89 45 b4                     	movl	%eax, -76(%ebp)
+1000935e: e8 82 24 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+10009363: 85 f6                        	testl	%esi, %esi
+10009365: 0f 85 9f 00 00 00            	jne	0x1000940a <DllUnregisterServer+0x269a>
+1000936b: 85 db                        	testl	%ebx, %ebx
+1000936d: 0f 84 9d 02 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+10009373: 8b 3d 70 e0 02 10            	movl	268623984, %edi
+10009379: 53                           	pushl	%ebx
+1000937a: ff d7                        	calll	*%edi
+1000937c: 83 c0 01                     	addl	$1, %eax
+1000937f: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+10009384: 7e 04                        	jle	0x1000938a <DllUnregisterServer+0x261a>
+10009386: 33 c0                        	xorl	%eax, %eax
+10009388: eb 1b                        	jmp	0x100093a5 <DllUnregisterServer+0x2635>
+1000938a: 8d 34 00                     	leal	(%eax,%eax), %esi
+1000938d: 8b c6                        	movl	%esi, %eax
+1000938f: e8 4c 2a 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+10009394: 8b 4d e8                     	movl	-24(%ebp), %ecx
+10009397: 89 65 f0                     	movl	%esp, -16(%ebp)
+1000939a: 8b c4                        	movl	%esp, %eax
+1000939c: 51                           	pushl	%ecx
+1000939d: 56                           	pushl	%esi
+1000939e: 53                           	pushl	%ebx
+1000939f: 50                           	pushl	%eax
+100093a0: e8 fb 94 ff ff               	calll	0x100028a0 <.text+0x18a0>
+100093a5: 8d 50 01                     	leal	1(%eax), %edx
+100093a8: 8a 08                        	movb	(%eax), %cl
+100093aa: 83 c0 01                     	addl	$1, %eax
+100093ad: 84 c9                        	testb	%cl, %cl
+100093af: 75 f7                        	jne	0x100093a8 <DllUnregisterServer+0x2638>
+100093b1: 2b c2                        	subl	%edx, %eax
+100093b3: 0f 84 57 02 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+100093b9: 53                           	pushl	%ebx
+100093ba: ff d7                        	calll	*%edi
+100093bc: 83 c0 01                     	addl	$1, %eax
+100093bf: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+100093c4: 7e 04                        	jle	0x100093ca <DllUnregisterServer+0x265a>
+100093c6: 33 c0                        	xorl	%eax, %eax
+100093c8: eb 1b                        	jmp	0x100093e5 <DllUnregisterServer+0x2675>
+100093ca: 8d 34 00                     	leal	(%eax,%eax), %esi
+100093cd: 8b c6                        	movl	%esi, %eax
+100093cf: e8 0c 2a 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+100093d4: 8b 55 e8                     	movl	-24(%ebp), %edx
+100093d7: 89 65 f0                     	movl	%esp, -16(%ebp)
+100093da: 8b c4                        	movl	%esp, %eax
+100093dc: 52                           	pushl	%edx
+100093dd: 56                           	pushl	%esi
+100093de: 53                           	pushl	%ebx
+100093df: 50                           	pushl	%eax
+100093e0: e8 bb 94 ff ff               	calll	0x100028a0 <.text+0x18a0>
+100093e5: 50                           	pushl	%eax
+100093e6: 8b 45 e0                     	movl	-32(%ebp), %eax
+100093e9: 8b 88 d8 00 00 00            	movl	216(%eax), %ecx
+100093ef: 83 c1 41                     	addl	$65, %ecx
+100093f2: 51                           	pushl	%ecx
+100093f3: 8d 55 0c                     	leal	12(%ebp), %edx
+100093f6: 68 cc f9 02 10               	pushl	$268630476              # imm = 0x1002F9CC
+100093fb: 52                           	pushl	%edx
+100093fc: ff 15 34 e2 02 10            	calll	*268624436
+10009402: 8b 7d e0                     	movl	-32(%ebp), %edi
+10009405: e9 a1 00 00 00               	jmp	0x100094ab <DllUnregisterServer+0x273b>
+1000940a: 83 fe 01                     	cmpl	$1, %esi
+1000940d: 0f 85 9b 00 00 00            	jne	0x100094ae <DllUnregisterServer+0x273e>
+10009413: 8b 5d d4                     	movl	-44(%ebp), %ebx
+10009416: 85 db                        	testl	%ebx, %ebx
+10009418: 0f 84 f2 01 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+1000941e: 53                           	pushl	%ebx
+1000941f: ff 15 70 e0 02 10            	calll	*268623984
+10009425: 03 c6                        	addl	%esi, %eax
+10009427: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+1000942c: 7e 04                        	jle	0x10009432 <DllUnregisterServer+0x26c2>
+1000942e: 33 c0                        	xorl	%eax, %eax
+10009430: eb 1b                        	jmp	0x1000944d <DllUnregisterServer+0x26dd>
+10009432: 8d 34 00                     	leal	(%eax,%eax), %esi
+10009435: 8b c6                        	movl	%esi, %eax
+10009437: e8 a4 29 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+1000943c: 8b 4d e8                     	movl	-24(%ebp), %ecx
+1000943f: 89 65 f0                     	movl	%esp, -16(%ebp)
+10009442: 8b c4                        	movl	%esp, %eax
+10009444: 51                           	pushl	%ecx
+10009445: 56                           	pushl	%esi
+10009446: 53                           	pushl	%ebx
+10009447: 50                           	pushl	%eax
+10009448: e8 53 94 ff ff               	calll	0x100028a0 <.text+0x18a0>
+1000944d: 8d 50 01                     	leal	1(%eax), %edx
+10009450: 8a 08                        	movb	(%eax), %cl
+10009452: 83 c0 01                     	addl	$1, %eax
+10009455: 84 c9                        	testb	%cl, %cl
+10009457: 75 f7                        	jne	0x10009450 <DllUnregisterServer+0x26e0>
+10009459: 2b c2                        	subl	%edx, %eax
+1000945b: 0f 84 af 01 00 00            	je	0x10009610 <DllUnregisterServer+0x28a0>
+10009461: 53                           	pushl	%ebx
+10009462: ff 15 70 e0 02 10            	calll	*268623984
+10009468: 83 c0 01                     	addl	$1, %eax
+1000946b: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+10009470: 7e 04                        	jle	0x10009476 <DllUnregisterServer+0x2706>
+10009472: 33 c0                        	xorl	%eax, %eax
+10009474: eb 1b                        	jmp	0x10009491 <DllUnregisterServer+0x2721>
+10009476: 8d 34 00                     	leal	(%eax,%eax), %esi
+10009479: 8b c6                        	movl	%esi, %eax
+1000947b: e8 60 29 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+10009480: 8b 55 e8                     	movl	-24(%ebp), %edx
+10009483: 89 65 f0                     	movl	%esp, -16(%ebp)
+10009486: 8b c4                        	movl	%esp, %eax
+10009488: 52                           	pushl	%edx
+10009489: 56                           	pushl	%esi
+1000948a: 53                           	pushl	%ebx
+1000948b: 50                           	pushl	%eax
+1000948c: e8 0f 94 ff ff               	calll	0x100028a0 <.text+0x18a0>
+10009491: 50                           	pushl	%eax
+10009492: 8b 87 d8 00 00 00            	movl	216(%edi), %eax
+10009498: 83 c0 41                     	addl	$65, %eax
+1000949b: 50                           	pushl	%eax
+1000949c: 8d 4d 0c                     	leal	12(%ebp), %ecx
+1000949f: 68 cc f9 02 10               	pushl	$268630476              # imm = 0x1002F9CC
+100094a4: 51                           	pushl	%ecx
+100094a5: ff 15 34 e2 02 10            	calll	*268624436
+100094ab: 83 c4 10                     	addl	$16, %esp
+100094ae: 33 c0                        	xorl	%eax, %eax
+100094b0: 8d 55 d8                     	leal	-40(%ebp), %edx
+100094b3: 89 45 d8                     	movl	%eax, -40(%ebp)
+100094b6: 89 45 dc                     	movl	%eax, -36(%ebp)
+100094b9: 89 87 d4 01 00 00            	movl	%eax, 468(%edi)
+100094bf: 8b 45 e4                     	movl	-28(%ebp), %eax
+100094c2: 52                           	pushl	%edx
+100094c3: 50                           	pushl	%eax
+100094c4: 8b cf                        	movl	%edi, %ecx
+100094c6: e8 15 e3 ff ff               	calll	0x100077e0 <DllUnregisterServer+0xa70>
+100094cb: 8b 7d d8                     	movl	-40(%ebp), %edi
+100094ce: 8b 75 dc                     	movl	-36(%ebp), %esi
+100094d1: 8b cf                        	movl	%edi, %ecx
+100094d3: 0b ce                        	orl	%esi, %ecx
+100094d5: 89 45 ec                     	movl	%eax, -20(%ebp)
+100094d8: 0f 84 ee 00 00 00            	je	0x100095cc <DllUnregisterServer+0x285c>
+100094de: 85 c0                        	testl	%eax, %eax
+100094e0: 0f 8c ea 00 00 00            	jl	0x100095d0 <DllUnregisterServer+0x2860>
+100094e6: 6a 00                        	pushl	$0
+100094e8: 6a 14                        	pushl	$20
+100094ea: 56                           	pushl	%esi
+100094eb: 57                           	pushl	%edi
+100094ec: e8 bf 3d 01 00               	calll	0x1001d2b0 <DllUnregisterServer+0x16540>
+100094f1: 03 f8                        	addl	%eax, %edi
+100094f3: 13 f2                        	adcl	%edx, %esi
+100094f5: 3b 75 b0                     	cmpl	-80(%ebp), %esi
+100094f8: 72 20                        	jb	0x1000951a <DllUnregisterServer+0x27aa>
+100094fa: 77 05                        	ja	0x10009501 <DllUnregisterServer+0x2791>
+100094fc: 3b 7d ac                     	cmpl	-84(%ebp), %edi
+100094ff: 76 19                        	jbe	0x1000951a <DllUnregisterServer+0x27aa>
+10009501: b8 08 70 04 80               	movl	$2147774472, %eax       # imm = 0x80047008
+10009506: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+1000950b: 8d 55 b8                     	leal	-72(%ebp), %edx
+1000950e: 52                           	pushl	%edx
+1000950f: 89 45 ec                     	movl	%eax, -20(%ebp)
+10009512: 89 45 b8                     	movl	%eax, -72(%ebp)
+10009515: e8 cb 22 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+1000951a: 8b 4d e4                     	movl	-28(%ebp), %ecx
+1000951d: 8b 7d e0                     	movl	-32(%ebp), %edi
+10009520: 8d 45 0c                     	leal	12(%ebp), %eax
+10009523: 50                           	pushl	%eax
+10009524: 51                           	pushl	%ecx
+10009525: 8b cf                        	movl	%edi, %ecx
+10009527: e8 e4 e4 ff ff               	calll	0x10007a10 <DllUnregisterServer+0xca0>
+1000952c: 8b f0                        	movl	%eax, %esi
+1000952e: 85 f6                        	testl	%esi, %esi
+10009530: 89 75 ec                     	movl	%esi, -20(%ebp)
+10009533: 7d 11                        	jge	0x10009546 <DllUnregisterServer+0x27d6>
+10009535: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+1000953a: 8d 55 d0                     	leal	-48(%ebp), %edx
+1000953d: 52                           	pushl	%edx
+1000953e: 89 75 d0                     	movl	%esi, -48(%ebp)
+10009541: e8 9f 22 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+10009546: 83 bd 34 01 00 00 00         	cmpl	$0, 308(%ebp)
+1000954d: 0f 85 b9 00 00 00            	jne	0x1000960c <DllUnregisterServer+0x289c>
+10009553: 8b 87 f4 00 00 00            	movl	244(%edi), %eax
+10009559: c6 45 00 fc                  	movb	$-4, (%ebp)
+1000955d: c6 45 02 04                  	movb	$4, 2(%ebp)
+10009561: 8b 08                        	movl	(%eax), %ecx
+10009563: 8b 01                        	movl	(%ecx), %eax
+10009565: 8b 40 04                     	movl	4(%eax), %eax
+10009568: 6a 0c                        	pushl	$12
+1000956a: 8d 55 00                     	leal	(%ebp), %edx
+1000956d: 52                           	pushl	%edx
+1000956e: ff d0                        	calll	*%eax
+10009570: 84 c0                        	testb	%al, %al
+10009572: 0f 85 94 00 00 00            	jne	0x1000960c <DllUnregisterServer+0x289c>
+10009578: 8b 87 f4 00 00 00            	movl	244(%edi), %eax
+1000957e: 8b 08                        	movl	(%eax), %ecx
+10009580: 83 79 08 ff                  	cmpl	$-1, 8(%ecx)
+10009584: 75 19                        	jne	0x1000959f <DllUnregisterServer+0x282f>
+10009586: b8 02 70 04 80               	movl	$2147774466, %eax       # imm = 0x80047002
+1000958b: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+10009590: 8d 4d bc                     	leal	-68(%ebp), %ecx
+10009593: 51                           	pushl	%ecx
+10009594: 89 45 ec                     	movl	%eax, -20(%ebp)
+10009597: 89 45 bc                     	movl	%eax, -68(%ebp)
+1000959a: e8 46 22 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+1000959f: f7 41 04 00 00 ff 00         	testl	$16711680, 4(%ecx)      # imm = 0xFF0000
+100095a6: 74 64                        	je	0x1000960c <DllUnregisterServer+0x289c>
+100095a8: 8b c1                        	movl	%ecx, %eax
+100095aa: 81 78 04 00 04 02 ff         	cmpl	$4278322176, 4(%eax)    # imm = 0xFF020400
+100095b1: 74 59                        	je	0x1000960c <DllUnregisterServer+0x289c>
+100095b3: b8 01 70 04 80               	movl	$2147774465, %eax       # imm = 0x80047001
+100095b8: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+100095bd: 8d 55 c0                     	leal	-64(%ebp), %edx
+100095c0: 52                           	pushl	%edx
+100095c1: 89 45 ec                     	movl	%eax, -20(%ebp)
+100095c4: 89 45 c0                     	movl	%eax, -64(%ebp)
+100095c7: e8 19 22 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+100095cc: 85 c0                        	testl	%eax, %eax
+100095ce: 7d 11                        	jge	0x100095e1 <DllUnregisterServer+0x2871>
+100095d0: 89 45 c8                     	movl	%eax, -56(%ebp)
+100095d3: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+100095d8: 8d 45 c8                     	leal	-56(%ebp), %eax
+100095db: 50                           	pushl	%eax
+100095dc: e8 04 22 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+100095e1: 68 1c 4f 03 10               	pushl	$268652316              # imm = 0x10034F1C
+100095e6: 8d 4d cc                     	leal	-52(%ebp), %ecx
+100095e9: 51                           	pushl	%ecx
+100095ea: c7 45 cc 05 40 00 80         	movl	$2147500037, -52(%ebp)  # imm = 0x80004005
+100095f1: e8 ef 21 01 00               	calll	0x1001b7e5 <DllUnregisterServer+0x14a75>
+100095f6: 83 7d ec 00                  	cmpl	$0, -20(%ebp)
+100095fa: 7c 07                        	jl	0x10009603 <DllUnregisterServer+0x2893>
+100095fc: c7 45 ec 01 80 04 80         	movl	$2147778561, -20(%ebp)  # imm = 0x80048001
+10009603: b8 09 96 00 10               	movl	$268473865, %eax        # imm = 0x10009609
+10009608: c3                           	retl
+10009609: 8b 75 ec                     	movl	-20(%ebp), %esi
+1000960c: 8b c6                        	movl	%esi, %eax
+1000960e: eb 05                        	jmp	0x10009615 <DllUnregisterServer+0x28a5>
+10009610: b8 57 00 07 80               	movl	$2147942487, %eax       # imm = 0x80070057
+10009615: 8d 65 8c                     	leal	-116(%ebp), %esp
+10009618: 8b 4d f4                     	movl	-12(%ebp), %ecx
+1000961b: 64 89 0d 00 00 00 00         	movl	%ecx, %fs:0
+10009622: 59                           	popl	%ecx
+10009623: 5f                           	popl	%edi
+10009624: 5e                           	popl	%esi
+10009625: 5b                           	popl	%ebx
+10009626: 8b 8d 10 01 00 00            	movl	272(%ebp), %ecx
+1000962c: 33 cd                        	xorl	%ebp, %ecx
+1000962e: e8 8f 0d 01 00               	calll	0x1001a3c2 <DllUnregisterServer+0x13652>
+10009633: 81 c5 14 01 00 00            	addl	$276, %ebp              # imm = 0x114
+10009639: 8b e5                        	movl	%ebp, %esp
+1000963b: 5d                           	popl	%ebp
+1000963c: c2 20 00                     	retl	$32
+1000963f: cc                           	int3

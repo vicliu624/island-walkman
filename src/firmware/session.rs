@@ -16,13 +16,14 @@ pub fn preflight(device: Option<&DeviceInfo>, power: Option<&PowerStatus>) -> se
         "live response semantics not validated",
         "resident installer and recovery path not verified",
         "hardware flashing not authorized",
-        "A918 battery threshold and status policy not established",
+        "model-specific battery threshold and status policy not established",
         "candidate model and version metadata not authenticated",
     ];
     if device.is_none_or(|d| {
-        d.vendor != "SONY" || d.model != "NW-A918" || d.device_serial_hex.bytes().all(|b| b == b'0')
+        crate::devices::firmware_profile(&d.vendor, &d.model).is_none()
+            || d.device_serial_hex.bytes().all(|b| b == b'0')
     }) {
-        blockers.push("exact A918 identity and serial binding not verified");
+        blockers.push("supported model identity and serial binding not verified");
     }
     if power.is_none_or(|p| p.percent.is_none()) {
         blockers.push("battery percentage unavailable");
@@ -83,8 +84,8 @@ impl Session {
         target_version: Version,
     ) -> Result<Self> {
         ensure!(
-            identity.vendor == "SONY" && identity.model == "NW-A918",
-            "Exact A918 identity required"
+            crate::devices::firmware_profile(&identity.vendor, &identity.model).is_some(),
+            "Device model has no compatible firmware profile"
         );
         ensure!(
             Version::parse(&identity.revision)? == identity.version,
@@ -362,6 +363,31 @@ mod tests {
         s
     }
     #[test]
+    fn shared_firmware_accepts_each_a910_model_but_preserves_exact_identity() {
+        let original = session();
+        for model in ["NW-A916", "NW-A918", "NW-A919"] {
+            let mut identity = original.identity.clone();
+            identity.model = model.into();
+            let session = Session::new(
+                identity.clone(),
+                original.usb_serial.clone(),
+                original.image_sha256.clone(),
+                original.target_version.clone(),
+            )
+            .unwrap();
+            assert_eq!(session.identity.model, model);
+            let mut other = identity.clone();
+            other.model = if model == "NW-A918" {
+                "NW-A919"
+            } else {
+                "NW-A918"
+            }
+            .into();
+            assert!(!same_device(&identity, &other));
+        }
+    }
+
+    #[test]
     fn simulated_success_requires_exact_identity_and_post_reboot_version() {
         let mut s = verified();
         s.record_activation_intent().unwrap();
@@ -446,7 +472,7 @@ mod tests {
             .is_err()
         );
         let mut identity = s.identity.clone();
-        identity.model = "NW-A919".into();
+        identity.model = "NW-UNKNOWN".into();
         assert!(
             Session::new(
                 identity,

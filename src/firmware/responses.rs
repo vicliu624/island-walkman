@@ -58,6 +58,15 @@ pub struct DeviceInfo {
     pub storage_size_hex: String,
 }
 
+impl DeviceInfo {
+    /// Diagnostics include derived branding without changing persisted checkpoint data.
+    pub fn report(&self) -> Result<serde_json::Value> {
+        let mut report = serde_json::to_value(self)?;
+        report["firmware_identity"] = serde_json::to_value(super::identity::identify(self))?;
+        Ok(report)
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PowerStatus {
     pub supply_status_raw: u8,
@@ -124,7 +133,7 @@ pub fn power_status(bytes: &[u8]) -> Result<PowerStatus> {
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     pub fn info_fixture() -> Vec<u8> {
         let mut b = vec![0; 128];

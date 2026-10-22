@@ -1,0 +1,146 @@
+
+C:\Users\VicLi\Documents\Projects\island-walkman\data\firmware-analysis\FWUpdater.exe:	file format coff-i386
+
+Disassembly of section .text:
+
+00401000 <.text>:
+  407d40: 55                           	pushl	%ebp
+  407d41: 8d ac 24 7c ff ff ff         	leal	-132(%esp), %ebp
+  407d48: 81 ec 84 00 00 00            	subl	$132, %esp
+  407d4e: 6a ff                        	pushl	$-1
+  407d50: 68 c0 bb 41 00               	pushl	$4307904                # imm = 0x41BBC0
+  407d55: 64 a1 00 00 00 00            	movl	%fs:0, %eax
+  407d5b: 50                           	pushl	%eax
+  407d5c: 83 ec 18                     	subl	$24, %esp
+  407d5f: a1 24 12 42 00               	movl	4330020, %eax
+  407d64: 33 c5                        	xorl	%ebp, %eax
+  407d66: 89 85 80 00 00 00            	movl	%eax, 128(%ebp)
+  407d6c: 53                           	pushl	%ebx
+  407d6d: 56                           	pushl	%esi
+  407d6e: 57                           	pushl	%edi
+  407d6f: 50                           	pushl	%eax
+  407d70: 8d 45 f4                     	leal	-12(%ebp), %eax
+  407d73: 64 a3 00 00 00 00            	movl	%eax, %fs:0
+  407d79: 89 65 f0                     	movl	%esp, -16(%ebp)
+  407d7c: 8b 0d 5c 27 42 00            	movl	4335452, %ecx
+  407d82: 33 c0                        	xorl	%eax, %eax
+  407d84: 85 c9                        	testl	%ecx, %ecx
+  407d86: 89 45 fc                     	movl	%eax, -4(%ebp)
+  407d89: 75 3b                        	jne	0x407dc6 <.text+0x6dc6>
+  407d8b: a1 6c 27 42 00               	movl	4335468, %eax
+  407d90: 8b 08                        	movl	(%eax), %ecx
+  407d92: 8d 55 00                     	leal	(%ebp), %edx
+  407d95: 52                           	pushl	%edx
+  407d96: 8b 15 7c 23 42 00            	movl	4334460, %edx
+  407d9c: 52                           	pushl	%edx
+  407d9d: 8b 15 d4 26 42 00            	movl	4335316, %edx
+  407da3: 52                           	pushl	%edx
+  407da4: 8b 15 d0 26 42 00            	movl	4335312, %edx
+  407daa: 52                           	pushl	%edx
+  407dab: 50                           	pushl	%eax
+  407dac: 8b 41 14                     	movl	20(%ecx), %eax
+  407daf: ff d0                        	calll	*%eax
+  407db1: 85 c0                        	testl	%eax, %eax
+  407db3: 7d 4a                        	jge	0x407dff <.text+0x6dff>
+  407db5: 68 c0 ea 41 00               	pushl	$4319936                # imm = 0x41EAC0
+  407dba: 8d 4d e0                     	leal	-32(%ebp), %ecx
+  407dbd: 51                           	pushl	%ecx
+  407dbe: 89 45 e0                     	movl	%eax, -32(%ebp)
+  407dc1: e8 df 19 00 00               	calll	0x4097a5 <.text+0x87a5>
+  407dc6: 83 f9 01                     	cmpl	$1, %ecx
+  407dc9: 75 34                        	jne	0x407dff <.text+0x6dff>
+  407dcb: a1 6c 27 42 00               	movl	4335468, %eax
+  407dd0: 8b 10                        	movl	(%eax), %edx
+  407dd2: 8b 52 18                     	movl	24(%edx), %edx
+  407dd5: 8d 4d 00                     	leal	(%ebp), %ecx
+  407dd8: 51                           	pushl	%ecx
+  407dd9: 8b 0d d4 26 42 00            	movl	4335316, %ecx
+  407ddf: 51                           	pushl	%ecx
+  407de0: 8b 0d d0 26 42 00            	movl	4335312, %ecx
+  407de6: 51                           	pushl	%ecx
+  407de7: 50                           	pushl	%eax
+  407de8: ff d2                        	calll	*%edx
+  407dea: 85 c0                        	testl	%eax, %eax
+  407dec: 7d 11                        	jge	0x407dff <.text+0x6dff>
+  407dee: 89 45 e4                     	movl	%eax, -28(%ebp)
+  407df1: 68 c0 ea 41 00               	pushl	$4319936                # imm = 0x41EAC0
+  407df6: 8d 45 e4                     	leal	-28(%ebp), %eax
+  407df9: 50                           	pushl	%eax
+  407dfa: e8 a6 19 00 00               	calll	0x4097a5 <.text+0x87a5>
+  407dff: b9 80 00 00 00               	movl	$128, %ecx
+  407e04: be dc 26 42 00               	movl	$4335324, %esi          # imm = 0x4226DC
+  407e09: 8d 7d 00                     	leal	(%ebp), %edi
+  407e0c: 8d 64 24 00                  	leal	(%esp), %esp
+  407e10: 83 f9 04                     	cmpl	$4, %ecx
+  407e13: 72 11                        	jb	0x407e26 <.text+0x6e26>
+  407e15: 8b 17                        	movl	(%edi), %edx
+  407e17: 3b 16                        	cmpl	(%esi), %edx
+  407e19: 75 0f                        	jne	0x407e2a <.text+0x6e2a>
+  407e1b: 83 e9 04                     	subl	$4, %ecx
+  407e1e: 83 c6 04                     	addl	$4, %esi
+  407e21: 83 c7 04                     	addl	$4, %edi
+  407e24: eb ea                        	jmp	0x407e10 <.text+0x6e10>
+  407e26: 85 c9                        	testl	%ecx, %ecx
+  407e28: 74 5d                        	je	0x407e87 <.text+0x6e87>
+  407e2a: 0f b6 17                     	movzbl	(%edi), %edx
+  407e2d: 0f b6 1e                     	movzbl	(%esi), %ebx
+  407e30: 2b d3                        	subl	%ebx, %edx
+  407e32: 75 45                        	jne	0x407e79 <.text+0x6e79>
+  407e34: 83 e9 01                     	subl	$1, %ecx
+  407e37: 83 c6 01                     	addl	$1, %esi
+  407e3a: 83 c7 01                     	addl	$1, %edi
+  407e3d: 85 c9                        	testl	%ecx, %ecx
+  407e3f: 74 46                        	je	0x407e87 <.text+0x6e87>
+  407e41: 0f b6 17                     	movzbl	(%edi), %edx
+  407e44: 0f b6 1e                     	movzbl	(%esi), %ebx
+  407e47: 2b d3                        	subl	%ebx, %edx
+  407e49: 75 2e                        	jne	0x407e79 <.text+0x6e79>
+  407e4b: 83 e9 01                     	subl	$1, %ecx
+  407e4e: 83 c6 01                     	addl	$1, %esi
+  407e51: 83 c7 01                     	addl	$1, %edi
+  407e54: 85 c9                        	testl	%ecx, %ecx
+  407e56: 74 2f                        	je	0x407e87 <.text+0x6e87>
+  407e58: 0f b6 17                     	movzbl	(%edi), %edx
+  407e5b: 0f b6 1e                     	movzbl	(%esi), %ebx
+  407e5e: 2b d3                        	subl	%ebx, %edx
+  407e60: 75 17                        	jne	0x407e79 <.text+0x6e79>
+  407e62: 83 e9 01                     	subl	$1, %ecx
+  407e65: 83 c6 01                     	addl	$1, %esi
+  407e68: 83 c7 01                     	addl	$1, %edi
+  407e6b: 85 c9                        	testl	%ecx, %ecx
+  407e6d: 74 18                        	je	0x407e87 <.text+0x6e87>
+  407e6f: 0f b6 17                     	movzbl	(%edi), %edx
+  407e72: 0f b6 0e                     	movzbl	(%esi), %ecx
+  407e75: 2b d1                        	subl	%ecx, %edx
+  407e77: 74 0e                        	je	0x407e87 <.text+0x6e87>
+  407e79: 85 d2                        	testl	%edx, %edx
+  407e7b: b9 01 00 00 00               	movl	$1, %ecx
+  407e80: 7f 07                        	jg	0x407e89 <.text+0x6e89>
+  407e82: 83 c9 ff                     	orl	$-1, %ecx
+  407e85: eb 02                        	jmp	0x407e89 <.text+0x6e89>
+  407e87: 33 c9                        	xorl	%ecx, %ecx
+  407e89: 85 c9                        	testl	%ecx, %ecx
+  407e8b: 74 24                        	je	0x407eb1 <.text+0x6eb1>
+  407e8d: 68 c0 ea 41 00               	pushl	$4319936                # imm = 0x41EAC0
+  407e92: 8d 55 ec                     	leal	-20(%ebp), %edx
+  407e95: 52                           	pushl	%edx
+  407e96: c7 45 ec 05 40 00 80         	movl	$2147500037, -20(%ebp)  # imm = 0x80004005
+  407e9d: e8 03 19 00 00               	calll	0x4097a5 <.text+0x87a5>
+  407ea2: 8b 45 dc                     	movl	-36(%ebp), %eax
+  407ea5: 89 45 e8                     	movl	%eax, -24(%ebp)
+  407ea8: b8 ae 7e 40 00               	movl	$4226734, %eax          # imm = 0x407EAE
+  407ead: c3                           	retl
+  407eae: 8b 45 e8                     	movl	-24(%ebp), %eax
+  407eb1: 8b 4d f4                     	movl	-12(%ebp), %ecx
+  407eb4: 64 89 0d 00 00 00 00         	movl	%ecx, %fs:0
+  407ebb: 59                           	popl	%ecx
+  407ebc: 5f                           	popl	%edi
+  407ebd: 5e                           	popl	%esi
+  407ebe: 5b                           	popl	%ebx
+  407ebf: 8b 8d 80 00 00 00            	movl	128(%ebp), %ecx
+  407ec5: 33 cd                        	xorl	%ebp, %ecx
+  407ec7: e8 cf 1b 00 00               	calll	0x409a9b <.text+0x8a9b>
+  407ecc: 81 c5 84 00 00 00            	addl	$132, %ebp
+  407ed2: 8b e5                        	movl	%ebp, %esp
+  407ed4: 5d                           	popl	%ebp
+  407ed5: c3                           	retl

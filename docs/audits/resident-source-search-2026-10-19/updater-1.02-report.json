@@ -1,0 +1,36 @@
+{
+  "bytes": 13725504,
+  "sha256": "7e9d32842a78a3a490fc8646b0287f9dec0f57581fc0a580c4a15a43ff224a19",
+  "outer_md5_valid": true,
+  "family_signature": "5dfeff3c",
+  "stock_103_exact_match": false,
+  "components": [
+    {
+      "index": 0,
+      "offset": 64,
+      "bytes": 1578,
+      "sha256": "60aedd9213cd6178edcc92a1f168d3e9efda3d7af21292c7d3ea8bbceae713d4"
+    },
+    {
+      "index": 1,
+      "offset": 1648,
+      "bytes": 2523136,
+      "sha256": "680bf2c4cae6be0d7d3f7028c150f45a3648a82feb0231772a9e60b33262faf4"
+    },
+    {
+      "index": 2,
+      "offset": 2524784,
+      "bytes": 786432,
+      "sha256": "4c11d0c396dff18465ae1d24aa0692edd5ecb14ca5790232f7fdba92c8ae4252"
+    },
+    {
+      "index": 3,
+      "offset": 3311216,
+      "bytes": 10414288,
+      "sha256": "27efd3993693f28f303842784516824bb327a564fa91cc2d1c86825c7c95b9de"
+    }
+  ],
+  "authenticity_verified": false,
+  "device_compatibility_verified": false,
+  "firmware_write_enabled": false
+}

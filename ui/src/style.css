@@ -10,3 +10,7 @@ table th:nth-child(1){width:45px}table th:nth-child(2){width:245px}table th:nth-
 .brand-icon img{width:47px;height:47px;border-radius:18px}.release-notes{white-space:pre-wrap;overflow-wrap:anywhere}
 
 .transfer-recovery{margin-bottom:20px}.transfer-recovery>.row{justify-content:space-between;flex-wrap:wrap}.transfer-recovery p{font-size:13px;line-height:1.65}
+
+.app-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}.device-file-list{margin-top:16px;max-height:460px;overflow:auto}.device-file{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #dce9e1}.device-file>span{overflow-wrap:anywhere}.device-file small{white-space:nowrap;opacity:.7}
+
+.disk-apps{display:flex;flex-direction:column;gap:22px}.disk-storage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}.disk-apps>div:not(.app-grid),.disk-storage>div,.app-grid>div{padding:26px!important;border:1px solid var(--animal-border-color-light)}.disk-apps p,.disk-storage p{font-size:13px;color:var(--animal-text-color-secondary)}@media(max-width:1000px){.disk-storage{grid-template-columns:1fr}}

@@ -1,0 +1,74 @@
+
+C:\Users\VicLi\Documents\Projects\island-walkman\data\firmware-analysis\FWUpdaterCom.dll:	file format coff-i386
+
+Disassembly of section .text:
+
+10006d70 <DllUnregisterServer>:
+1000b6e0: 55                           	pushl	%ebp
+1000b6e1: 8b ec                        	movl	%esp, %ebp
+1000b6e3: 6a ff                        	pushl	$-1
+1000b6e5: 68 d8 d4 02 10               	pushl	$268621016              # imm = 0x1002D4D8
+1000b6ea: 64 a1 00 00 00 00            	movl	%fs:0, %eax
+1000b6f0: 50                           	pushl	%eax
+1000b6f1: 83 ec 08                     	subl	$8, %esp
+1000b6f4: a1 08 94 03 10               	movl	268669960, %eax
+1000b6f9: 33 c5                        	xorl	%ebp, %eax
+1000b6fb: 89 45 f0                     	movl	%eax, -16(%ebp)
+1000b6fe: 53                           	pushl	%ebx
+1000b6ff: 56                           	pushl	%esi
+1000b700: 57                           	pushl	%edi
+1000b701: 50                           	pushl	%eax
+1000b702: 8d 45 f4                     	leal	-12(%ebp), %eax
+1000b705: 64 a3 00 00 00 00            	movl	%eax, %fs:0
+1000b70b: ff 15 e8 93 03 10            	calll	*268669928
+1000b711: 8b 75 08                     	movl	8(%ebp), %esi
+1000b714: 81 c6 d8 00 00 00            	addl	$216, %esi
+1000b71a: 56                           	pushl	%esi
+1000b71b: 8b d8                        	movl	%eax, %ebx
+1000b71d: 89 75 ec                     	movl	%esi, -20(%ebp)
+1000b720: ff 15 78 e0 02 10            	calll	*268623992
+1000b726: 8b 7d 10                     	movl	16(%ebp), %edi
+1000b729: 33 c0                        	xorl	%eax, %eax
+1000b72b: 3b f8                        	cmpl	%eax, %edi
+1000b72d: 89 45 fc                     	movl	%eax, -4(%ebp)
+1000b730: 74 2d                        	je	0x1000b75f <DllUnregisterServer+0x49ef>
+1000b732: 57                           	pushl	%edi
+1000b733: ff 15 70 e0 02 10            	calll	*268623984
+1000b739: 83 c0 01                     	addl	$1, %eax
+1000b73c: 3d ff ff ff 3f               	cmpl	$1073741823, %eax       # imm = 0x3FFFFFFF
+1000b741: 7e 04                        	jle	0x1000b747 <DllUnregisterServer+0x49d7>
+1000b743: 33 c0                        	xorl	%eax, %eax
+1000b745: eb 18                        	jmp	0x1000b75f <DllUnregisterServer+0x49ef>
+1000b747: 8d 34 00                     	leal	(%eax,%eax), %esi
+1000b74a: 8b c6                        	movl	%esi, %eax
+1000b74c: e8 8f 06 01 00               	calll	0x1001bde0 <DllUnregisterServer+0x15070>
+1000b751: 8b c4                        	movl	%esp, %eax
+1000b753: 53                           	pushl	%ebx
+1000b754: 56                           	pushl	%esi
+1000b755: 57                           	pushl	%edi
+1000b756: 50                           	pushl	%eax
+1000b757: e8 44 71 ff ff               	calll	0x100028a0 <.text+0x18a0>
+1000b75c: 8b 75 ec                     	movl	-20(%ebp), %esi
+1000b75f: 8b 4d 08                     	movl	8(%ebp), %ecx
+1000b762: 50                           	pushl	%eax
+1000b763: 8b 45 0c                     	movl	12(%ebp), %eax
+1000b766: 50                           	pushl	%eax
+1000b767: 83 c1 fc                     	addl	$-4, %ecx
+1000b76a: e8 b1 e1 ff ff               	calll	0x10009920 <DllUnregisterServer+0x2bb0>
+1000b76f: 56                           	pushl	%esi
+1000b770: 8b f8                        	movl	%eax, %edi
+1000b772: ff 15 7c e0 02 10            	calll	*268623996
+1000b778: 8b c7                        	movl	%edi, %eax
+1000b77a: 8d 65 dc                     	leal	-36(%ebp), %esp
+1000b77d: 8b 4d f4                     	movl	-12(%ebp), %ecx
+1000b780: 64 89 0d 00 00 00 00         	movl	%ecx, %fs:0
+1000b787: 59                           	popl	%ecx
+1000b788: 5f                           	popl	%edi
+1000b789: 5e                           	popl	%esi
+1000b78a: 5b                           	popl	%ebx
+1000b78b: 8b 4d f0                     	movl	-16(%ebp), %ecx
+1000b78e: 33 cd                        	xorl	%ebp, %ecx
+1000b790: e8 2d ec 00 00               	calll	0x1001a3c2 <DllUnregisterServer+0x13652>
+1000b795: 8b e5                        	movl	%ebp, %esp
+1000b797: 5d                           	popl	%ebp
+1000b798: c2 0c 00                     	retl	$12

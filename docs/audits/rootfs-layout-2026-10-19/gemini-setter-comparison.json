@@ -1,0 +1,19 @@
+{
+  "start_va": "0x1a4ffc",
+  "end_exclusive_va": "0x1a50b4",
+  "old_sha256": "7050979f2fda5013cb67dd8a424d59ac0fe5755df1b76e8fee6e19cbc7f3b881",
+  "new_sha256": "bd87530809d98f6ce0401146cfb169a870f2a63cdf40acdb2c7d03a54e202660",
+  "differing_words": [
+    {
+      "va": "0x1a509c",
+      "old": "0x4bdb6c",
+      "new": "0x4bdb84"
+    },
+    {
+      "va": "0x1a50a0",
+      "old": "0x4872c4",
+      "new": "0x4872dc"
+    }
+  ],
+  "qualification": "Bounded byte comparison of the previously located setter and adjacent literal pool, not a whole-program equivalence proof."
+}

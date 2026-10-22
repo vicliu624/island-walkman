@@ -1,0 +1,812 @@
+/*
+ * icx1087_pm.c
+ *
+ * Copyright 2006,2007 Sony Corporation.
+ *
+ * Based on linux-kernel/arch/arm/mach-mp200/pm.c
+ *
+ * Copyright (C) NEC Electronics Corporation 2005-2006
+ *
+ *
+ * This program is free software;you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by Free Softwere
+ * Foundation; either version 2 of License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warrnty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; If not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ */
+
+#include <common.h>
+
+#ifdef CONFIG_ICX1087
+
+#include "bios_smu.h"
+#include "bios_gio.h"
+#include "icx1087.h"
+
+
+/***********/
+/* options */
+/***********/
+#define PM_DISABLE_USBWAKINT_ON_PD		/* USBWAKINT disable	*/
+#define PM_DISABLE_MWI_CLKCTRL 			/* (presently checking) */
+
+
+/**********/
+/* Macros */
+/**********/
+
+/* LOW-BATT checking loop */
+#define PM_LBAT_INTERVAL	(50000)      /* 50ms     */
+/* 2007.06.04 fuj : Update the indication time of LowBatt */
+#ifdef CONFIG_ICX1111
+#define PM_LBAT_COUNT		(200)        /* wait 10s */
+#else
+#define PM_LBAT_COUNT		(100)        /* wait 5s  */
+#endif
+
+/* (ON:150ms + OFF:50ms + ON:150ms + OFF:500ms) / 50ms */
+#define	PM_LBAT_BEEP_SET	(17)
+#define	PM_LBAT_BEEP_ON1	(0)
+#define	PM_LBAT_BEEP_OFF1	(3)
+#define	PM_LBAT_BEEP_ON2	(4)
+#define	PM_LBAT_BEEP_OFF2	(7)
+
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
+/*
+ * Save the current interrupt enable state & disable IRQs
+ */
+#define local_irq_save(x)							\
+({  	                        					\
+    unsigned long temp; 	            			\
+    (void) (&temp == &x);							\
+    __asm__ __volatile__(               	    	\
+    	"mrs    %0, cpsr        @ local_irq_save\n" \
+		"   orr %1, %0, #128\n"                 	\
+		"   msr cpsr_c, %1"                 		\
+    	: "=r" (x), "=r" (temp)                 	\
+    	:                           				\
+    	: "memory", "cc");                  		\
+})
+
+/*
+ * restore saved IRQ & FIQ state
+ */
+#define local_irq_restore(x)						\
+    __asm__ __volatile__(                   		\
+    "msr    cpsr_c, %0      @ local_irq_restore\n"  \
+    :                           					\
+    : "r" (x)                       				\
+    : "memory", "cc")
+
+
+/* PMU registers */
+#define	PMU_ADDRESS						0xC8000000
+#define	PMU_PC							(PMU_ADDRESS + 0x0004)
+#define	PMU_START						(PMU_ADDRESS + 0x0008)
+#define	PMU_WDT_COUNT_EN				(PMU_ADDRESS + 0x0060)
+#define	PMU_WDT_COUNT_LMT				(PMU_ADDRESS + 0x0064)
+#define PMU_CMD_BUF_RAM					(PMU_ADDRESS + 0x0800)
+
+/* PMU parameters */
+#define PMU_START_SET           		0x00000001
+#define PMU_WDT_DISABLE         		0x00000000
+#define PMU_WDT_MAX_COUNT       		0x0003FFFF
+
+/* PMU command */
+#define PMU_CMD_REG_WRITE(vadr, data)   0x00000000, (vadr), (data)
+#define PMU_CMD_MWI_WRITE(vadr, data)   0x00010000, (vadr), (data)
+#define PMU_CMD_L1_STAT_WAIT(wait)  	(0x10060000 | (wait))
+#define PMU_CMD_PMU_END()       		0x20000000
+
+/* PMU command parameters */
+#define PMU_CMDP_WAIT_FOR_POWER_OFF 	0
+#define PMU_CMD_BUF_RAM_SIZE        	512	/* (word) */
+
+/* PMU command set function */
+#define SET_PMU_CMDS(n, cmds)			mp200_pm_set_pmu_cmds(n, cmds, ARRAY_SIZE(cmds))
+
+/* INTC registers */
+#define INTC_ADDRESS             		0xC0020000
+#define	INTC_IT0_IDS0					(INTC_ADDRESS + 0x08)
+#define	INTC_IT0_IDS1					(INTC_ADDRESS + 0x0C)
+
+/* INTC parameters */
+#define MASK_INTC_ALL           		0xFFFFFFFF
+
+/* MWI_CONT */
+#define UWIRE_CS0               		0
+#define UWIRE_CS1               		1
+
+#define UWIRE_CS_PWC            		UWIRE_CS0
+#define UWIRE_CS_BOARD_B        		UWIRE_CS1
+
+#define CS1_EN                  		(1U<<5)
+#define CS0_EN                  		(1U<<4)
+#define CS1                     		(1U<<3) /* active value of CS1 is 1   */
+#define CS0                     		(1U<<2) /* active value of CS0 is 1   */
+
+/* MWI registers */
+#define MWI_ADDRESS             		0xC8020000
+#define MWI_CONT                		(MWI_ADDRESS + 0x00)
+#define MWI_CS0                 		(MWI_ADDRESS + 0x04)
+#define MWI_CS1                 		(MWI_ADDRESS + 0x08)
+#define MWI_START               		(MWI_ADDRESS + 0x0C)
+#define MWI_INTSTATUS           		(MWI_ADDRESS + 0x20)
+#define MWI_INTRAW              		(MWI_ADDRESS + 0x24)
+#define MWI_INTFFCLR            		(MWI_ADDRESS + 0x28)
+#define MWI_INTENSET            		(MWI_ADDRESS + 0x2C)
+#define MWI_INTENCLR            		(MWI_ADDRESS + 0x30)
+#define MWI_TXQA                		(MWI_ADDRESS + 0x40)
+#define MWI_TXQ                 		(MWI_ADDRESS + 0x50)
+#define MWI_RXQ                 		(MWI_ADDRESS + 0x60)
+
+/* MWI parameters */
+#define MWI_PACKAGE_MODE        		(0x00272001)
+#define MWI_DATA_LENGTH_8       		7
+#define UWIRE_BIT_DTX_SHIFT     		8
+
+#define MWI_CONT_PWC_A8_D8_TX										\
+					( MWI_PACKAGE_MODE                              \
+		            | (MWI_DATA_LENGTH_8 << UWIRE_BIT_DTX_SHIFT)    \
+		            | ((CS0_EN | CS0) << UWIRE_CS_PWC) )
+#define MWI_CONT_PWC_A8_D8_TX_OFF									\
+					( MWI_PACKAGE_MODE                              \
+		            | (MWI_DATA_LENGTH_8 << UWIRE_BIT_DTX_SHIFT)    \
+		            | (CS0_EN << UWIRE_CS_PWC) )
+
+#define MWI_START_FLAG					1		/* Transmit Start     */
+#define MWI_FFCLR               		1       /* Interrupts Clear   */
+#define MWI_ENCLR               		0x00000001
+#define MWI_ENSET               		0x00000001
+
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+#ifdef CONFIG_ICX1111
+/* for Deep-Power-Down */
+#define	WARMBOOT_ADDR	0xA003F800	/* resume code virtual address	*/
+#define	HANDLER_SIZE	0x00000800	/* max size of resume code		*/
+#endif
+
+/* conversion */
+#define	inl(_a)			BIOS_MCR_INPW(_a)
+#define	outl(_v, _a)	BIOS_MCR_OUTPW(_a, _v)
+
+
+/*******************/
+/* Local variables */
+/*******************/
+
+/* PMU commands */
+static const unsigned int pmu_cmds_power_off[] = {
+/* 2007.04.11 fuj : updated power off sequence */
+#ifdef CONFIG_ICX1111
+/* SDR Pull Down */
+    PMU_CMD_REG_WRITE(SMU_PULLCTL_SDR, SMU_PULLCTL_SDR_PDOWN),
+/* SDR Floating */
+    PMU_CMD_REG_WRITE(SMU_PCTL_SDR, SMU_PCTL_SDR_FLOATING),
+/* SET MWI_SCLK_DIV for OSC */
+    PMU_CMD_REG_WRITE(SMU_MWI_SCLK_DIV, SMU_MWI_DIV_OSC_VAL ),
+/* L0 power OFF */
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1ENA, MASK_SMU_MWI_GCK),
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1, SMU_GCK_ON),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX_OFF),
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX),
+    PMU_CMD_REG_WRITE(MWI_TXQA, (PWC_REGA << 24)),
+    PMU_CMD_REG_WRITE(MWI_TXQ, (PWC_REGA_L0_OFF_ECO_PS << 24)),
+    PMU_CMD_REG_WRITE(MWI_INTENSET, MWI_ENSET),
+    PMU_CMD_MWI_WRITE(MWI_START, MWI_START_FLAG),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX_OFF),
+/* Clock -> RTC */
+    PMU_CMD_REG_WRITE(SMU_PLLSEL, SMU_PLLSEL_RTC ),
+/* disable OSC */
+    PMU_CMD_REG_WRITE(SMU_OSC_CTRL, SMU_OSC_ENA_DISABLE ),
+/*  PMU_END */
+    PMU_CMD_PMU_END(),
+#else
+/* pe0 reset */
+    PMU_CMD_REG_WRITE(SMU_RESETREQ1A_ENA, MASK_SMU_PE0_RST),
+    PMU_CMD_REG_WRITE(SMU_RESETREQ1A, SMU_RST_RESET),
+/* Clock -> OSC */
+    PMU_CMD_REG_WRITE(SMU_PLLSEL, SMU_PLLSEL_OSC),
+/* LPLL standby */
+    PMU_CMD_REG_WRITE(SMU_LPLL_CTRL2, SMU_PLL_STANDBY),
+/* HPLL standby */
+    PMU_CMD_REG_WRITE(SMU_HPLL_CTRL4, SMU_PLL_STANDBY),
+/* SDR Pull Down */
+    PMU_CMD_REG_WRITE(SMU_PULLCTL_SDR, SMU_PULLCTL_SDR_PDOWN),
+/* SDR Floating */
+    PMU_CMD_REG_WRITE(SMU_PCTL_SDR, SMU_PCTL_SDR_FLOATING),
+/* SET MWI_SCLK_DIV for OSC */
+    PMU_CMD_REG_WRITE(SMU_MWI_SCLK_DIV, SMU_MWI_DIV_OSC_VAL ),
+/* DCDCIO MODE ECO */
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1ENA, MASK_SMU_MWI_GCK),
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1, SMU_GCK_ON),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+/* set ECO mode */
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX_OFF),
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX),
+    PMU_CMD_REG_WRITE(MWI_TXQA, (PWC_REGA << 24)),
+    PMU_CMD_REG_WRITE(MWI_TXQ, (PWC_REGA_L1_ON_ECO << 24)),
+    PMU_CMD_REG_WRITE(MWI_INTENSET, MWI_ENSET),
+    PMU_CMD_MWI_WRITE(MWI_START, MWI_START_FLAG),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+/* set L1 OFF */
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX_OFF),
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX),
+    PMU_CMD_REG_WRITE(MWI_TXQA, (PWC_REGA << 24)),
+    PMU_CMD_REG_WRITE(MWI_TXQ, (PWC_REGA_L1_OFF_ECO << 24)),
+    PMU_CMD_REG_WRITE(MWI_INTENSET, MWI_ENSET),
+    PMU_CMD_MWI_WRITE(MWI_START, MWI_START_FLAG),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1ENA, MASK_SMU_MWI_GCK),
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1, SMU_GCK_OFF),
+/* wait L1 power OFF */
+    PMU_CMD_L1_STAT_WAIT(PMU_CMDP_WAIT_FOR_POWER_OFF),
+/* L0 power OFF */
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1ENA, MASK_SMU_MWI_GCK),
+    PMU_CMD_REG_WRITE(SMU_GCLKCTRL1, SMU_GCK_ON),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+/* set L0 OFF */
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX_OFF),
+    PMU_CMD_REG_WRITE(MWI_CONT, MWI_CONT_PWC_A8_D8_TX),
+    PMU_CMD_REG_WRITE(MWI_TXQA, (PWC_REGA << 24)),
+    PMU_CMD_REG_WRITE(MWI_TXQ, (PWC_REGA_L0_OFF_ECO_PS << 24)),
+    PMU_CMD_REG_WRITE(MWI_INTENSET, MWI_ENSET),
+    PMU_CMD_MWI_WRITE(MWI_START, MWI_START_FLAG),
+    PMU_CMD_REG_WRITE(MWI_INTFFCLR, MWI_FFCLR),
+    PMU_CMD_REG_WRITE(MWI_CONT, CS0_EN),
+/* Clock -> RTC */
+    PMU_CMD_REG_WRITE(SMU_PLLSEL, SMU_PLLSEL_RTC ),
+/* disable OSC */
+    PMU_CMD_REG_WRITE(SMU_OSC_CTRL, SMU_OSC_ENA_DISABLE ),
+/*  PMU_END */
+    PMU_CMD_PMU_END(),
+#endif
+};
+
+
+/********************/
+/* Global variables */
+/********************/
+UINT8 icx1087_vbat_data = 0;		        	/* value of VBAT        */
+UINT8 icx1087_vbat_low  = VBAT_THRESHOLD_LOW;   /* value of LowBatt     */
+UINT8 icx1087_vbat_vlow = VBAT_THRESHOLD_VLOW;  /* value of VeryLowBatt */
+UINT8 icx1087_fact1_data = 0;					/* factor1 of Power-ON	*/
+/* 2007.05.29 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111 
+UINT8 icx11xx_fact3_data = 0;					/* factor3 of Power-ON	*/
+UINT32 icx11xx_rtc_year  = 0;				/* Alarm:year				*/
+UINT32 icx11xx_rtc_mdhm  = 0;				/* Alarm:month|day|hour|min	*/
+#endif
+UINT8 icx1087_lsiver;							/* LSI version			*/
+	
+
+/*********************/
+/* External functios */
+/*********************/
+extern void mp200_change_osc(void);			/* bios_pwoff.S		*/
+
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+#ifdef CONFIG_ICX1111
+extern void warmboot_handler(void);			/* bios_pwoff.S		*/
+extern unsigned int warmboot_handler_size;	/* bios_pwoff.S		*/
+#endif
+
+
+/******************/
+/* Local routines */
+/******************/
+
+static unsigned int mp200_pm_get_pll(void)
+{
+    if ((inl(SMU_PLLSEL) & MASK_SMU_PLLSEL) == SMU_PLLSEL_PLL) {
+        if(inl(SMU_PLLSEL2) & SMU_NRM_CK_SEL) { /* low */
+            return BIOS_CLOCK_LPLL;
+        }
+        else { /* high */
+            return BIOS_CLOCK_HPLL;
+        }
+    }
+    return BIOS_CLOCK_OSC;
+}
+
+/*
+ * fullspeed  ->  economy
+ */
+static void mp200_pm_full_to_eco(void)
+{
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+#ifdef CONFIG_ICX1111
+	unsigned int sus_add;
+	void (*mp200_change_osc_on_sram) (void);
+
+	/* on SRAM mp200_change_osc() */
+	sus_add = (unsigned int)mp200_change_osc - (unsigned int)warmboot_handler;
+	mp200_change_osc_on_sram = (void (*)(void))(WARMBOOT_ADDR + sus_add);
+#endif
+
+	/* stop MWIRE temporarily */
+    gioPwc_exit();
+
+    if (mp200_pm_get_pll() != BIOS_CLOCK_OSC) {
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+#ifdef CONFIG_ICX1111
+		mp200_change_osc_on_sram();
+#else
+    	mp200_change_osc();
+#endif
+    }
+
+    /* OSC(11.2896)/3 = 3.7632MHz */
+    outl(0x00000000,  SMU_LCD_LCLK_SEL);
+    outl(0x00000102,  SMU_LCD_LCLK_DIV);
+
+    /* set uWire clock */
+    gioPwc_init();
+
+	/* off regurator */
+	gioPwc_write(PWC_PSCNT2, PWC_PSCNT2_PWROFF);
+/* 2007.04.03 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+	if (ICX11xx_CHK_SI_REV(ICX11xx_SI_REV_DOBER))
+		gioPwc_write(PWC_PSCNT1, PWC_PSCNT1_PWROFF_V3);
+	else
+		gioPwc_write(PWC_PSCNT1, PWC_PSCNT1_PWROFF_IRIS);
+#else
+	if (icx1087_lsiver >= PWC_LSIVER_ES202) 
+		gioPwc_write(PWC_PSCNT1, PWC_PSCNT1_PWROFF_V3);
+	else
+		gioPwc_write(PWC_PSCNT1, PWC_PSCNT1_PWROFF);
+#endif
+}
+
+static int mp200_pm_set_pmu_cmds(unsigned int cnt, const unsigned int data[], int size)
+{
+	int i;
+
+	for (i = 0; i < size; i++) {
+		outl(data[i],
+		PMU_CMD_BUF_RAM + (cnt + i) * sizeof(unsigned int));
+	}
+
+	return i;
+}
+
+static void mp200_pm_set_poweroff_regs(void)
+{
+	unsigned int n = 0;
+
+	/* power OFF */
+	n += SET_PMU_CMDS(n, pmu_cmds_power_off);
+	if (n >= PMU_CMD_BUF_RAM_SIZE) {
+		/* PMU command length over */
+	}
+
+	/* setting pmu regs. */
+	/* power off sequence start address */
+	outl(0, PMU_PC);
+
+	/* disable watch dog timer */
+	outl(PMU_WDT_DISABLE, PMU_WDT_COUNT_EN);
+
+	/* set watch dog timer limit count */
+	outl(PMU_WDT_MAX_COUNT, PMU_WDT_COUNT_LMT);
+}
+
+static void mp200_pm_do_poweroff(void)
+{
+	unsigned int wfi_reg = 0;
+	unsigned int regval;
+	unsigned char pwcreg;
+	int i;
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+#ifdef CONFIG_ICX1111
+	unsigned int sus_add;
+	void (*suspend_on_sram) (void);
+	void mp200_cpu_poweroff(void);
+
+	/* on SRAM mp200_cpu_poweroff() */
+	sus_add = (unsigned int)mp200_cpu_poweroff - (unsigned int)warmboot_handler;
+	suspend_on_sram = (void (*)(void))(WARMBOOT_ADDR + sus_add);
+#endif
+
+	pwcreg = PWC_INTC_FACT_KEYPAD; 		/* PWIC_GPIO0 (AD_Key) */
+
+	if (icx1087_lsiver >= PWC_LSIVER_ES12) {
+		pwcreg |= PWC_INTC_FACT_HOLD;	/* PWIC_GPIO1 (Hold_Key) */
+/* 2006.11.21 fuj : applied cradle wake up */
+		pwcreg |= PWC_INTC_FACT_CRADLE;	/* PWIC_GPIO7 (CRD_DET)	*/
+#ifdef PM_DISABLE_USBWAKINT_ON_PD
+		/* USBWAKEINT Disable */
+		gioPwc_write(PWC_INTC_FMASK3, 0x00);
+		gioPwc_write(PWC_INTC_BMASK3, 0x00);
+#endif
+	}
+
+	/* set detect mode */
+	gioPwc_write(PWC_INTC_DETMOD1L, PWC_DETMOD1L_KEYHLD);
+/* 2006.11.21 fuj : applied cradle wake up */
+	gioPwc_write(PWC_INTC_DETMOD1H, PWC_DETMOD1H_CRDDET);
+	/* set power-on factor(AD-key/Hold) */
+	gioPwc_write(PWC_INTC_FMASK1, pwcreg);
+	gioPwc_write(PWC_INTC_BMASK1, 0x0);
+/* 2007.05.17 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111 
+	gioPwc_write(PWC_INTC_FMASK3, PWC_INTC_FACT_RTCINT);
+	gioPwc_write(PWC_INTC_BMASK3, 0x0);
+
+/* 2007.08.08 fuj : Clear the alarm enable bit instead of the flag bit */
+	regval = gioPwc_read(PWC_RTC_RTC1_RD);
+	if (regval & PWC_RTC_RTC1_ALE) {
+		gioPwc_write(PWC_RTC_RTC1, (regval & ~PWC_RTC_RTC1_ALE));
+		gioPwc_write(PWC_RTC_RTC1, regval);
+		gioPwc_write(PWC_INTC_WRSTMSK, PWC_INTC_WRSTMSK_RTCAL);
+	}
+#endif
+	for (i=12*1000; i>0; i--);			/* wait 1ms */
+	/* clear power-on factor */
+	gioPwc_write(PWC_INTC_CLRFACT1, 0xFF);
+	gioPwc_write(PWC_INTC_CLRFACT3, 0xFF);
+
+	/* setting pmu registers for poweroff */
+	mp200_pm_set_poweroff_regs();
+
+	/* disable interrupt */
+	outl(MASK_INTC_ALL, INTC_IT0_IDS0);
+	outl(MASK_INTC_ALL, INTC_IT0_IDS1);
+
+#ifdef PM_DISABLE_MWI_CLKCTRL
+	/* mwi APB clock control off */
+	outl(inl(SMU_APBCLKCTRL) & ~(0x00040000), SMU_APBCLKCTRL);
+#endif
+
+	/* disable uwire int */
+	outl(MWI_ENCLR, MWI_INTENCLR);
+
+	/* set power-on mask */
+	gioPwc_write(PWC_INTC_PWONMSK, pwcreg);
+
+	/* start PMU */
+	outl(PMU_START_SET, PMU_START);
+
+	/* wait for pmu_start */
+	do {
+		regval = inl(PMU_START);
+	} while (regval != PMU_START_SET);
+
+	/* save PEn regs and wait for interrupt */
+
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+/* 2007.05.30 fuj : Added a flag of DPD control */
+#ifdef CONFIG_ICX1111
+	if (ICX11xx_CHK_SI_DPD())	/* not used DPD	*/
+		__asm__ __volatile__ (" mcr   p15, 0, %0, c7, c0, 4"::"r" (wfi_reg));
+	else
+		suspend_on_sram();
+#else
+	__asm__ __volatile__ (" mcr   p15, 0, %0, c7, c0, 4"::"r" (wfi_reg));
+#endif
+
+	/*
+	 * PEn status moves to WFI, pmu command start at that time.
+	 * after warm boot handler done, pc return here
+	 */
+	regval = inl(PMU_START);
+	if ((regval & PMU_START_SET) == PMU_START_SET) {
+		outl(0, PMU_START);
+		/* PMU not run */
+	}
+}
+
+
+/*******************/
+/* Global routines */
+/*******************/
+
+/**
+ * Get VBAT and Factor of Power-on (save the value in global variable)
+ *   Called from board_init(mp200.c)
+ *   Input  : none
+ *   Output : none
+ */
+void icx1087_get_pm(void)
+{
+	/* get LSI version */
+	icx1087_lsiver = gioPwc_read(PWC_LSIVER);
+
+	/* set threshold of LowBatt and VeryLowBatt */
+/* 2007.08.02 fuj : Applied DSY battery table */
+#ifdef CONFIG_ICX1111
+	if (ICX11xx_CHK_SI_BTT(ICX11xx_SI_BTT_DSY)) {
+		if (ICX1087_CHK_FWUP())
+			icx1087_vbat_low = VBAT_THRESHOLD_FWUP_DSY;
+		else
+			icx1087_vbat_low = VBAT_THRESHOLD_LOW_DSY;
+
+		icx1087_vbat_vlow = VBAT_THRESHOLD_VLOW_DSY;
+	}
+	else
+#endif
+	if (icx1087_lsiver >= PWC_LSIVER_ES202) {
+		if (ICX1087_CHK_FWUP())
+			icx1087_vbat_low = VBAT_THRESHOLD_FWUP_V3;
+		else
+			icx1087_vbat_low = VBAT_THRESHOLD_LOW_V3;
+
+		icx1087_vbat_vlow = VBAT_THRESHOLD_VLOW_V3;
+	}
+	else {
+		if (ICX1087_CHK_FWUP())
+			icx1087_vbat_low = VBAT_THRESHOLD_FWUP;
+		else
+			icx1087_vbat_low = VBAT_THRESHOLD_LOW;
+
+		icx1087_vbat_vlow = VBAT_THRESHOLD_VLOW;
+	}
+
+	/* initialize AD */
+	gioPwc_init_ad();
+
+	/* get A/D value */
+	if (gioPwc_read_ad(PWC_AD_CH_VBAT, &icx1087_vbat_data) == 0) {
+		icx1087_vbat_data = 0;
+    }
+#ifdef CONFIG_VBAT_ZERO
+	icx1087_vbat_data = 0;
+#endif
+
+	/* get factor of Power-on */
+	icx1087_fact1_data = gioPwc_read(PWC_INTC_FACT1);
+	gioPwc_write(PWC_INTC_CLRFACT1, 0xFF);
+/* 2007.05.29 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111 
+	icx11xx_fact3_data = gioPwc_read(PWC_INTC_FACT3);
+	if ((icx11xx_fact3_data & PWC_INTC_FACT_RTCINT)
+	 && (gioPwc_read(PWC_RTC_RTC2_RD) & PWC_RTC_RTC2_AFG)) {
+		icx11xx_rtc_year = gioPwc_read(PWC_RTC_YEAR_RD);
+		icx11xx_rtc_mdhm =  gioPwc_read(PWC_RTC_MONTH_RD)
+		 				 | (gioPwc_read(PWC_RTC_DAY_RD)  <<  8)
+		 				 | (gioPwc_read(PWC_RTC_HOUR_RD) << 16)
+		 				 | (gioPwc_read(PWC_RTC_MIN_RD)  << 24);
+	}
+#endif
+
+	/* exit AD */
+	gioPwc_exit_ad();
+
+#ifdef CONFIG_DISPLAY_PWC_STATE
+	printf("\n'%02X/%02X/%02X(%d) %02X:%02X\n", 
+			gioPwc_read(PWC_RTC_YEAR_RD),
+			gioPwc_read(PWC_RTC_MONTH_RD),
+			gioPwc_read(PWC_RTC_DAY_RD),
+			gioPwc_read(PWC_RTC_WEEK_RD),
+			gioPwc_read(PWC_RTC_HOUR_RD),
+			gioPwc_read(PWC_RTC_MIN_RD));
+	printf("  Alarm: (%d) %02X:%02X\n", 
+			gioPwc_read(0x85),
+			gioPwc_read(0x83),
+			gioPwc_read(0x81));
+	printf("\nPower IC status\n");
+ 	printf(" LSI verion  :%02Xh\n", icx1087_lsiver);
+	printf(" BAT voltage :%d\n", icx1087_vbat_data);
+	printf(" PSW state   :%02Xh\n", gioPwc_read(PWC_PSW_STATE));
+	printf(" INT factor1 :%02Xh\n", icx1087_fact1_data);	
+	printf(" INT factor3 :%02Xh\n", icx11xx_fact3_data);	
+	printf(" RTC1        :%02Xh\n", gioPwc_read(PWC_RTC_RTC1_RD));
+	printf(" RTC2        :%02Xh\n", gioPwc_read(PWC_RTC_RTC2_RD));
+	printf(" RTC YEAR    :%08Xh\n", icx11xx_rtc_year);
+	printf(" RTC MDHM    :%08Xh\n", icx11xx_rtc_mdhm);
+	printf(" TIMER YEAR  :%08Xh\n", icx1087_set_val.year);
+	printf(" TIMER MDHM  :%08Xh\n", icx1087_set_val.mdhm);
+	printf(" LowBatt     :%d\n", icx1087_vbat_low);	
+	printf(" VeryLowBatt :%d\n", icx1087_vbat_vlow);	
+	printf(" Key         :%02Xh\n\n", icx1087_key_data);	
+#endif
+}
+
+/**
+ * Detect power source
+ *   Called from board_init(mp200.c)
+ *   Input  : src : kind of source
+ *   Output : YES/NO(1/0)
+ */
+int icx1087_det_psw(UINT8 src)
+{
+	int rc = 0;
+
+	/* detect power source */
+	if ((src & gioPwc_read(PWC_PSW_STATE)) == src) {
+		rc = 1;
+	}
+
+	return rc;
+}
+
+/* 2007.05.17 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111 
+/**
+ * Detect RTC interruption
+ *   Called from board_init(mp200.c)
+ *   Input  : none
+ *   Output : YES/NO(1/0)
+ */
+int icx11xx_det_rtc(void)
+{
+	if ((icx11xx_fact3_data & PWC_INTC_FACT_RTCINT)
+	 && (gioPwc_read(PWC_RTC_RTC2_RD) & PWC_RTC_RTC2_AFG))
+		return 1;
+	else
+		return 0;
+}
+
+/**
+ * Check RTC interruption
+ *   Called from board_init(mp200.c)
+ *   Input  : none
+ *   Output : YES/NO(1/0)
+ */
+int icx11xx_chk_rtc(void)
+{
+	if (gioPwc_read(PWC_RTC_RTC2_RD) & PWC_RTC_RTC2_AFG)
+		return 1;
+	else
+		return 0;
+}
+
+/**
+ * Check RTC date
+ *   Called from board_init(mp200.c)
+ *   Input  : Now/Boot(1/0)
+ *   Output : YES/NO(1/0)
+ */
+int icx11xx_chk_rtc_date(int now_flag)
+{
+#ifdef CONFIG_RTC_COMP_DATE
+	UINT32 year;
+	UINT32 mdhm;
+
+	if (now_flag) {
+		year = gioPwc_read(PWC_RTC_YEAR_RD);
+		mdhm =  gioPwc_read(PWC_RTC_MONTH_RD)
+			 | (gioPwc_read(PWC_RTC_DAY_RD)  <<  8)
+			 | (gioPwc_read(PWC_RTC_HOUR_RD) << 16)
+			 | (gioPwc_read(PWC_RTC_MIN_RD)  << 24);
+	}
+	else {
+		year = icx11xx_rtc_year;
+		mdhm = icx11xx_rtc_mdhm;
+	}
+
+	/* detect RTC factor */
+	if ((icx1087_set_val.year == year) && (icx1087_set_val.mdhm == mdhm))
+		return 1;
+	else
+		return 0;
+#else
+	return 1;
+#endif
+}
+#endif
+
+/**
+ * Check low battery
+ *   Called from board_init(mp200.c)
+ *   Input  : none
+ *   Output : 1:to power off / 0:boot up
+ */
+int icx1087_chk_lowbatt(void)
+{
+	int cnt;
+	int beepptrn;
+	int rc = 1;
+
+	/* not LOW-BATT -> boot up */
+	if (!ICX1087_VBAT_LOW())
+		return 0;
+
+	/* display LOW-BATT */
+	icx1087_disp_lcd(LCD_IMG_LOWBATT, 1);
+
+	/* wait for connecting ADP/USB or elapse 5s */
+	for (cnt = 0; cnt < PM_LBAT_COUNT; cnt++) {
+
+		beepptrn = cnt % PM_LBAT_BEEP_SET; 
+	
+		/* check ADP and VBUS */
+		if ((beepptrn == 0) || (beepptrn > PM_LBAT_BEEP_OFF2)) {
+#ifdef CONFIG_DET_ADP
+			if (icx1087_det_psw(ICX1087_PSW_ADP) || icx1087_det_psw(ICX1087_PSW_USB)) {
+				rc = 0;
+				break;
+			}
+#else
+			if (icx1087_det_psw(ICX1087_PSW_USB)) {
+				rc = 0;
+				break;
+			}
+#endif
+		}
+
+		/* beep control */
+		switch (beepptrn) {
+			case PM_LBAT_BEEP_ON1	:
+			case PM_LBAT_BEEP_ON2	:
+				icx1087_on_beep(BEEP_TIME_CONTINUE);
+				break;
+			case PM_LBAT_BEEP_OFF1	:
+			case PM_LBAT_BEEP_OFF2	:
+				icx1087_off_beep();
+				break;
+			default :
+				break;
+		}
+
+		/* interval */
+		udelay(PM_LBAT_INTERVAL);
+	}
+	icx1087_off_lcd();
+
+	return rc;
+}
+
+/**
+ * Power down 
+ *   Called from board_init(mp200.c)
+ *   Input  : none
+ *   Output : none
+ */
+void icx1087_power_off(void)
+{
+    unsigned long irq_flags = 0;
+
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+/* 2007.05.15 fuj : Applied Deep-Power-Down */
+	/* shutdown LCD */
+	icx11xx_exit_lcd();
+
+	/* copy to SRAM */
+	memcpy((void *)WARMBOOT_ADDR, warmboot_handler, warmboot_handler_size);
+#endif
+
+	/* int mask */
+	local_irq_save(irq_flags);
+
+    /* if clock is not 12MHz, then make the clock 12MHz */
+    mp200_pm_full_to_eco();
+
+    /* poweroff setting function*/
+    mp200_pm_do_poweroff();
+
+    /* int unmask */
+    local_irq_restore(irq_flags);     /* not call */
+}
+
+/**
+ * Set limiter in Power PATH IC
+ *   Called from board_init(mp200.c)
+ *   Input  : none
+ *   Output : none
+ *	 NOte	: PCTL(PM1,SPI) has set in poweron.S
+ *			: GPIO0_EO has set in IPL
+ */
+void icx1087_set_limiter(void)
+{
+	/* set limiter */
+	BIOS_MCR_OUTPW( GPIO_GPIO0_DO,
+				   (GPIO_GPIO0_LIMIT << 16) | (~GPIO_GPIO0_LIMIT & 0x0000FFFF));
+}
+
+#endif /* CONFIG_ICX1087 */
+

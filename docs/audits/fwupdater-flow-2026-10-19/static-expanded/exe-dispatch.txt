@@ -1,0 +1,263 @@
+
+C:\Users\VicLi\Documents\Projects\island-walkman\data\firmware-analysis\FWUpdater.exe:	file format coff-i386
+
+Disassembly of section .text:
+
+00401000 <.text>:
+  408150: 55                           	pushl	%ebp
+  408151: 8b ec                        	movl	%esp, %ebp
+  408153: 6a ff                        	pushl	$-1
+  408155: 68 58 bc 41 00               	pushl	$4308056                # imm = 0x41BC58
+  40815a: 64 a1 00 00 00 00            	movl	%fs:0, %eax
+  408160: 50                           	pushl	%eax
+  408161: 83 ec 34                     	subl	$52, %esp
+  408164: a1 24 12 42 00               	movl	4330020, %eax
+  408169: 33 c5                        	xorl	%ebp, %eax
+  40816b: 89 45 ec                     	movl	%eax, -20(%ebp)
+  40816e: 53                           	pushl	%ebx
+  40816f: 56                           	pushl	%esi
+  408170: 57                           	pushl	%edi
+  408171: 50                           	pushl	%eax
+  408172: 8d 45 f4                     	leal	-12(%ebp), %eax
+  408175: 64 a3 00 00 00 00            	movl	%eax, %fs:0
+  40817b: 89 65 f0                     	movl	%esp, -16(%ebp)
+  40817e: 8b 45 14                     	movl	20(%ebp), %eax
+  408181: 8b 75 08                     	movl	8(%ebp), %esi
+  408184: 33 db                        	xorl	%ebx, %ebx
+  408186: 89 45 d4                     	movl	%eax, -44(%ebp)
+  408189: a1 5c 27 42 00               	movl	4335452, %eax
+  40818e: 3b c3                        	cmpl	%ebx, %eax
+  408190: 89 5d dc                     	movl	%ebx, -36(%ebp)
+  408193: 89 5d fc                     	movl	%ebx, -4(%ebp)
+  408196: 0f 85 c0 01 00 00            	jne	0x40835c <.text+0x735c>
+  40819c: 56                           	pushl	%esi
+  40819d: e8 9e fb ff ff               	calll	0x407d40 <.text+0x6d40>
+  4081a2: 83 c4 04                     	addl	$4, %esp
+  4081a5: 3b c3                        	cmpl	%ebx, %eax
+  4081a7: 7d 15                        	jge	0x4081be <.text+0x71be>
+  4081a9: 68 c0 ea 41 00               	pushl	$4319936                # imm = 0x41EAC0
+  4081ae: 8d 4d c8                     	leal	-56(%ebp), %ecx
+  4081b1: 51                           	pushl	%ecx
+  4081b2: c7 45 c8 00 23 04 80         	movl	$2147754752, -56(%ebp)  # imm = 0x80042300
+  4081b9: e8 e7 15 00 00               	calll	0x4097a5 <.text+0x87a5>
+  4081be: 33 c0                        	xorl	%eax, %eax
+  4081c0: bf 10 00 00 00               	movl	$16, %edi
+  4081c5: 39 7e 3c                     	cmpl	%edi, 60(%esi)
+  4081c8: 89 45 e0                     	movl	%eax, -32(%ebp)
+  4081cb: 89 45 e4                     	movl	%eax, -28(%ebp)
+  4081ce: 72 05                        	jb	0x4081d5 <.text+0x71d5>
+  4081d0: 8b 46 28                     	movl	40(%esi), %eax
+  4081d3: eb 03                        	jmp	0x4081d8 <.text+0x71d8>
+  4081d5: 8d 46 28                     	leal	40(%esi), %eax
+  4081d8: 39 3d a4 27 42 00            	cmpl	%edi, 4335524
+  4081de: 8b 10                        	movl	(%eax), %edx
+  4081e0: 89 55 e3                     	movl	%edx, -29(%ebp)
+  4081e3: 72 25                        	jb	0x40820a <.text+0x720a>
+  4081e5: a1 90 27 42 00               	movl	4335504, %eax
+  4081ea: 3b c3                        	cmpl	%ebx, %eax
+  4081ec: 74 23                        	je	0x408211 <.text+0x7211>
+  4081ee: 6a ff                        	pushl	$-1
+  4081f0: 50                           	pushl	%eax
+  4081f1: e8 aa 94 ff ff               	calll	0x4016a0 <.text+0x6a0>
+  4081f6: 83 c4 08                     	addl	$8, %esp
+  4081f9: 3b c3                        	cmpl	%ebx, %eax
+  4081fb: 89 45 dc                     	movl	%eax, -36(%ebp)
+  4081fe: 75 14                        	jne	0x408214 <.text+0x7214>
+  408200: 68 0e 00 07 80               	pushl	$2147942414             # imm = 0x8007000E
+  408205: e8 f6 91 ff ff               	calll	0x401400 <.text+0x400>
+  40820a: b8 90 27 42 00               	movl	$4335504, %eax          # imm = 0x422790
+  40820f: eb dd                        	jmp	0x4081ee <.text+0x71ee>
+  408211: 89 5d dc                     	movl	%ebx, -36(%ebp)
+  408214: 39 be c8 00 00 00            	cmpl	%edi, 200(%esi)
+  40821a: c6 45 fc 01                  	movb	$1, -4(%ebp)
+  40821e: 72 08                        	jb	0x408228 <.text+0x7228>
+  408220: 8b 86 b4 00 00 00            	movl	180(%esi), %eax
+  408226: eb 06                        	jmp	0x40822e <.text+0x722e>
+  408228: 8d 86 b4 00 00 00            	leal	180(%esi), %eax
+  40822e: 3b c3                        	cmpl	%ebx, %eax
+  408230: 74 1e                        	je	0x408250 <.text+0x7250>
+  408232: 6a ff                        	pushl	$-1
+  408234: 50                           	pushl	%eax
+  408235: e8 66 94 ff ff               	calll	0x4016a0 <.text+0x6a0>
+  40823a: 8b d8                        	movl	%eax, %ebx
+  40823c: 83 c4 08                     	addl	$8, %esp
+  40823f: 85 db                        	testl	%ebx, %ebx
+  408241: 89 5d d8                     	movl	%ebx, -40(%ebp)
+  408244: 75 0d                        	jne	0x408253 <.text+0x7253>
+  408246: 68 0e 00 07 80               	pushl	$2147942414             # imm = 0x8007000E
+  40824b: e8 b0 91 ff ff               	calll	0x401400 <.text+0x400>
+  408250: 89 5d d8                     	movl	%ebx, -40(%ebp)
+  408253: 8d 45 d8                     	leal	-40(%ebp), %eax
+  408256: 50                           	pushl	%eax
+  408257: 8d 4d dc                     	leal	-36(%ebp), %ecx
+  40825a: c6 45 fc 02                  	movb	$2, -4(%ebp)
+  40825e: e8 5d ad ff ff               	calll	0x402fc0 <.text+0x1fc0>
+  408263: 53                           	pushl	%ebx
+  408264: c6 45 fc 01                  	movb	$1, -4(%ebp)
+  408268: ff 15 dc c1 41 00            	calll	*4309468
+  40826e: 39 be 00 01 00 00            	cmpl	%edi, 256(%esi)
+  408274: 8b 0d 68 27 42 00            	movl	4335464, %ecx
+  40827a: 89 4d d8                     	movl	%ecx, -40(%ebp)
+  40827d: 72 08                        	jb	0x408287 <.text+0x7287>
+  40827f: 8b 86 ec 00 00 00            	movl	236(%esi), %eax
+  408285: eb 06                        	jmp	0x40828d <.text+0x728d>
+  408287: 8d 86 ec 00 00 00            	leal	236(%esi), %eax
+  40828d: 85 c0                        	testl	%eax, %eax
+  40828f: 74 1e                        	je	0x4082af <.text+0x72af>
+  408291: 6a ff                        	pushl	$-1
+  408293: 50                           	pushl	%eax
+  408294: e8 07 94 ff ff               	calll	0x4016a0 <.text+0x6a0>
+  408299: 8b d8                        	movl	%eax, %ebx
+  40829b: 83 c4 08                     	addl	$8, %esp
+  40829e: 85 db                        	testl	%ebx, %ebx
+  4082a0: 89 5d c4                     	movl	%ebx, -60(%ebp)
+  4082a3: 75 0f                        	jne	0x4082b4 <.text+0x72b4>
+  4082a5: 68 0e 00 07 80               	pushl	$2147942414             # imm = 0x8007000E
+  4082aa: e8 51 91 ff ff               	calll	0x401400 <.text+0x400>
+  4082af: 33 db                        	xorl	%ebx, %ebx
+  4082b1: 89 5d c4                     	movl	%ebx, -60(%ebp)
+  4082b4: 39 be e4 00 00 00            	cmpl	%edi, 228(%esi)
+  4082ba: c6 45 fc 03                  	movb	$3, -4(%ebp)
+  4082be: 72 08                        	jb	0x4082c8 <.text+0x72c8>
+  4082c0: 8b 86 d0 00 00 00            	movl	208(%esi), %eax
+  4082c6: eb 06                        	jmp	0x4082ce <.text+0x72ce>
+  4082c8: 8d 86 d0 00 00 00            	leal	208(%esi), %eax
+  4082ce: 85 c0                        	testl	%eax, %eax
+  4082d0: 74 1e                        	je	0x4082f0 <.text+0x72f0>
+  4082d2: 6a ff                        	pushl	$-1
+  4082d4: 50                           	pushl	%eax
+  4082d5: e8 c6 93 ff ff               	calll	0x4016a0 <.text+0x6a0>
+  4082da: 8b f8                        	movl	%eax, %edi
+  4082dc: 83 c4 08                     	addl	$8, %esp
+  4082df: 85 ff                        	testl	%edi, %edi
+  4082e1: 89 7d d0                     	movl	%edi, -48(%ebp)
+  4082e4: 75 0f                        	jne	0x4082f5 <.text+0x72f5>
+  4082e6: 68 0e 00 07 80               	pushl	$2147942414             # imm = 0x8007000E
+  4082eb: e8 10 91 ff ff               	calll	0x401400 <.text+0x400>
+  4082f0: 33 ff                        	xorl	%edi, %edi
+  4082f2: 89 7d d0                     	movl	%edi, -48(%ebp)
+  4082f5: 0f b7 4e 6c                  	movzwl	108(%esi), %ecx
+  4082f9: 8b 45 d4                     	movl	-44(%ebp), %eax
+  4082fc: 8b 75 dc                     	movl	-36(%ebp), %esi
+  4082ff: 8b 55 d8                     	movl	-40(%ebp), %edx
+  408302: 8b 12                        	movl	(%edx), %edx
+  408304: 50                           	pushl	%eax
+  408305: 51                           	pushl	%ecx
+  408306: 8b 4d e0                     	movl	-32(%ebp), %ecx
+  408309: 53                           	pushl	%ebx
+  40830a: 57                           	pushl	%edi
+  40830b: 56                           	pushl	%esi
+  40830c: 83 ec 0c                     	subl	$12, %esp
+  40830f: 8b c4                        	movl	%esp, %eax
+  408311: 89 08                        	movl	%ecx, (%eax)
+  408313: 8b 4d e4                     	movl	-28(%ebp), %ecx
+  408316: 89 48 04                     	movl	%ecx, 4(%eax)
+  408319: 33 c9                        	xorl	%ecx, %ecx
+  40831b: 89 48 08                     	movl	%ecx, 8(%eax)
+  40831e: 8b 45 d8                     	movl	-40(%ebp), %eax
+  408321: 8b 4a 0c                     	movl	12(%edx), %ecx
+  408324: 50                           	pushl	%eax
+  408325: c6 45 fc 04                  	movb	$4, -4(%ebp)
+  408329: ff d1                        	calll	*%ecx
+  40832b: 57                           	pushl	%edi
+  40832c: 8b 3d dc c1 41 00            	movl	4309468, %edi
+  408332: 89 45 dc                     	movl	%eax, -36(%ebp)
+  408335: ff d7                        	calll	*%edi
+  408337: 53                           	pushl	%ebx
+  408338: ff d7                        	calll	*%edi
+  40833a: 56                           	pushl	%esi
+  40833b: ff d7                        	calll	*%edi
+  40833d: 8b 45 dc                     	movl	-36(%ebp), %eax
+  408340: 8b 4d f4                     	movl	-12(%ebp), %ecx
+  408343: 64 89 0d 00 00 00 00         	movl	%ecx, %fs:0
+  40834a: 59                           	popl	%ecx
+  40834b: 5f                           	popl	%edi
+  40834c: 5e                           	popl	%esi
+  40834d: 5b                           	popl	%ebx
+  40834e: 8b 4d ec                     	movl	-20(%ebp), %ecx
+  408351: 33 cd                        	xorl	%ebp, %ecx
+  408353: e8 43 17 00 00               	calll	0x409a9b <.text+0x8a9b>
+  408358: 8b e5                        	movl	%ebp, %esp
+  40835a: 5d                           	popl	%ebp
+  40835b: c3                           	retl
+  40835c: 83 f8 01                     	cmpl	$1, %eax
+  40835f: 75 dc                        	jne	0x40833d <.text+0x733d>
+  408361: 56                           	pushl	%esi
+  408362: e8 d9 f9 ff ff               	calll	0x407d40 <.text+0x6d40>
+  408367: 83 c4 04                     	addl	$4, %esp
+  40836a: 3b c3                        	cmpl	%ebx, %eax
+  40836c: 7d 15                        	jge	0x408383 <.text+0x7383>
+  40836e: 68 c0 ea 41 00               	pushl	$4319936                # imm = 0x41EAC0
+  408373: 8d 55 cc                     	leal	-52(%ebp), %edx
+  408376: 52                           	pushl	%edx
+  408377: c7 45 cc 00 23 04 80         	movl	$2147754752, -52(%ebp)  # imm = 0x80042300
+  40837e: e8 22 14 00 00               	calll	0x4097a5 <.text+0x87a5>
+  408383: a1 90 27 42 00               	movl	4335504, %eax
+  408388: bf 10 00 00 00               	movl	$16, %edi
+  40838d: 39 3d a4 27 42 00            	cmpl	%edi, 4335524
+  408393: 73 05                        	jae	0x40839a <.text+0x739a>
+  408395: b8 90 27 42 00               	movl	$4335504, %eax          # imm = 0x422790
+  40839a: 50                           	pushl	%eax
+  40839b: 8d 4d d8                     	leal	-40(%ebp), %ecx
+  40839e: e8 ad 93 ff ff               	calll	0x401750 <.text+0x750>
+  4083a3: 39 be c8 00 00 00            	cmpl	%edi, 200(%esi)
+  4083a9: b3 05                        	movb	$5, %bl
+  4083ab: 88 5d fc                     	movb	%bl, -4(%ebp)
+  4083ae: 72 08                        	jb	0x4083b8 <.text+0x73b8>
+  4083b0: 8b 86 b4 00 00 00            	movl	180(%esi), %eax
+  4083b6: eb 06                        	jmp	0x4083be <.text+0x73be>
+  4083b8: 8d 86 b4 00 00 00            	leal	180(%esi), %eax
+  4083be: 50                           	pushl	%eax
+  4083bf: 8d 4d dc                     	leal	-36(%ebp), %ecx
+  4083c2: e8 89 93 ff ff               	calll	0x401750 <.text+0x750>
+  4083c7: 8d 45 dc                     	leal	-36(%ebp), %eax
+  4083ca: 50                           	pushl	%eax
+  4083cb: 8d 4d d8                     	leal	-40(%ebp), %ecx
+  4083ce: c6 45 fc 06                  	movb	$6, -4(%ebp)
+  4083d2: e8 e9 ab ff ff               	calll	0x402fc0 <.text+0x1fc0>
+  4083d7: 8b 4d dc                     	movl	-36(%ebp), %ecx
+  4083da: 8b 3d dc c1 41 00            	movl	4309468, %edi
+  4083e0: 51                           	pushl	%ecx
+  4083e1: 88 5d fc                     	movb	%bl, -4(%ebp)
+  4083e4: ff d7                        	calll	*%edi
+  4083e6: 83 be e4 00 00 00 10         	cmpl	$16, 228(%esi)
+  4083ed: 8b 1d 6c 27 42 00            	movl	4335468, %ebx
+  4083f3: 72 08                        	jb	0x4083fd <.text+0x73fd>
+  4083f5: 8b 86 d0 00 00 00            	movl	208(%esi), %eax
+  4083fb: eb 06                        	jmp	0x408403 <.text+0x7403>
+  4083fd: 8d 86 d0 00 00 00            	leal	208(%esi), %eax
+  408403: 50                           	pushl	%eax
+  408404: 8d 4d d4                     	leal	-44(%ebp), %ecx
+  408407: e8 44 93 ff ff               	calll	0x401750 <.text+0x750>
+  40840c: 0f b7 4e 6c                  	movzwl	108(%esi), %ecx
+  408410: 8b 00                        	movl	(%eax), %eax
+  408412: 8b 13                        	movl	(%ebx), %edx
+  408414: 51                           	pushl	%ecx
+  408415: 8b 4a 1c                     	movl	28(%edx), %ecx
+  408418: 50                           	pushl	%eax
+  408419: 8b 45 d8                     	movl	-40(%ebp), %eax
+  40841c: 50                           	pushl	%eax
+  40841d: 68 d8 26 42 00               	pushl	$4335320                # imm = 0x4226D8
+  408422: 53                           	pushl	%ebx
+  408423: c6 45 fc 07                  	movb	$7, -4(%ebp)
+  408427: ff d1                        	calll	*%ecx
+  408429: 8b 55 d4                     	movl	-44(%ebp), %edx
+  40842c: 52                           	pushl	%edx
+  40842d: 89 45 dc                     	movl	%eax, -36(%ebp)
+  408430: ff d7                        	calll	*%edi
+  408432: 8b 45 d8                     	movl	-40(%ebp), %eax
+  408435: 50                           	pushl	%eax
+  408436: e9 00 ff ff ff               	jmp	0x40833b <.text+0x733b>
+  40843b: 8b 4d c0                     	movl	-64(%ebp), %ecx
+  40843e: 89 4d dc                     	movl	%ecx, -36(%ebp)
+  408441: b8 3d 83 40 00               	movl	$4227901, %eax          # imm = 0x40833D
+  408446: c3                           	retl
+  408447: cc                           	int3
+  408448: cc                           	int3
+  408449: cc                           	int3
+  40844a: cc                           	int3
+  40844b: cc                           	int3
+  40844c: cc                           	int3
+  40844d: cc                           	int3
+  40844e: cc                           	int3
+  40844f: cc                           	int3

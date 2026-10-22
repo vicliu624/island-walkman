@@ -1,5 +1,6 @@
 //! Read-only firmware research boundary. No mutating commands or device writes,
 //! interface claims, upgrade activation or updater subprocesses exist here.
+pub mod identity;
 pub mod responses;
 pub mod session;
 #[cfg(windows)]
@@ -48,6 +49,7 @@ pub struct UsbCandidate {
     /// bcdDevice is NOT the installed firmware version.
     pub usb_device_revision: String,
     pub model_verified: bool,
+    pub profile: &'static crate::devices::DeviceProfile,
 }
 
 #[derive(Debug, Serialize)]
@@ -64,9 +66,10 @@ pub struct ProbeReport {
 }
 
 pub fn probe() -> Result<ProbeReport> {
+    let _operation = crate::device_operation::acquire()?;
     let candidates = nusb::list_devices()
         .wait()?
-        .filter(|d| d.vendor_id() == 0x054c && d.product_id() == 0x032a)
+        .filter(|d| crate::devices::usb_profile(d.vendor_id(), d.product_id()).is_some())
         .map(|d| UsbCandidate {
             vendor_id: format!("{:04X}", d.vendor_id()),
             product_id: format!("{:04X}", d.product_id()),
@@ -78,6 +81,7 @@ pub fn probe() -> Result<ProbeReport> {
             usb_device_revision: format!("{:04X}", d.device_version()),
             // The stock INI shares this VID/PID across A916/A918/A919.
             model_verified: false,
+            profile: crate::devices::usb_profile(d.vendor_id(), d.product_id()).unwrap(),
         })
         .collect();
     Ok(ProbeReport {
@@ -153,7 +157,7 @@ fn inspect_bytes(bytes: &[u8]) -> Result<PackageReport> {
     );
     let header = decrypt(&bytes[16..64]);
     ensure!(
-        &header[..8] == b"5dfeff3c",
+        &header[..8] == crate::devices::A910_FIRMWARE.package_signature.as_bytes(),
         "Not the researched A91x UPG family"
     );
     ensure!(
@@ -197,7 +201,7 @@ fn inspect_bytes(bytes: &[u8]) -> Result<PackageReport> {
         stock_103_exact_match: sha256 == STOCK_SHA256,
         sha256,
         outer_md5_valid: true,
-        family_signature: "5dfeff3c".into(),
+        family_signature: crate::devices::A910_FIRMWARE.package_signature.into(),
         components,
         // MD5 and DES are format checks, not publisher authentication or model checks.
         authenticity_verified: false,

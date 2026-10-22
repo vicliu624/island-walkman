@@ -228,6 +228,7 @@ fn transfer(app: &Arc<App>, covers: bool) -> Result<()> {
     transfer_confirmed(app, covers, false)
 }
 fn transfer_confirmed(app: &Arc<App>, covers: bool, experimental_confirmed: bool) -> Result<()> {
+    let _operation = crate::device_operation::acquire()?;
     ensure!(
         app.allow_device_write || experimental_confirmed,
         "Device writes are disabled until this experimental transfer is confirmed in the transfer dialog."
@@ -251,7 +252,7 @@ fn transfer_confirmed(app: &Arc<App>, covers: bool, experimental_confirmed: bool
         })
         .collect::<Result<Vec<_>>>()?;
     reliable::create(&app.data, &root, selected, covers)?;
-    resume_transfer(app, true)
+    resume_transfer_locked(app, true)
 }
 
 fn display_device_root(root: &Path) -> String {
@@ -304,6 +305,11 @@ fn recovery_state(app: &Arc<App>) -> Result<Option<reliable::Session>> {
 }
 
 fn resume_transfer(app: &Arc<App>, explicit: bool) -> Result<()> {
+    let _operation = crate::device_operation::acquire()?;
+    resume_transfer_locked(app, explicit)
+}
+
+fn resume_transfer_locked(app: &Arc<App>, explicit: bool) -> Result<()> {
     let pending = reliable::pending(&app.data)?.context("No pending transfer to resume")?;
     let mut observer = |update: reliable::Update| {
         log(app, update.percent, &update.message);
@@ -327,7 +333,7 @@ fn resume_transfer(app: &Arc<App>, explicit: bool) -> Result<()> {
         || detect().into_iter().map(PathBuf::from).collect(),
         explicit,
         &app.transfer_pause,
-        &mut reliable::Native,
+        &mut reliable::Native::new(app.device_io_profile),
         &mut observer,
     );
     let result = match result {
@@ -414,6 +420,7 @@ fn transfer_with_capacity(
     copy_to_device: impl FnOnce(&Path, &Path) -> Result<()>,
     available_space: impl FnOnce() -> Result<u64>,
 ) -> Result<()> {
+    let _operation = crate::device_operation::acquire()?;
     ensure_recovery_safe(&app.data, root)?;
     let _lock = OpenOptions::new()
         .create(true)
@@ -1156,7 +1163,7 @@ fn handle(mut req: Request, app: &Arc<App>) {
                 let s = app.state.lock().unwrap().clone();
                 return Ok((
                     serde_json::to_vec(
-                        &json!({"state":s,"token":app.token,"device_write_enabled":app.allow_device_write,"device_io_profile":"resumable_append","diagnostic_copy_profile":app.device_io_profile.name()}),
+                        &json!({"version":env!("CARGO_PKG_VERSION"),"state":s,"token":app.token,"device_write_enabled":app.allow_device_write,"device_io_profile":"resumable_append","diagnostic_copy_profile":app.device_io_profile.name()}),
                     )?,
                     "application/json".into(),
                 ));
@@ -1241,6 +1248,51 @@ fn handle(mut req: Request, app: &Arc<App>) {
             return Ok((b"{}".to_vec(), "application/json".into()));
         }
         match url.as_str() {
+            "/api/apps/catalog" => {
+                return Ok((
+                    serde_json::to_vec(&crate::apps::published(
+                        v["repository"]
+                            .as_str()
+                            .filter(|s| !s.is_empty())
+                            .map(Path::new),
+                    )?)?,
+                    "application/json".into(),
+                ));
+            }
+            "/api/apps/installed" | "/api/storage" | "/api/storage/browse" => {
+                ensure_idle(app)?;
+                let root = app.state.lock().unwrap().device_root.clone();
+                let root = Path::new(&root);
+                let value = match url.as_str() {
+                    "/api/apps/installed" => serde_json::to_value(crate::apps::installed(root)?)?,
+                    "/api/storage" => serde_json::to_value(crate::apps::storage(root)?)?,
+                    _ => serde_json::to_value(crate::apps::browse(
+                        root,
+                        v["path"].as_str().unwrap_or(""),
+                    )?)?,
+                };
+                return Ok((serde_json::to_vec(&value)?, "application/json".into()));
+            }
+            "/api/apps/install" => {
+                ensure_idle(app)?;
+                ensure!(
+                    v["confirmed"].as_bool() == Some(true),
+                    "Confirm the selected app installation"
+                );
+                let id = v["id"].as_str().context("Missing app id")?.to_owned();
+                let repository = v["repository"]
+                    .as_str()
+                    .filter(|s| !s.is_empty())
+                    .map(PathBuf::from);
+                let root = app.state.lock().unwrap().device_root.clone();
+                launch(app.clone(), "Installing application", move |app| {
+                    let result =
+                        crate::apps::install(Path::new(&root), &id, repository.as_deref())?;
+                    log(app, 100, &format!("App installed: {result}"));
+                    Ok(())
+                })?;
+            }
+
             "/api/firmware/safety" => {
                 return Ok((
                     serde_json::to_vec(&crate::firmware::session::live_gate())?,
@@ -1850,6 +1902,26 @@ mod tests {
     }
 
     #[test]
+    fn firmware_operation_blocks_transfer_start_and_resume_before_device_access() {
+        let (_temp, app, _root, _source) = virtual_player();
+        let operation = crate::device_operation::acquire().unwrap();
+        assert!(
+            transfer_confirmed(&app, true, true)
+                .unwrap_err()
+                .to_string()
+                .contains("Device is busy")
+        );
+        assert!(
+            resume_transfer(&app, true)
+                .unwrap_err()
+                .to_string()
+                .contains("Device is busy")
+        );
+        drop(operation);
+        assert!(crate::device_operation::acquire().is_ok());
+    }
+
+    #[test]
     fn confirmed_ui_transfer_reaches_preflight_without_unlocking_later_requests() {
         let (_temp, mut app, root, source) = virtual_player();
         Arc::get_mut(&mut app).unwrap().allow_device_write = false;
@@ -1867,6 +1939,52 @@ mod tests {
         assert!(!app.allow_device_write);
         let error = transfer(&app, true).unwrap_err();
         assert!(error.to_string().contains("Device writes are disabled"));
+    }
+
+    #[test]
+    fn firmware_write_routes_are_absent_even_with_music_write_authorization() {
+        let (_temp, mut app, root, _) = virtual_player();
+        Arc::get_mut(&mut app).unwrap().allow_device_write = true;
+        let device_before = manifest(&root).unwrap();
+        let state_before = serde_json::to_vec(&*app.state.lock().unwrap()).unwrap();
+        let endpoints = [
+            "safety", "flash", "upload", "activate", "reset", "raw", "rollback",
+        ];
+        for endpoint in endpoints {
+            let server = Server::http("127.0.0.1:0").unwrap();
+            let address = server.server_addr().to_ip().unwrap();
+            let handler_app = app.clone();
+            let worker = std::thread::spawn(move || handle(server.recv().unwrap(), &handler_app));
+            let body = json!({"confirmed":true,"experimental_confirmed":true,
+                "force":true,"firmware_write_enabled":true,"path":root,
+                "cdb":[252,0,4,100,98,109,110,0,0,0,0,0]})
+            .to_string();
+            let mut client = std::net::TcpStream::connect(address).unwrap();
+            client
+                .set_read_timeout(Some(std::time::Duration::from_secs(3)))
+                .unwrap();
+            write!(client, "POST /api/firmware/{endpoint} HTTP/1.0\r\nHost: {address}\r\nX-Island-Token: test\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}", body.len()).unwrap();
+            let mut response = String::new();
+            client.read_to_string(&mut response).unwrap();
+            worker.join().unwrap();
+            if endpoint == "safety" {
+                assert!(response.starts_with("HTTP/1.0 200"), "{response}");
+                let (_, json) = response.split_once("\r\n\r\n").unwrap();
+                let report: Value = serde_json::from_str(json).unwrap();
+                assert_eq!(report["firmware_write_enabled"], false);
+                assert_eq!(report["raw_vendor_queries_enabled"], false);
+                assert!(!report["blockers"].as_array().unwrap().is_empty());
+            } else {
+                assert!(response.starts_with("HTTP/1.0 400"), "{response}");
+                assert!(response.contains("Unknown endpoint"), "{response}");
+            }
+            assert!(!app.state.lock().unwrap().job.running);
+            assert_eq!(manifest(&root).unwrap(), device_before);
+            assert_eq!(
+                serde_json::to_vec(&*app.state.lock().unwrap()).unwrap(),
+                state_before
+            );
+        }
     }
 
     #[test]

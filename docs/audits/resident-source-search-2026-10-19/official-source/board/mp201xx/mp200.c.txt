@@ -1,0 +1,364 @@
+/*
+ * (C) Copyright 2002
+ * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+ * Marius Groeger <mgroeger@sysgo.de>
+ *
+ * (C) Copyright 2002
+ * David Mueller, ELSOFT AG, <d.mueller@elsoft.ch>
+ *
+ * (C) Copyright 2003
+ * Texas Instruments, <www.ti.com>
+ * Kshitij Gupta <Kshitij@ti.com>
+ *
+ * Modified for OMAP 1610 H2 board by Nishant Kamat, Jan 2004
+ *
+ * (C) Copyright 2005-2006 NEC Electronics Corporation
+ *
+ * See file CREDITS for list of people who contributed to this
+ * project.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
+ */
+
+/*
+ * Copyright 2006,2007 Sony Corporation. 
+ */
+ 
+
+#include <common.h>
+
+/* 2006.06.09 fuj : For KEY */
+#ifdef CONFIG_ICX1087
+#include "icx1087/icx1087.h"
+#endif /* CONFIG_ICX1087 */
+/* 2007.04.19 fuj : Applied encryption of pwd */
+#ifdef CONFIG_ICX1111
+#include "md5.h"
+#endif
+
+/*
+ * Miscellaneous platform dependent initialisations
+ */
+int board_init (void)
+{
+	DECLARE_GLOBAL_DATA_PTR;
+
+	/* arch number of MP200 Board */
+	gd->bd->bi_arch_number = CFG_MP200_ARCH;
+
+	/* adress of boot parameters */
+#ifdef	CONFIG_MP201
+	gd->bd->bi_boot_params = 0x30000100;
+#else
+	gd->bd->bi_boot_params = 0x34000100;
+#endif
+
+	icache_enable ();
+
+	return 0;
+}
+
+
+int dram_init (void)
+{
+	DECLARE_GLOBAL_DATA_PTR;
+
+	gd->bd->bi_dram[0].start = PHYS_SDRAM_1;
+	gd->bd->bi_dram[0].size = PHYS_SDRAM_1_SIZE;
+/* 2006.03.07 fuj (SDRAM) */
+#ifndef CONFIG_ICX1087
+	gd->bd->bi_dram[1].start = PHYS_SDRAM_2;
+	gd->bd->bi_dram[1].size = PHYS_SDRAM_2_SIZE;
+#endif /* !CONFIG_ICX1087 */
+
+	return 0;
+}
+
+/* 2006.06.09 fuj : For Beep & LCD & Key */
+#ifdef CONFIG_ICX1087
+int display_opening (void)
+{
+	int pow_off = 0;
+	int beep_on = 0;
+	int lcd_on  = 1;
+/* 2007.05.28 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+	int rc;
+#endif
+
+	/* setup to boot */
+	icx1087_setup();
+
+	/**********************/
+	/* collect parameters */
+	/**********************/
+
+    /* get keypad */
+    icx1087_get_keypad();
+
+	/* initialize NAND driver and get NVP */
+	icx1087_init_nand();
+	icx1087_get_setval(ID_SETVAL_SETTING, NULL);
+/* 2007.03.06 fuj : Get system information in order to applied various models */
+#ifdef CONFIG_ICX1111
+	icx11xx_get_sysinfo();
+	icx11xx_init_lcd();
+#endif
+
+    /* get VBAT value and factor of Power ON */
+	icx1087_get_pm();
+
+	/******************/
+	/* decide process */
+	/******************/
+
+	/* initialize beep process */
+	icx1087_init_beep();
+
+	/***** detect ADP *****/
+#ifdef CONFIG_DET_ADP
+	if (icx1087_det_psw(ICX1087_PSW_ADP)) {
+#else 
+	if (0) {
+#endif
+		/* set limiter in PowerPATH */
+		icx1087_set_limiter();
+
+		/* sound a beep */
+		beep_on = 1;
+	}
+	/***** detect VBUS *****/
+	else if (icx1087_det_psw(ICX1087_PSW_USB)) {
+
+		/* check very LOWBATT */
+		if (ICX1087_IS_BOOTFLG()) {
+			icx1087_set_lowbatt();
+			icx1087_set_nonebatt();
+			lcd_on = 0;
+		}
+		else if (ICX1087_VBAT_VLOW()) {
+			icx1087_set_lowbatt();
+			lcd_on = 0;
+		}
+		else {
+			icx1087_set_limiter();
+			ICX1087_SET_BOOTFLG();
+		}
+
+		/* sound a beep */
+		beep_on = 1;
+	}
+/* 2007.06.04 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+	/***** RTC wakeup *****/
+	else if (icx11xx_det_rtc()) {
+
+		/* check VBAT */
+		if (ICX1087_VBAT_VLOW()) {
+			/* Very LOW-BATT -> power off */
+			pow_off = 1;
+		}
+		else {
+			/* set limiter in PowerPATH */
+			icx1087_set_limiter();
+
+			if (!ICX1087_VBAT_LOW()) {
+				if (icx11xx_chk_rtc_date(0)) {
+					icx11xx_set_rtc();
+					lcd_on = 0;
+				}
+				else
+					pow_off = 1;
+			}
+			else {
+				if (icx1087_chk_lowbatt())
+					pow_off = 1;
+			}
+		}
+	}
+#endif
+	/***** KEY wakeup *****/
+	else if (icx1087_det_key() || ICX1087_KEY_PRESSED()) {
+
+		if (ICX1087_VBAT_VLOW()) {
+			/* Very LOW-BATT -> power off */
+			pow_off = 1;
+		}
+		else {
+			/* set limiter in PowerPATH */
+			icx1087_set_limiter();
+
+			if (!ICX1087_VBAT_LOW() && (icx1087_get_hold() == 0))
+				beep_on = 1;
+			else if (icx1087_chk_lowbatt())
+				pow_off = 1;
+/* 2006.11.21 fuj : applied cradle wake up */
+			else if (icx1087_det_cradle() && !(ICX1087_KEY_PRESSED()))
+				beep_on = 1;
+/* 2007.05.28 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+			else {
+				rc = icx1087_chk_hold();
+				if (rc == ICX11xx_CANCEL_HOLD_TO) {
+					pow_off = 1;
+				}
+				else if (rc == ICX11xx_CANCEL_HOLD_RTC) {
+					icx11xx_set_rtc();
+					lcd_on = 0;
+				}
+			}
+#else
+			else if (icx1087_chk_hold())
+				pow_off = 1;
+#endif
+		}
+	}
+	/***** HOLD wakeup *****/
+	else if (icx1087_det_hold()) {
+
+		/* check HOLD and VBAT */
+		if (icx1087_get_hold()) {
+			pow_off = 1;
+		}
+		else if (ICX1087_VBAT_VLOW()) {
+			/* Very LOW-BATT -> power off */
+			pow_off = 1;
+		}
+		else {
+			/* set limiter in PowerPATH */
+			icx1087_set_limiter();
+
+			if (icx1087_chk_lowbatt())
+				pow_off = 1;
+		}
+	}
+	/***** others *****/
+	else {
+		
+		/* check VBAT */
+		if (ICX1087_VBAT_VLOW()) {
+			/* Very LOW-BATT -> power off */
+			pow_off = 1;
+		}
+		else {
+			/* set limiter in PowerPATH */
+			icx1087_set_limiter();
+
+			if (icx1087_chk_lowbatt())
+				pow_off = 1;
+		}
+	}
+
+	/************************/
+	/* power-off or boot-up */
+	/************************/
+
+	/* sound a beep */
+	if(beep_on && ICX1087_KEY_PLAY() && ICX1087_CHK_BEEP()) {
+		icx1087_on_beep(BEEP_TIME_100MS);
+	}
+	icx1087_disable_beep();
+
+	if(pow_off) {
+
+		ICX1087_CLR_BOOTFLG();
+
+		/* beep complete off */
+		icx1087_exit_beep();
+
+		/* power off */
+		icx1087_power_off();
+	}
+	else {
+		/* display opening */
+		icx1087_disp_lcd(LCD_IMG_OPENING, lcd_on);
+
+/* 2007.08.06 fuj : BOOTFLG will be cleared in Kernel(USB driver) */
+/*		ICX1087_CLR_BOOTFLG(); */
+	}
+
+	/* exit setup */
+	icx1087_exit_setup();
+
+    return 0;
+}
+
+
+int check_pwd(const char *pwd, int len)
+{
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+	unsigned char pwdbuf[FLG_BOOT_PWD_LEN];
+#else
+	DebugParam_t param;
+#endif
+	int          i;
+	int          rc;
+/* 2007.04.19 fuj : Applied encryption of pwd */
+#ifdef CONFIG_ICX1111
+	MD5_CTX		 md5c;
+	char		 sig[16], buf[FLG_BOOT_PWD_LEN];
+#endif
+
+	/* get pwd from NVP */
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+	rc = icx1087_get_pwd(pwdbuf);
+#else
+	rc = icx1087_get_setval(ID_SETVAL_PWD, (void *)&param);
+#endif
+	if (rc != 0) {
+/* 2007.04.19 fuj : Applied encryption of pwd */
+#ifdef CONFIG_ICX1111
+		if (len > FLG_BOOT_PWD_LEN)
+			return 0;
+
+		/* calcurate MD5 digest */
+		MD5Init(&md5c);
+		MD5Update(&md5c, (unsigned char *)pwd, len);
+		MD5Final(sig, &md5c);
+
+		for (i = 0; i < 16; i++)
+			sprintf(&buf[i*2], "%02x", (unsigned char)sig[i]);
+
+		/* compare pwds */
+/* 2007.04.17 fuj */
+		if (strncmp(pwdbuf, buf, FLG_BOOT_PWD_LEN) == 0)
+			rc = 1;
+		else
+			rc = 0;
+#else
+		/* get length of pwd */
+		for (i = 0; i < FLG_BOOT_PWD_LEN; i++)
+			if (param.pwd[i] == '\0')
+				break;
+
+		/* check the length */
+		if (len != i)
+			return 0;
+
+		/* compare pwds */
+		if (strncmp(param.pwd, pwd, len) == 0)
+			rc = 1;
+		else
+			rc = 0;
+#endif
+	}
+
+	return rc;
+}
+#endif /* CONFIG_ICX1087 */
+

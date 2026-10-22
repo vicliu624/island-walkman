@@ -1,0 +1,87 @@
+[
+  {
+    "file": "./etc/init.d/gemini",
+    "term": "nvpflag",
+    "offsets": [
+      2615,
+      2768
+    ],
+    "lines": [
+      {
+        "line": 132,
+        "text": "\t/usr/local/bin/nvpflag tst 0"
+      },
+      {
+        "line": 143,
+        "text": "nvpval=$(/usr/local/bin/nvpflag tst)"
+      }
+    ]
+  },
+  {
+    "file": "./etc/init.d/rc.sysinfo",
+    "term": "nvpflag",
+    "offsets": [
+      40
+    ],
+    "lines": [
+      {
+        "line": 3,
+        "text": "ICX_MODEL_ID=`/usr/local/bin/nvpflag -x mid`"
+      }
+    ]
+  },
+  {
+    "file": "./etc/init.d/consstart",
+    "term": "nvpflag",
+    "offsets": [
+      165,
+      221,
+      1167,
+      1400
+    ],
+    "lines": [
+      {
+        "line": 8,
+        "text": "#   $ nvpflag gty 0x67747479"
+      },
+      {
+        "line": 9,
+        "text": "# - If MP Test mode flag is set (nvpflag tst == 0x67747479), don't"
+      },
+      {
+        "line": 48,
+        "text": "\tOUT=$(/usr/local/bin/nvpflag tst)"
+      },
+      {
+        "line": 62,
+        "text": "\tflag=$(/usr/local/bin/nvpflag gty)"
+      }
+    ]
+  },
+  {
+    "file": "./usr/local/bin/wrldr",
+    "term": "wrldr",
+    "offsets": [
+      11531
+    ]
+  },
+  {
+    "file": "./usr/local/bin/nvpflag",
+    "term": "nvpflag",
+    "offsets": [
+      4367,
+      4687,
+      4815
+    ]
+  },
+  {
+    "file": "./usr/local/bin/nvpflag",
+    "term": "fup",
+    "offsets": [
+      4380,
+      4440,
+      4700,
+      4823
+    ]
+  }
+]

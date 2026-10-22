@@ -1,0 +1,92 @@
+[
+  {
+    "file": "..\\sony-nw-a918\\work\\game-apps\\capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "07c1d026c1dd2e62eb35000fd1f037e44043e892d45cf974ca3207d95c6b0ea3",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\game-external\\capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "38f9a2da22cf46163c8663f88a1bfdb96bd765ed2305bbe4883c877335b8bfd9",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\game-external\\rejected-r12-capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "895167f53816eecee756e9eefef0320781011ef71c02acbd553d66b240705cd9",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\recovery-r12\\capacity-r11.img",
+    "bytes": 50331648,
+    "sha256": "2f11edcd4c6ef82f8642d709c30bf6880ac4fc6d7c149b437d3aada673791d49",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\recovery-r12\\capacity-r12.img",
+    "bytes": 50331648,
+    "sha256": "e93b344d0bde4bb22ef19eb1e15ccf1cf9cfeefaea93e175e4f5980849d4f50b",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\recovery-r12\\root48-test.img",
+    "bytes": 50331648,
+    "sha256": "49bf5027f0d47e020beb8e7bb8810ea7b83a9315de7e618a8f8ff8efa4a56e97",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\rootfs-usage\\original-capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "d59013f9b8b010089162c4b1552762412ad4fbd20948f92c14b1e04b049e9f71",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\rootfs-usage\\R14-capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "6057bd71fbcd518ab0ee6729f1f1a64307d77855b389ce1c2195630a57d1bf6c",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\stock-trim-audit\\debug-stripped-capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "90e8ef28ca4f78452e11984ccbe98a0037bbd9edffb28f4852b5f88911528e1b",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  },
+  {
+    "file": "..\\sony-nw-a918\\work\\stock-trim-audit\\without-factory-oma-capacity-files\\root48.img",
+    "bytes": 50331648,
+    "sha256": "cd2306800136666ca9fd93b5fc96cade7544ea24f4be6821d1a5044c7d3351ec",
+    "ext2_superblock_magic": "0xef53",
+    "ext2_blocks": 12288,
+    "has_ext2_header": true,
+    "classification": "Local generated rootfs-capacity fixture; not attributable factory NAND backup"
+  }
+]

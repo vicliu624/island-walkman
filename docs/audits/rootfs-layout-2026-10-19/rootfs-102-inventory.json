@@ -1,0 +1,5458 @@
+[
+  {
+    "path": ".",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./contents",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./version",
+    "type": "0",
+    "size": 10,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bb4d21ca0cf705354d2c7e4715dd2e2daced5ace48e8600d98871d3200819486"
+  },
+  {
+    "path": "./linuxrc",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "./sbin/init"
+  },
+  {
+    "path": "./tmp",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./proc",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./mnt",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./var",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/inittab",
+    "type": "0",
+    "size": 1039,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2b306fa4f63eb481f555e2a0756b338631d2399c36d656b9974c7bb95d2f0b57"
+  },
+  {
+    "path": "./etc/host.conf",
+    "type": "0",
+    "size": 26,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "83b331f98a128e1721c54be5c07bd38ad0d146e89cdecbe0eb53cbc23ff6b86a"
+  },
+  {
+    "path": "./etc/group",
+    "type": "0",
+    "size": 92,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c93096ac925ad5af164c90880ec1caf94c4452bdc965c084f4475dca69337a8b"
+  },
+  {
+    "path": "./etc/rc0.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/rc0.d/K90halt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/halt"
+  },
+  {
+    "path": "./etc/mime.types",
+    "type": "0",
+    "size": 7374,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f63a88a95a0c446557b47056adfcc16d78a836bb5bdb99f81c34a541911c7bfe"
+  },
+  {
+    "path": "./etc/rcS.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/rcS.d/README",
+    "type": "0",
+    "size": 701,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "54c427c18240af8c8a72e1d567c5983cb1d20428c1bb128edc4a5cec9a0a8aa1"
+  },
+  {
+    "path": "./etc/rcS.d/S30mount",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/mount"
+  },
+  {
+    "path": "./etc/network",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/network/interfaces",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/network/interfaces/lo",
+    "type": "0",
+    "size": 83,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "fd4747996008e773e11076c73d9c1365fced5657715c4e970d61df00651518b6"
+  },
+  {
+    "path": "./etc/network/interfaces/eth0",
+    "type": "0",
+    "size": 133,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "448581f51cf4e5c8035b86a436d30c419d8a8b235d9b03222bcd84f1156c7ea0"
+  },
+  {
+    "path": "./etc/network/route",
+    "type": "0",
+    "size": 68,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9742c59e4b4f42437e23591a2e07ecd22dff7af798343db007a3caf5a86813a2"
+  },
+  {
+    "path": "./etc/nsswitch.conf",
+    "type": "0",
+    "size": 1696,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9899e90a6838fc3932bf774db552f91506399ac3ff42b937bb95b4746b01047a"
+  },
+  {
+    "path": "./etc/rc6.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/rc6.d/K90reboot",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/reboot"
+  },
+  {
+    "path": "./etc/terminfo",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/terminfo/v",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/terminfo/v/vt100",
+    "type": "0",
+    "size": 1163,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "94b356c5a95014cda1e9fa410398756c7c122ebdc838283b9b3988dffa9a0078"
+  },
+  {
+    "path": "./etc/terminfo/l",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/terminfo/l/linux",
+    "type": "0",
+    "size": 1695,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ce731c63e075f8fdf1cbb6735db76023a9725f174a8c04811d1da0efc64d4e31"
+  },
+  {
+    "path": "./etc/default",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/default/rcS",
+    "type": "0",
+    "size": 0,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "./etc/rc3.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/rc3.d/S80telnetd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/telnetd"
+  },
+  {
+    "path": "./etc/hostname",
+    "type": "0",
+    "size": 18,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "40c064532b58351196435652373f391297ff5652d29ab0c8998b661ef00b453f"
+  },
+  {
+    "path": "./etc/firmversion",
+    "type": "0",
+    "size": 347,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a1d106f34b20e32a89736405bd10c98d232941c5f4b54e5b72b1cc778e3c3208"
+  },
+  {
+    "path": "./etc/ld.so.conf",
+    "type": "0",
+    "size": 39,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "95f4563257d460924e460581fb4e5f54511cc12e70740d509d29bd27da938a70"
+  },
+  {
+    "path": "./etc/resolv.conf",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../tmp/resolv.conf"
+  },
+  {
+    "path": "./etc/passwd",
+    "type": "0",
+    "size": 187,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f9ddc3685fcf9af544bc68f1e5010436834307ccf2c2a216888417045924e622"
+  },
+  {
+    "path": "./etc/rc5.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/services",
+    "type": "0",
+    "size": 19938,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "12549ea7e67f3d20de33a0e18bfdbf0000d789bd65d7e926f1f55232309b5b5e"
+  },
+  {
+    "path": "./etc/fstab",
+    "type": "0",
+    "size": 221,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "48ae601bcc359d929313405e4b832e12e0de957b023e0d8c8a2731405a9db18d"
+  },
+  {
+    "path": "./etc/rc4.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/protocols",
+    "type": "0",
+    "size": 178,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4e8cfa7ccbb64f9c371d955998f583b4d76176fed110ce5513f70b8c47fddd80"
+  },
+  {
+    "path": "./etc/hosts",
+    "type": "0",
+    "size": 42,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "903b4c3ca69188a50008d0628a477fd7664e24669e081d91a5037cad0a7b241f"
+  },
+  {
+    "path": "./etc/AudioC_VolTbl",
+    "type": "0",
+    "size": 864,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "cf47ff510c6061c383812b6af503be1e2c704f8cdc01e2897ecbccf3aa702633"
+  },
+  {
+    "path": "./etc/issue",
+    "type": "0",
+    "size": 57,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9954a81743859ee548303ddac0acd7fa5828e807daf38efb93a57ad3c9717cf9"
+  },
+  {
+    "path": "./etc/udhcpc.conf",
+    "type": "0",
+    "size": 801,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "70dc17c139ecf9798e02f5e9c85118585e8bb682d9659ffa86278dcaef3de6a9"
+  },
+  {
+    "path": "./etc/rc1.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/profile",
+    "type": "0",
+    "size": 548,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "048a1b353fc5532d56f9a0154d24ed6f30f4637ecdf0f8fc3aca88e910e57a39"
+  },
+  {
+    "path": "./etc/rc2.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/rc2.d/S20hwclock",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/hwclock"
+  },
+  {
+    "path": "./etc/rc2.d/S10icx1087driver",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/icx1087driver"
+  },
+  {
+    "path": "./etc/rc2.d/S42gemini",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/gemini"
+  },
+  {
+    "path": "./etc/rc2.d/S70netstart",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/netstart"
+  },
+  {
+    "path": "./etc/rc2.d/S60consstart",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/consstart"
+  },
+  {
+    "path": "./etc/rc2.d/S90icx1087helper",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/icx1087helper"
+  },
+  {
+    "path": "./etc/rc2.d/S80telnetd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../init.d/telnetd"
+  },
+  {
+    "path": "./etc/init.d",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./etc/init.d/halt",
+    "type": "0",
+    "size": 418,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bb502f023b5c078fa96f2954ec085b3a38011e71c807a7e5c1e879964e24fc05"
+  },
+  {
+    "path": "./etc/init.d/netstart",
+    "type": "0",
+    "size": 1591,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1973ce4df9f0916be3eaa04b55f6f1207474211d5d2152048508fa94d1ca3068"
+  },
+  {
+    "path": "./etc/init.d/icx1087helper",
+    "type": "0",
+    "size": 194,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6b40f6816524ca8ff4c9fb47d5ddf8a152d772e2a088281628b101cd8a41d0b3"
+  },
+  {
+    "path": "./etc/init.d/gemini",
+    "type": "0",
+    "size": 3290,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "feb319ca95bef84aefe3705a50b691b4a077885b50ec98a886106824101ed6e6"
+  },
+  {
+    "path": "./etc/init.d/mount",
+    "type": "0",
+    "size": 314,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e1ce9bef701a8226e5ad327409f4c80836ff12e82931533d2fef88c3bc29b6b2"
+  },
+  {
+    "path": "./etc/init.d/rc.sysinfo",
+    "type": "0",
+    "size": 1453,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "da60f3137188a4d67165e32ad00b9084b2602030aeadef06d4ec1c39d1038505"
+  },
+  {
+    "path": "./etc/init.d/mtp",
+    "type": "0",
+    "size": 1525,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "facc43810124ee004c9b1b71100368c82594c735b5a31ff68fdfbc362d6ed562"
+  },
+  {
+    "path": "./etc/init.d/icx1087driver",
+    "type": "0",
+    "size": 898,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c8e7e813d18c80df30b41c788310f82c544bdc0c3beb87597b51d7eb2875e2b2"
+  },
+  {
+    "path": "./etc/init.d/rcS",
+    "type": "0",
+    "size": 1190,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5e20860551a37cea7f8ffc93e30054c65e00faabc1246b585650ea14dc7dd0ab"
+  },
+  {
+    "path": "./etc/init.d/networking",
+    "type": "0",
+    "size": 1916,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c6796950e7e938b54bdd3ba51a4a97ead2ec6e5a32ba2f825895d31bce7fd95a"
+  },
+  {
+    "path": "./etc/init.d/rc.altinitrd",
+    "type": "0",
+    "size": 196,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "266df1587190109959ac8421694f006abaadd27ce624e06cd4201e432b738fe5"
+  },
+  {
+    "path": "./etc/init.d/log",
+    "type": "0",
+    "size": 478,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4cde8243492307a6340e2a78f05117dd3243c0c7a1d4b14c5b53643f81c70984"
+  },
+  {
+    "path": "./etc/init.d/rc.firmversion",
+    "type": "0",
+    "size": 407,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8f7a64c0c0a71c905007358d106319a9178f6305223d8f2d46327122bb43878f"
+  },
+  {
+    "path": "./etc/init.d/functions",
+    "type": "0",
+    "size": 141,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "069f3f2f7632afaa41c8032c2e28b16c3f3a23518400f570c60f8cd6b4289917"
+  },
+  {
+    "path": "./etc/init.d/reboot",
+    "type": "0",
+    "size": 213,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "04f7ee83c618a7333f030e783ff8eb9d4553f87f5b21f528b21011f9a334360d"
+  },
+  {
+    "path": "./etc/init.d/consstart",
+    "type": "0",
+    "size": 1823,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8593db508005f4afa4dd59300c7410b87e3cbfc66b0858fda0784cd313441f77"
+  },
+  {
+    "path": "./etc/init.d/telnetd",
+    "type": "0",
+    "size": 457,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "09849c0f4da71ea9f232d5617d727455f3b2a8c602f10205fe44bf011fd16c95"
+  },
+  {
+    "path": "./etc/init.d/rc.sysinit",
+    "type": "0",
+    "size": 236,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "640f4a7357e6d7a5672960b122c90fcce9e698ee856b9bb3a0e3e608b34b155a"
+  },
+  {
+    "path": "./etc/init.d/rc.local",
+    "type": "0",
+    "size": 10,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a8076d3d28d21e02012b20eaf7dbf75409a6277134439025f282e368e3305abf"
+  },
+  {
+    "path": "./etc/init.d/hwclock",
+    "type": "0",
+    "size": 310,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7e9345fd1f5540967d6dee37728f00dfa16b0fc8f7f8e00e2addcc720349a72b"
+  },
+  {
+    "path": "./etc/init.d/rc",
+    "type": "0",
+    "size": 3011,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d0e897cc7d07000e990061962f6e6df3a02504e94d2906b398325112a9530f97"
+  },
+  {
+    "path": "./sys",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./sbin",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./sbin/halt",
+    "type": "0",
+    "size": 9328,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0437c10ce1169289080c89cf2c4062ae4a6db20d76a432348493c5f0e7e9bee0"
+  },
+  {
+    "path": "./sbin/fsck",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/klogd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/modprobe",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/ifconfig",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/init",
+    "type": "0",
+    "size": 28908,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "edb375993e5512c2d7197f154d6dcac852fef589d50fe411dc8edc54d4268b21"
+  },
+  {
+    "path": "./sbin/rmmod",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/tune2fs",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/runlevel",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/fsck.ext3",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/hdparm",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/lsmod",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/swapoff",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/mkdosfs",
+    "type": "0",
+    "size": 49963,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "43905b475f18e94df72a1961081e815a9612367e604165fb21781161c536769a"
+  },
+  {
+    "path": "./sbin/mkfs.ext3",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/udhcpc",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/mkfs.ext2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/chroot",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/sulogin",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/fdisk",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/killall5",
+    "type": "0",
+    "size": 9284,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "167b8249c7154915aaf459784837c8d211fc8087a55af0af51a3b4d04a5771ff"
+  },
+  {
+    "path": "./sbin/reboot",
+    "type": "0",
+    "size": 3580,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "df325d5423887133eb4e108ba3f4939fc0f35028f412cc4026909990fe36668b"
+  },
+  {
+    "path": "./sbin/mke2fs",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/poweroff",
+    "type": "0",
+    "size": 3584,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bdce6abc75436d58791ed8d77ae12747d11508d40ab69cfe66e1ad4936455270"
+  },
+  {
+    "path": "./sbin/e2fsck",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/telinit",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "init"
+  },
+  {
+    "path": "./sbin/swapon",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/fsck.ext2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/telnetd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/pivot_root",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/syslogd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/sysctl",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/shutdown",
+    "type": "0",
+    "size": 16208,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "85ac78a2f1daf4a05a4abfda0549d818275deb6f058cdf3026b7838d9db49c2c"
+  },
+  {
+    "path": "./sbin/hwclock",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/insmod",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/route",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./sbin/getty",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "./usr",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/sbin",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/sbin/flash_erase",
+    "type": "0",
+    "size": 14900,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9fe7dc12b361ccb1037d34aebca493fe453604394c7751a88a63b351450a16e5"
+  },
+  {
+    "path": "./usr/sbin/nanddump",
+    "type": "0",
+    "size": 18495,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d1095437bab5b7d7eb2f51afbdcb7d45eb2b8c5ccedbd022f3fe7272231913c0"
+  },
+  {
+    "path": "./usr/sbin/chroot",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/sbin/flash_info",
+    "type": "0",
+    "size": 11739,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "03a9d4d1328e878b05ce6755a3ae611035496296605db616e445a5c269ff8e33"
+  },
+  {
+    "path": "./usr/sbin/nandwrite",
+    "type": "0",
+    "size": 24719,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "31d9ac22226634cf87cff5170581f319126874183fcb17560fcb61ed3f49b83a"
+  },
+  {
+    "path": "./usr/sbin/telnetd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/sbin/flash_eraseall",
+    "type": "0",
+    "size": 35278,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "63ac07c5e127fb50d6ff778d5aab4dfe792960bbb9424cce30372b5247093095"
+  },
+  {
+    "path": "./usr/lib",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/lib/libthread_db.so",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../lib/libthread_db.so.1"
+  },
+  {
+    "path": "./usr/lib/libproc-3.2.6.so",
+    "type": "0",
+    "size": 50904,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "09aacfe6cdc47441863d31ee825113c18dfa37ae1c918a72f0d700a9c9fdecb1"
+  },
+  {
+    "path": "./usr/lib/libstdc++.so",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libstdc++.so.6.0.3"
+  },
+  {
+    "path": "./usr/lib/libstdc++.so.6",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libstdc++.so.6.0.3"
+  },
+  {
+    "path": "./usr/lib/libstdc++.so.6.0.3",
+    "type": "0",
+    "size": 781504,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bb814b286fe315f76bb22da51854258c33770d6952c9a5ecd726a79f29a538e0"
+  },
+  {
+    "path": "./usr/lib/omf",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/lib/omf/libomf_core_hw_dep.so",
+    "type": "0",
+    "size": 14868,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9d1583abd9bc2707fbfe1388a5f5e98fa7a4b4b9035624c6dc90fd7ca06d509e"
+  },
+  {
+    "path": "./usr/lib/omf/libomx_core_dbg.so",
+    "type": "0",
+    "size": 30476,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "58659c63a021ce613cceefc7e9f00c445e333e78ff0f02150bde988950189a9d"
+  },
+  {
+    "path": "./usr/lib/omf/video",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/lib/omf/video/omf_dsp_manager.mp201",
+    "type": "0",
+    "size": 201968,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7a7f55dc727555960240d297de0ff363eed172d991001a01e9298b13b3772ab1"
+  },
+  {
+    "path": "./usr/lib/omf/video/omf_me_h264d.mp201",
+    "type": "0",
+    "size": 2372,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "26a683e59cd830096510d569a578db1ee39f7d8bbf013c62db4471809b0d8fcf"
+  },
+  {
+    "path": "./usr/lib/omf/video/omf_me_m4vd.mp201",
+    "type": "0",
+    "size": 2384,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8e700ee186b761f5b109da5a9db9e5decc0912d712ce616a0475e903d9036ee6"
+  },
+  {
+    "path": "./usr/lib/omf/video/omf_me_ps.mp201",
+    "type": "0",
+    "size": 2296,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "542ce3da652a64a86a137d1bb9911dc3c990cc6a62ab2fd4d99a871f33dd245e"
+  },
+  {
+    "path": "./usr/lib/omf/VERSION",
+    "type": "0",
+    "size": 441,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b12a2c964e1964cd9ff6a471e3afe7b21a21e93f776ef61dfd54ee97bcd8869e"
+  },
+  {
+    "path": "./usr/lib/omf/omx_nw_walkman_video.cfg",
+    "type": "0",
+    "size": 1008,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "294b6319b48d83686feff7f62a3dc3a9c5e76bc034b3327029124c159099be84"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_mp3d.so",
+    "type": "0",
+    "size": 19668,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "84222ef8e20f3c19d366e1af4444566caa629ef1cb27d0f4e4eb10e7174f1829"
+  },
+  {
+    "path": "./usr/lib/omf/libomf_core_hw_dep_dbg.so",
+    "type": "0",
+    "size": 15744,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d56e15b2fe71b455dc03a6b718b23d204c210e4af4e5ce0fa6935812e69505a0"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_lpcmd.so",
+    "type": "0",
+    "size": 19644,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9777ff91deb198df2083785b23e532284eb0d2b9567c0af1d777180ec45b24be"
+  },
+  {
+    "path": "./usr/lib/omf/dtv",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/lib/omf/dtv/omf_dsp_manager.mp201",
+    "type": "0",
+    "size": 644812,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "59a8a5e7c69add2b88cc758570b057ac86121489a0f57f83953c8e8f124028d4"
+  },
+  {
+    "path": "./usr/lib/omf/dtv/omf_me_aacd.mp201",
+    "type": "0",
+    "size": 2552,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c1b1c098c9441d8ec320689f7b4e47ab9dfa84e082e5c61eb51f5e94dc320cc4"
+  },
+  {
+    "path": "./usr/lib/omf/dtv/omf_me_h264d.mp201",
+    "type": "0",
+    "size": 2516,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "80101dace7c305a666de50ae65d12cf904f522cd23015c86f06e5bbd66e354bd"
+  },
+  {
+    "path": "./usr/lib/omf/dtv/omf_me_ps.mp201",
+    "type": "0",
+    "size": 2440,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "367913822f70150f623ba7bcb53decf02f1ceae6c46c48b24d94ac71cc0bc90c"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_atxd.so",
+    "type": "0",
+    "size": 19348,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4b8392b3f7a3a77ba5b0fa28bf89f02171d5720bc362dfeb63912514217ead1e"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_at3d.so",
+    "type": "0",
+    "size": 19348,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f78b7eb90288e8ce7b3cc544e95c2840ef70e88ee7789dae29b20a3ba02c06a5"
+  },
+  {
+    "path": "./usr/lib/omf/libomf_core_os_dep.so",
+    "type": "0",
+    "size": 10708,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b57965fd5e04958e870a0af5d577f91b5d844b90395927d84c1dba75af905d2b"
+  },
+  {
+    "path": "./usr/lib/omf/omx_nw_walkman_dtv.cfg",
+    "type": "0",
+    "size": 844,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f3e80ecbb5235013db8623853f1b83f7a7af11f36086116dfca021a1d19d9131"
+  },
+  {
+    "path": "./usr/lib/omf/libomx_core.so",
+    "type": "0",
+    "size": 30060,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "698b256adf8a626c048cca1b4864aabb703af57e890b0dfeaff3d5a8c63cb09d"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_h264d.so",
+    "type": "0",
+    "size": 20120,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9d1229d7094d64a6c79f911c836d67b2529910a0432e8aea867d147c443464c9"
+  },
+  {
+    "path": "./usr/lib/omf/audio",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_mp3d.mp201",
+    "type": "0",
+    "size": 5576,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0fa12dc44dd533d6b398a61803c7165a3eecd1da5aca053410e9a5aed9951063"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_atxe.mp201",
+    "type": "0",
+    "size": 5544,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ba4ed72884830a4d0bc569d2b83ae83ec1402a23452c56b8cc0a5265ed2b91f2"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_dsp_manager.mp201",
+    "type": "0",
+    "size": 1817584,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7afbbda6c7e9aa80b36710ea956b6a2bbe5f8ec4a1b8c5f486167d7364fd2a13"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_at3d.mp201",
+    "type": "0",
+    "size": 5552,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "88b2211e2ce38c139ce63602c1c354d247c08e2017445d8e25a7718c65d6e796"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_lpcme.mp201",
+    "type": "0",
+    "size": 5556,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a6d3ab7181e0cfd711e38fd1973fb4fa6ebf4cf25b81ea4ea312fdc8aef8fd89"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_wmad.mp201",
+    "type": "0",
+    "size": 5576,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "62107252a733c37799a5b49e74b583a9245f7b2ee1f671e9285d27a184e56f5a"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_lpcmd.mp201",
+    "type": "0",
+    "size": 5564,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "466f757825bc8af579d8ae95b9f09b11a1670ad04f9306b590a6429451780e94"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_atxd.mp201",
+    "type": "0",
+    "size": 5552,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "16258b14588f8050c06d2dd961c6692a06de79d4ec9da789f8ff1b81f165ca26"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_aacd.mp201",
+    "type": "0",
+    "size": 5576,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "15003aef59ed0c541c9258548bd581f5d090102bad1fd05cc75fd4b60ab343c7"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_ps.mp201",
+    "type": "0",
+    "size": 5464,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7da697b59b785aed206f016a3c858f422694e144925bd186ae37286902cd448f"
+  },
+  {
+    "path": "./usr/lib/omf/audio/omf_me_aald.mp201",
+    "type": "0",
+    "size": 5552,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1ec30580df70f2dcf2130fb80edd4054a6136a1764b2d3d6e42cd053cfd172b3"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_wmad.so",
+    "type": "0",
+    "size": 20736,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1df98b681044b6a96cb3fd9ff314fee4a1b62e0ecfafc719030a4d1904ad486f"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_lpcme.so",
+    "type": "0",
+    "size": 19524,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3c9cc6c7fd8ff2c05632ead8964356e13ed30936104bb7d5fc9894e6b949b4b9"
+  },
+  {
+    "path": "./usr/lib/omf/omx_nw_walkman_audio.cfg",
+    "type": "0",
+    "size": 2572,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "80432895f70e300567835d74384cd7f3c3308f46a0b788c295f5b0fdbd59ba94"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_aacd.so",
+    "type": "0",
+    "size": 19844,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e386fb1a04319cf9c25133392c602b7f766d861f60d4e772c13f70f84226f55d"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_aald.so",
+    "type": "0",
+    "size": 19596,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0691412039553ebf46e7be16d84cb3e90040808995e916c507461aedb123c7c3"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_atxe.so",
+    "type": "0",
+    "size": 19344,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "460fbed914958ce3c22ff54a18ed5c63db35d061d3909f9093d69675c85e387b"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_m4vd.so",
+    "type": "0",
+    "size": 19824,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "99339fa8335c9678d031aa424d46359484775745c122ca349ef76967ae4f0b58"
+  },
+  {
+    "path": "./usr/lib/omf/omf_mc_aacd_cpu.so",
+    "type": "0",
+    "size": 109800,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bf351ae16e7f6c3a715ba6482ef4bbf2847af0f3fdd3f4d5d682c3a29df509f6"
+  },
+  {
+    "path": "./usr/bin",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/bin/lastb",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "last"
+  },
+  {
+    "path": "./usr/bin/tail",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/chvt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/cmp",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/logger",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/reset",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/bzcat",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/time",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/tr",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/basename",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/unzip",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/lsz",
+    "type": "0",
+    "size": 66784,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0558ff882b09ac422567aac64bb5059dc2575aadc83d91739ccb24ece671f818"
+  },
+  {
+    "path": "./usr/bin/yes",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/uptime",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/ldd",
+    "type": "0",
+    "size": 5428,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "dc79f17875a57c99bf4a748bbc4e253db8e975d5551b796e1dd7e9dc63790772"
+  },
+  {
+    "path": "./usr/bin/sort",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/strings",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/xargs",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/whoami",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/hexdump",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/[",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/wget",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/dirname",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/lrz",
+    "type": "0",
+    "size": 62936,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bf9ed1378bce242384bd49ad1a428c07749dd486170fa532022981c905dbe769"
+  },
+  {
+    "path": "./usr/bin/md5sum",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/install",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/less",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/[[",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/which",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/tty",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/cut",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/tee",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/deallocvt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/telnet",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/readlink",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/env",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/clear",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/uniq",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/id",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/killall",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/find",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/od",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/wc",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/expr",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/test",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/head",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/bunzip2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/du",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/bin/openvt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../bin/busybox"
+  },
+  {
+    "path": "./usr/local",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/mptapp",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/mptapp/oneseg",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/mptapp/oneseg/CHLIST00.DB",
+    "type": "0",
+    "size": 3248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "27df8a2020b2d680a24478af44325c109cc6b7aadb95154452b0ae7ae5222164"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnslope_g.bmp",
+    "type": "0",
+    "size": 230454,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2d6cc7f30d6ace4c4e46ce2635874ee1b0399dacf1a6be59bb2b158e2a95a943"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnfont2020_1.bmp",
+    "type": "0",
+    "size": 153656,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0bc9a6c0913817dcc89421ca997beaac0de1f8202abece8923ce6923f1d591be"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnslope_b.bmp",
+    "type": "0",
+    "size": 230454,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "21f78bdcddaceed3ec68f6517423787f705d4057282f6fff8392d91f9f8793bc"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnfont2020_0.bmp",
+    "type": "0",
+    "size": 153656,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "054a266d9dabbc6ab8a10b9db5739cf14302dd0e401afcdab5b69743ecda2304"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnfont2020_2.bmp",
+    "type": "0",
+    "size": 153656,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f0c5f3685a9135171d4bb710ddda76e46d90b7d070987adcf08d55b3bd14c1a4"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnfont2020_3.bmp",
+    "type": "0",
+    "size": 153656,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "935b9adc06989ab38ec7cc80248e54c4259e5f243916dbd28076a14aea9897b7"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnslope_w.bmp",
+    "type": "0",
+    "size": 230454,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7f531beca30ea57d8704de3f835dfc6f222daff19b10f6235049127f0fdc16c9"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnfont0808_0.bmp",
+    "type": "0",
+    "size": 24632,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0a545a1f4deccb2f3f5906842ea8f1bef37e1016d30178130377f8dce38e8763"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cncolorbar.bmp",
+    "type": "0",
+    "size": 230456,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c191e9eee06aca28c8f7e15f7d19959e6b0f6ce917fd3c49a699dcf8129cc9ab"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnbubble.bmp",
+    "type": "0",
+    "size": 76856,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "14b30486a2298bd44dfc69506bfe98fb03ff917b275a318ef5e3da4d0c9da9ab"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnslope_r.bmp",
+    "type": "0",
+    "size": 230454,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9afef05508910c30c45cdcad64f77a7360df1a8b1aaa0495660e2b2e325acb94"
+  },
+  {
+    "path": "./usr/local/share/mptapp/rgb/cnballs.bmp",
+    "type": "0",
+    "size": 221240,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c9662e1dee7293f16c8203ccdac0fe240bfeb22c38ddba6d432265d48173285a"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test014.oma",
+    "type": "0",
+    "size": 724176,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "19621cbe855d065866d81ecfb9422143fbcad3d7b24a2a6285bdcf467f8839f6"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test010.oma",
+    "type": "0",
+    "size": 723834,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "fc37a06f759ced0ebac3a40b496ac0e981c4dabaede4ebd5db506281770f4cfb"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test012.oma",
+    "type": "0",
+    "size": 723834,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f00faee4e4e4af308a13b3f7770bd5cb498f74cf82a88532ef415ab1e67535e5"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test011.oma",
+    "type": "0",
+    "size": 1444500,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1ccf9f25b957908ad5b3d5f0c04ae485f738ba80fa2a8d0f946527a294023fed"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test008.oma",
+    "type": "0",
+    "size": 723834,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9c67d70a7145cbd6f8f64d7cc22b59f23e825c711055ad896f5bcc28e4afc90a"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test009.oma",
+    "type": "0",
+    "size": 723834,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "15f19c6d34ccfcbc27c7468a1aaad6dde4a2e4d23abb422a116adb5e95b60a7c"
+  },
+  {
+    "path": "./usr/local/share/mptapp/oma/Test013.oma",
+    "type": "0",
+    "size": 723834,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f7e73c925515dd997bd38d41ae7042e0b020f5d5cd094dedc882c70d4e9b00d6"
+  },
+  {
+    "path": "./usr/local/share/mptapp/yuv",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/mptapp/yuv/cnbg.yuv",
+    "type": "0",
+    "size": 115232,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6de761cb65966d02f602a83900c9d2c98592d991665a40c861bc8e695d54d315"
+  },
+  {
+    "path": "./usr/local/share/gemini",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_chs.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "57d91a504b8a9d3e33758fc87c5157823b3034d79333f416ae42509abbdf886b"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_spa.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "14e010a4a9be32918855a506e26dd8857b3c6ba07dc2496951d59cbba82527a5"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_ita.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7f4307a70c87e3994bdd788492ee4b0543cd6aafed4e29cd6ae11ba458e5c145"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_jp.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d313a3280229629badb79899cfdaee7fcce274585205b97cf457da445087141b"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_jp.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d6b8ee6f42e37229042e9a37f23127ddf604d90d804708cff4c8ccf0dad8dbfa"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_rus.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bc67deec24b1f76c80e5ad9fbe4b38a3748952ecc2cda97840002b877b8614ea"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_spa.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d7dad0a6066df4599a6f2ec1ed44b9a16158bf17ad234cab81ff63ebfed829aa"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_jp.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c969074fb77a40cc198369ddad658e34e65af9b4098ff928ac4563fcad8a95df"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_cht.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "78d42dad2c5a339e0dfef6f11445996aa27456068d67fb7c2d9b9e4f5786448c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_pt.bmp",
+    "type": "0",
+    "size": 22152,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e5206d70ee7861b95c529c53c16e9f1138a2956624515e8a204ec724eb56186f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_jp.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "daa6aeccff998365f08c8d78fa3e33a82eca02144af85f6d045aac2d7ebf8dd6"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_pt.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "13cc10c75420d08723b325680b841d2c3ab87b8c62532e680c32bc469525a033"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_kr.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "cfc52554072227a176e646c60f21e94a558146af08569860c52dbb7f46c6e610"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_kr.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bfac2a31272adebdf34fb2b24dc96ac261901b008b321f243dacae8e47417f3c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_en.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e2dc0cb0941192022483526d10f4888747e7cdbc6d9de4a6c8af91bba8dfe1c2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_chs.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "aa8b7e76950ead29b07f48cda9f2f5bcd29eb7bb5760687dc00cdcb59a1f08cf"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_ger.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "35597f9dae4fcb95287a4bd7008f7da279cffe7510fbae94f550ac31243a65bf"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_rus.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8879705d83a485b8cb2d17b6d48707b8f2655fc6e9717a5759a641c29b2d117d"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_pt.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "85a2c49f22e8b24feead5d904ae821acddc8687edde232d0c012bf323ba0624c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_cht.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1b1f57ee126c70016e4c6b29a31aa519b326ebdb23d27d2bd150d9349f53519b"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_ita.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "606885d77c473f868e4c4710406545b2274691b6cc0693961ec355678aaf31fe"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_bg.bmp",
+    "type": "0",
+    "size": 153666,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "884ab009bf03addbb20e7b6023c04cf5abd5e636b237fa7af8ab242e492f863f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_chs.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ca4274eaf4ffc4b1b786e91041f4dc2b4e2f0e12358b100ae6de9c8926e14357"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_bg.bmp",
+    "type": "0",
+    "size": 153666,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "349808839a6991876297183458bda28c704161d8a45ec24999ced36e93387d8d"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_spa.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5e7cd7967154405c6c1d376bb9e2d9ff2f14b3c580ad5c15edb6711578451551"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_ita.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b350f65deab781491960bd4930a66d68859aeea8079c6ddf04cf55c0b9699a2a"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_fr.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bfd28a9cdf540dc56e2789920f3ef4dfbf1bd8272722603f42e39584a33facd2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_cht.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2918542e37a029a474b1314f6836075afdd5fe971b8aa381df26bf1ae4e5216c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_chs.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b65273356b0337d70117a7fdc6981c53da37736984a640b19e14b204a08cfa94"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_en.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0b87562d72f69f478059586c274aec171712263264cb1649fdeb7873e477b78f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_rus.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7ec01e487f74210edd937eb2b956045af4fcf6d78fd81e9208d0c6959d78d1ce"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_spa.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "eb3728ce83aef3f74df46b5d26f7524f30a0a0a6965d5e218bccdacb1661a26a"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_kr.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2e1381febb4cec6b5d2ed94284925f10f8f7aa88cec6dabeb82cbc7e6c0e0dcb"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_ger.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3be149a3e3c61eebc4869807d1fb6e8831c43714c337647ecdad37089f84e09d"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_ger.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "32bd776242485396ebd8cc9c2024b9ee6f4936ef222722bb3e230ce589e6003f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_fr.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "911f336885c0bc3496bc41adbbbd6622b01d82c1b5d9f4a771a62ea552fb93a2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_en.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "fb0fcc146782122337ba3429a3de31640b634488640585550ccad51610fb27bd"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_pt.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "03b086b9bba6722904e05214e3309238609521e865df4823e9afe089900a9434"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_bg.bmp",
+    "type": "0",
+    "size": 153672,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d5324d82a7c6922600daa782215d6f1a303c4391cbfd762bb0f97e695002aed7"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/loader_progress.bmp",
+    "type": "0",
+    "size": 104,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "fa2104bfaf63b688d4a0d7087199d23430ad6d424f86ec3e87cc64a64cdb744e"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/hold_ita.bmp",
+    "type": "0",
+    "size": 49704,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "86f9e4858b8ebeb3adec26dd00010f9872c21e75a8fada1e0b362fb3357f1195"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_en.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9298cff1f6cf89fc7927f1c4466192b3aac070052106cd5fb3a7f360384db6ae"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_fr.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d1e7cc2c4b6f0f71733d66cb3de7a209a8e07cc44ee9225bfeccb7f12ef0335b"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_ger.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "58d05008129527d664351935f1db138fbee085c1bceb7b460e8fa44117542735"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_rus.bmp",
+    "type": "0",
+    "size": 66248,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1f7eb085b6d2fc9d6a565b5b86c4985bed8c8f16f8bc348b4ff0713e792026f0"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_fr.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b52cabc958afd24adeb86399848d467e4bb39417361c118688386571980170ff"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/update_error_cht.bmp",
+    "type": "0",
+    "size": 37032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a0a8eb5287cc31bf53952595f6c3002a389a42ee43d14451a06f7bb3feac2058"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/loader_rc/lowbatt_kr.bmp",
+    "type": "0",
+    "size": 24360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "25c60f42dd1d033d7c7a98638fcbbddf62ae33406a4e0e5a8f3b2488873909d8"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/font",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/font/ICX1101_dui_font.dpk",
+    "type": "0",
+    "size": 3783920,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f5446c7a92cd5237dcfd0503c58838252b0da64035165cec73c7b5fac869118a"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/font/dui_font.dpk",
+    "type": "0",
+    "size": 3466976,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "53a39f7614b00992d1a3c843ebfa0387658173d0120100eb051d0f73ec6718fb"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/wording_res",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/wording_res/ICX-COMMON_wording.dpk",
+    "type": "0",
+    "size": 248000,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5fcf08ade749713892649752dfb7201ebb09950387fecc34b1af217c9d1e7102"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/dui_tex",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/dui_tex/dui_tex.dpk",
+    "type": "0",
+    "size": 5223408,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9ea83fcdf1ef76c18bfea6ce6ac0ae8e7e12830d9148d7d4aba76dfaa25f3134"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/dui_tex/ICX1101_home_anim.dpk",
+    "type": "0",
+    "size": 956944,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d9da1a5813b06968875dff9bcc922310d4991ebf378feb8eb4827ae6bba7df84"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/REGION",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/REGION/REGLIST00.DB",
+    "type": "0",
+    "size": 2560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8d704cecb2746f1d1f090ff5fe45770dceee992f12270a435adf0bd20ee1d3cd"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST3C.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5ecda21390fc26d15a9b42bf08e86d991f5a94c38274a00837bc8d5f590111ed"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST1F.DB",
+    "type": "0",
+    "size": 560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5aa2c308f7d2573b52b471755a39c61cec3f04e46264dcc39335bec24135408e"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST19.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6d1eab0eb6666e373cf7ea9dfdd1d595b4878db9b60465e89fce72dee6699cec"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST21.DB",
+    "type": "0",
+    "size": 560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d6e8f0792954a799f55fbe0a1bef298567e3d42d7bc2bea5da55b0f897186439"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST37.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6e57fad28cf5322ed6dea099462589689207ef854eca0a9698db90ff6f05c3b6"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST2F.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "aa5d26fb76de01137a9872753d85b013e5d8f9f85897523b26ffec004cbb85e7"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST13.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "acdc809af59a87359806711e0a87588c03c633cadb5715da4f8f86bf659709dc"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST20.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4583296971458b14839cea2d9993d73d24b503c2c1c8909142fc5d4c49905fb5"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST40.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b156c72bcc27dd5029497ec382b4600fc9520effbb51e7e60801d591a85ac81a"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST1D.DB",
+    "type": "0",
+    "size": 560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "95fbff66605b0074b1cc0f46ac2c3a2c4eafcc34fd30426b3c6c3af942df87dd"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST2B.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "09a51388a379ea816f85891f3a589832c0c125b3ff5afe127d2dcaed725eb87c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST16.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "52c8a799e820a130ca6db0533316979c14c367879d4fb39b6d8bf1083dc8d53a"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST2C.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "be3bcbc7738652d6ff79fc5757084939cdb0b9081f51274c261a71430ecf1fd6"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST2E.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "fd648ba82a7f159d45c62aa45e96c1e4aa4cf273d2cb8d0f807d9c3f8edff3c7"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST14.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "15a59e1044d528248d05c3c3488e97e1cd7a43f9c9dd3b4b3b5f3ee0fca91a42"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST32.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4bf2b60e7bd72231aff45c7757ea82f0cdba56bce240a58640a75a6bc153276f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST24.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "581c0d6f2b12bd95896527c87daf651bae8df14a8855cd03c3eb9b0f9483f902"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST34.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4b1601ec27095a4303f564b40ed06d1f3a9d83a1c65c28f89c53efacdbca7cc7"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST42.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f07e462966f305d5296fb3b9a6f381e3f71ecb264f3205eea01c7ab42b2edec2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST28.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0b1e0b22657aade85dc9f064feaff330778d8dd97f7629edf75d12eed1b248c2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST3A.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "45390e12effd1ec6ece4afe2894bd4413f49bfa2202fbc659cb63670976e1766"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST15.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "33f445a88fa426840fdad5cb1a628509299990ba12b0fd5b21b699afc418e72f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST38.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "144cb442b0aa06be605bf0b77f5867cffe0f6df88e3c558531a5fab86a05aa8e"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST43.DB",
+    "type": "0",
+    "size": 240,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7765484e26be79cf3807573514a2315413c66054a4315b78562fb37a807b38c7"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST31.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0b09e75b89204cdc5a2ecae0e0e2c31834f5659f69673a40c3ac3946e22b02d2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST11.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5dc166707a064d74f44c9dbe993642848c5649bb438a29c860b486dbc18f245c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST1E.DB",
+    "type": "0",
+    "size": 560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8c64a4c6b50dc6ed5066c16bc3b688271c075c4bfb9cc1495b700e9e13ea9d2c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST44.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "41ffbc2968267257f4be6f6fb17131e04a57d619e9e9ccdf35179922c6130be2"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST3E.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9dd224c96df3ed77eeba51457846e6a52ae14c5b5c70dfb080d615b2d616c336"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST3F.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "67f0c30d24f751edc7ed58129ca6aff67f420db5ed8216f3aa50504130bf6ccf"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST3B.DB",
+    "type": "0",
+    "size": 240,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "efa735c0a6ead10a4be358d0ec12d027ae4927bd56c223cec04fd59c8f8c27cf"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST2A.DB",
+    "type": "0",
+    "size": 304,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a35a952beec08b673621c3d99b76a1044d4724af38550a8eac06e565e54ba7a1"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST39.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "464e9f51a2a503bf45cc18706ab94decd6cb56da79ea3f04ec7f88eed51c414c"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST33.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e4893a3262f5efd7f4a09e9f631ff3015665a5ff85a82a795b0e85e8b62d3b61"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST12.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f33bfcbeea5223221db00b048fa0538b915bff7d1e8b23179dfe0105ee4d6a67"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST35.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b743fd0ae05a56fbaa3da86ca76bcafe8af9eb66e49fa0382644c29b7d7f8866"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST17.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3d9b5fd57be24487912fdf40a5fc08a433c3f5509b01591a091d473afb69217a"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST1A.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "97395768fa5d4a65d00dbe6622553b67a01e1fc8864ed195edf4307cb2c333cf"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST18.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a617cdcdb133596894a2373ee41a94f40cc5f59aa77cf31f57a31d8b38f4ab83"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST10.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f76c7137dfa0bcf0fa21b185e69f80d9ca373c1f67d57e5e2483bd13e70cba35"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST1C.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a815000f9d21a47ade38b038e7ccc9b3e52c2a97aa46f42ed2c96e47a89d9858"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST22.DB",
+    "type": "0",
+    "size": 560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c7417515ce4948f1d3ef0201202751ac01c906ac9f42743a8c660711b535f35b"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST1B.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3ce31083317a70451a8f2d656182a892cf66c591c5832ac39fe45ede64b5d774"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST27.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "26716c4716a830031f79f68bf53ca6ca2996b6e406bebe199b615181c7a31df7"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST41.DB",
+    "type": "0",
+    "size": 304,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "cb20759641c366452339754126b188a441b7d47fa049639cf7243b2b8a55eb22"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST30.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "02ba01bdcc3ea881bb99aa4e3d545ba20bcd31b469439c657a4da65fa2d503c6"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST29.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d70d9c8a2bc2cf079b65182b8c4071f6a2cdcaf7e1c9f5d28f2c8a8952cacc7b"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST36.DB",
+    "type": "0",
+    "size": 368,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "319770810863210a738af51d12372a2ce1cc6c3372ef7b76a80a4fa558a30b69"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST25.DB",
+    "type": "0",
+    "size": 432,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "eaf7f32285df9e7414a379babbbe007af0a2d59ad20d2fc4f5009b68ed31cb4d"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST23.DB",
+    "type": "0",
+    "size": 560,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a1603fb3aac6c93fce0ee1ebbfce8abada827d3a009346a55fa1db6741fdea21"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST26.DB",
+    "type": "0",
+    "size": 304,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "655867c1f971ee5fc0671ed55f66a963269351a62de742a92826fe171ef91f31"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST2D.DB",
+    "type": "0",
+    "size": 496,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ee2dafb153eb79c1a35c0cabbe06ea08dde0bc040d4c2550ea5634c7842dfb3f"
+  },
+  {
+    "path": "./usr/local/share/gemini/res/1SEG/CHLIST/CHLIST3D.DB",
+    "type": "0",
+    "size": 624,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "17cb4f6feb7f233ef8ec70e261b6851fe6f2ab898140fda663b883661dd723a4"
+  },
+  {
+    "path": "./usr/local/lib",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/bin",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/bin/wripl",
+    "type": "0",
+    "size": 5764,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a2fa260020e26465738391d4fa5aba0d007a892a2667653f9cf3164137535928"
+  },
+  {
+    "path": "./usr/local/bin/cogemini",
+    "type": "0",
+    "size": 31320,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "27f49b6beb91b4c0b334fb62e97406d90662ad7095d2b6f9a6f9728d68e17f9c"
+  },
+  {
+    "path": "./usr/local/bin/gemini.sh",
+    "type": "0",
+    "size": 9256,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c29676f59265e2dfe55f362d555cb918b331e3f1d03833e13c6a49451c101a2a"
+  },
+  {
+    "path": "./usr/local/bin/fatdump",
+    "type": "0",
+    "size": 39532,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "66b590fe7cd46fac8cca35d05586567739bc50089192fa981e0321ce55322be0"
+  },
+  {
+    "path": "./usr/local/bin/wrknl",
+    "type": "0",
+    "size": 13596,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2a4b8673e16277ccceb259b330c8635bfef18904c7da1d66a6d7d3909018e0c9"
+  },
+  {
+    "path": "./usr/local/bin/mptapp",
+    "type": "0",
+    "size": 2798392,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "324aa7a9fe7e395b0cea5dcf4f80942b722eca0418922791e7845d5d759b4ff6"
+  },
+  {
+    "path": "./usr/local/bin/GEMINI_REVISION",
+    "type": "0",
+    "size": 419,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "27a9179c49962d118bc89902076e4671eb76314bf595f8b85801ffbc59658f8c"
+  },
+  {
+    "path": "./usr/local/bin/gemini",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "gemini-ICX1101"
+  },
+  {
+    "path": "./usr/local/bin/mixer_volume",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "./mixer_info"
+  },
+  {
+    "path": "./usr/local/bin/load_nvp",
+    "type": "0",
+    "size": 48,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "95e4b9f671cacdd28f76eb928e945918b3af395284a07698ad2510f552a58ab4"
+  },
+  {
+    "path": "./usr/local/bin/watchman",
+    "type": "0",
+    "size": 8688,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "42482cabed6a4c3d620e99e1f27967f11bbd5632c132e11795305fbecd90445d"
+  },
+  {
+    "path": "./usr/local/bin/nvpstr",
+    "type": "0",
+    "size": 5688,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "14d28dd347bdfe6c87e4893cf37ca0c2986efc523e1d011cc123eda2045283fb"
+  },
+  {
+    "path": "./usr/local/bin/load_usb_epson",
+    "type": "0",
+    "size": 2527,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6d49d51d301c5a25f94a6da3e1946983a1d918934a9697e97c0a86af403b9cdb"
+  },
+  {
+    "path": "./usr/local/bin/mgscc_test_ioctl",
+    "type": "0",
+    "size": 15041,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7a3f363a40b78f878db1f58baa83b5b60b99d49b959f69dfab5884c75f8e979b"
+  },
+  {
+    "path": "./usr/local/bin/reboot.sh",
+    "type": "0",
+    "size": 1927,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "46f0e0a3910541062eaf71158390f2d6f9c2323de82a55c8165dd3745999e4c4"
+  },
+  {
+    "path": "./usr/local/bin/dsp_play",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "./mixer_info"
+  },
+  {
+    "path": "./usr/local/bin/wrldr",
+    "type": "0",
+    "size": 14184,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6d1b2f2a0d7c336cdcc9a84667561d101cfec12e2ebc878867dc043c49d061a1"
+  },
+  {
+    "path": "./usr/local/bin/gettyd",
+    "type": "0",
+    "size": 6352,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d7fce9fa9fe9c0cb3927d121f82f913639a1a1c017b62b9abcc4aaba390d84f5"
+  },
+  {
+    "path": "./usr/local/bin/gemini-ICX1101",
+    "type": "0",
+    "size": 5691608,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6629c54dac443e42de758ea4fd1c257c140d972f5cfe52a618076cdfd1f18e94"
+  },
+  {
+    "path": "./usr/local/bin/glogd",
+    "type": "0",
+    "size": 34172,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "cef2e95a2689f455ad00a6dd44cf9176fdf538db5486f261983ea94e77b05391"
+  },
+  {
+    "path": "./usr/local/bin/mgscsi_test_ioctl",
+    "type": "0",
+    "size": 32409,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "62bc97895a6023d70511299169466a9ebdaf9b8604efef782ab573b75a8178ff"
+  },
+  {
+    "path": "./usr/local/bin/mkdosfs",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../../../sbin/mkdosfs"
+  },
+  {
+    "path": "./usr/local/bin/load_ms",
+    "type": "0",
+    "size": 45,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "81935390b6e5563f4ffd81e191384fe0190428fd6ffa5fe5f77d7b5f6e1f68c3"
+  },
+  {
+    "path": "./usr/local/bin/mixer_info",
+    "type": "0",
+    "size": 20536,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c7888a19db990a93209164ef848949b0ed8b1508c23bb79b32402d61eac5e95e"
+  },
+  {
+    "path": "./usr/local/bin/apl_conn",
+    "type": "0",
+    "size": 16510,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "37580d0393de4f548718a7b5fdb1b58dc3310edde37582dace172e9b54de5af7"
+  },
+  {
+    "path": "./usr/local/bin/msdir",
+    "type": "0",
+    "size": 7372,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "e6bd3f24c1c865da95a277d0e2b2812d5b7d1565d9846ae6625de952f73091a2"
+  },
+  {
+    "path": "./usr/local/bin/load_mg",
+    "type": "0",
+    "size": 1208,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c741c6478822549d0d65f941ba43a0c3cea1523848360235232e4b7406fdfce6"
+  },
+  {
+    "path": "./usr/local/bin/nvp",
+    "type": "0",
+    "size": 16508,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c7aa6a73fd739bcbe8a028453b932876ca420b9550a54d655424ccb933bcd85b"
+  },
+  {
+    "path": "./usr/local/bin/dmesg_log",
+    "type": "0",
+    "size": 7420,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "efdd89e780dab8fb86dedaf98b04ac0ac9d9e7a232bd2f9c2f3f463d44c060f1"
+  },
+  {
+    "path": "./usr/local/bin/gldump",
+    "type": "0",
+    "size": 58176,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "09852082d39c92d0cfede37c7376b923fb118fb6f2f6f6efeba99f9b32714ba9"
+  },
+  {
+    "path": "./usr/local/bin/load_usb",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "load_usb_epson"
+  },
+  {
+    "path": "./usr/local/bin/load_usb_epson_with_ramdisk",
+    "type": "0",
+    "size": 2652,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a52d1cc97dbf4488b12a842c35fb8a2c60619987b49a868bace4e4e372356eb7"
+  },
+  {
+    "path": "./usr/local/bin/gemini-sampledata.sh",
+    "type": "0",
+    "size": 185,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a4b0d5f7a4dc7dee4d46a761d6af9347b8113771a88b74843da696f30bc86463"
+  },
+  {
+    "path": "./usr/local/bin/load_1seg",
+    "type": "0",
+    "size": 134,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a95a61443b56452dbe9688f62301b9d3301741a4c99301a53939632daa7dfa91"
+  },
+  {
+    "path": "./usr/local/bin/cde",
+    "type": "0",
+    "size": 6844,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0ba218d88a92630fb7ad3c4c1b0e4b024c2cebaaf747a1dca56a05c36f9b95b1"
+  },
+  {
+    "path": "./usr/local/bin/sysinfo",
+    "type": "0",
+    "size": 7628,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "9c2a2e8d356e687e9f736bf4e9cbcb68c00b9460758b5e164c7ece0bfd540062"
+  },
+  {
+    "path": "./usr/local/bin/apl_trns",
+    "type": "0",
+    "size": 11739,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0d35ed1c00ff2ec02f906e455a6bafae995652864b85bf0fa377da2104d08624"
+  },
+  {
+    "path": "./usr/local/bin/nvpflag",
+    "type": "0",
+    "size": 7140,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "90aa0b11ef01c0997a1db28faf664d3eed931675e7c272b7232d74ed3591e7ac"
+  },
+  {
+    "path": "./usr/local/bin/mc.sh",
+    "type": "0",
+    "size": 11399,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c9b0c6bcb841916f73f69d4a55b68080f2cda0bcfeb1448e28694ffb32b5535d"
+  },
+  {
+    "path": "./usr/local/bin/icx1087_syslog",
+    "type": "0",
+    "size": 22896,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "756d481218e8a901f84fa39129436599f9593705f2782b894ab0755d9ce57804"
+  },
+  {
+    "path": "./usr/local/bin/msget",
+    "type": "0",
+    "size": 10700,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "796d42e3546a7461f4455f40bb40d33412d0834839da8edb6302ff2faf9e63a7"
+  },
+  {
+    "path": "./usr/local/bin/icx1111_ice_debug_port",
+    "type": "0",
+    "size": 11294,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c8d2f1188da912a18078314e29b7b310692fc2297736b9c0692ef90315ae1b11"
+  },
+  {
+    "path": "./usr/local/test",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./usr/local/test/noican_test",
+    "type": "0",
+    "size": 5452,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "24a0acc034013d561cfce84c7944fe69c86a791b6ccdb7e6022b83f306ef5466"
+  },
+  {
+    "path": "./usr/local/test/fmscan",
+    "type": "0",
+    "size": 28824,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "145986bb6f46105a5128331878dd512c1d4c0f56f51bbb6ab5d4a6dd1dcbe50e"
+  },
+  {
+    "path": "./usr/local/test/icx1087_power_test",
+    "type": "0",
+    "size": 5156,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b6533c753f96afa21c6b4adfa0a48258176dfc568d39eb814bdfe60abf6e262c"
+  },
+  {
+    "path": "./usr/local/test/cradle_conn",
+    "type": "0",
+    "size": 5248,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "00e5ffbb930f8d00d6a1a6c37ce0ccb60d416cb16d8f710ba91aa3518abd3254"
+  },
+  {
+    "path": "./usr/local/test/fb_usb_test",
+    "type": "0",
+    "size": 4224,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "087c5eb11aeef78bcd7e16491bf9eb43e568b71e99340ad3323f451b05fb36e4"
+  },
+  {
+    "path": "./usr/local/test/power_off_test",
+    "type": "0",
+    "size": 4556,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5e539cab5f05d17e9b028c035424249ac0b816595769e837089c4b217ff2fba5"
+  },
+  {
+    "path": "./usr/local/test/cpu_backlight",
+    "type": "0",
+    "size": 11136,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c5fad5cd1aa2c6bc26b0ea47a65fa9fd179e3ced61e345923959f5f73c0fd543"
+  },
+  {
+    "path": "./usr/local/test/icx1087_power_enable_debug_port",
+    "type": "0",
+    "size": 3916,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "62f034a0c0d637f1b5c168279f210fb42658657d4f1568e4769a3644e9e7c3f2"
+  },
+  {
+    "path": "./usr/local/test/test_led",
+    "type": "0",
+    "size": 11720,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8bb81ac8c3320c5708d9c7124de529842482453740edbf092b9d553253889bc7"
+  },
+  {
+    "path": "./usr/local/test/watchdog_procps_test",
+    "type": "0",
+    "size": 5336,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "dd2dfec290a2d2af10e8ccdd9fa67df1ef622bb63ce3deaccbdb1c7f0346dd15"
+  },
+  {
+    "path": "./usr/local/test/backlight_test",
+    "type": "0",
+    "size": 5928,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "00fce0af51d42e7ff24d68a0257a18bc8ba9e5427a9ea67d424b7aab217a5062"
+  },
+  {
+    "path": "./usr/local/test/key_ioctl_test",
+    "type": "0",
+    "size": 3840,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0188f47a47e72906f7c82446bf29dbf36a51e63301ffc821e593f4ed6a4ae95e"
+  },
+  {
+    "path": "./usr/local/test/ad_test",
+    "type": "0",
+    "size": 4420,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ecd9ea9793c8f76acef2a0378fb60d39ef0ccc1f6bd633af1db8f396856dba4d"
+  },
+  {
+    "path": "./usr/local/test/fm",
+    "type": "0",
+    "size": 25822,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "12e267320dbe930c22fc881af6e6a92e8759b4b7053fd7298cf5c9546b3b5a6e"
+  },
+  {
+    "path": "./usr/local/test/bar_ramp240x320.bin",
+    "type": "0",
+    "size": 153600,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5f9d2d0c1a718e2aa25560711181bf6ca3f669b57467f24dd59d10caf89a3f1c"
+  },
+  {
+    "path": "./usr/local/test/dhry21",
+    "type": "0",
+    "size": 14728,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7cff8adc422e160cfbe58f62f1c6a28d3c2c13b6c468c4750189688c155050d8"
+  },
+  {
+    "path": "./usr/local/test/key_event_test",
+    "type": "0",
+    "size": 4948,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0e845bbaaab53154ff36bfc8daf8366ffc445bfde184fa22d93665ab80b327d6"
+  },
+  {
+    "path": "./usr/local/test/nvp_test",
+    "type": "0",
+    "size": 5284,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b654cb50c1f7aef36e03b5b1325608acb3b225f0803786c613e85648d4e60e69"
+  },
+  {
+    "path": "./usr/local/test/colorbar",
+    "type": "0",
+    "size": 5216,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c367072ca616dcbfcc0b88f022571bbce0164bba9fa1b0e251e475811f74b4f5"
+  },
+  {
+    "path": "./usr/local/test/gap_auto_suspend",
+    "type": "0",
+    "size": 5532,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "902437cd769bf553878f22c6d303ba52b6b894f0360cd9d5fed0535561eb94af"
+  },
+  {
+    "path": "./usr/local/test/alarm_test",
+    "type": "0",
+    "size": 15879,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6cfa0d2f835fd284477fa0458b6c988aa86460aef6f066c807bf8b2954d8eee3"
+  },
+  {
+    "path": "./usr/local/test/watchdog_test",
+    "type": "0",
+    "size": 4052,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "4040ceaf16f018de25a40ff6b55952bc005cc655eab7cfb43b658065fef4174c"
+  },
+  {
+    "path": "./usr/local/test/send_dummy_key_event",
+    "type": "0",
+    "size": 3904,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2196d5c668f4c1fc02250fab175e0ca7524797b21db8f9dc9c2fdbf2534d9fd7"
+  },
+  {
+    "path": "./usr/local/test/mp200_pm_ext_test",
+    "type": "0",
+    "size": 4252,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ba0c8d8b12c0aa5658280749a99ac65c6d441cd8cdb970472f00d3be0f2f62cd"
+  },
+  {
+    "path": "./usr/local/test/icx1111_ice_debug_port",
+    "type": "0",
+    "size": 12209,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "43a0b8d9e788e9a7cbd6f2cc70053d4fca26f1e610eba08546c92fcb27dd7ea1"
+  },
+  {
+    "path": "./dev",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./lib",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./lib/libnss_dns-2.3.3.so",
+    "type": "0",
+    "size": 14456,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ab3c0ca271bde461b2492651e932a47adb29316a19e3d978e2fcb8fe9e95cf8b"
+  },
+  {
+    "path": "./lib/libm.so.6",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libm-2.3.3.so"
+  },
+  {
+    "path": "./lib/libext2fs.so.2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libext2fs.so.2.4"
+  },
+  {
+    "path": "./lib/libgcc_s.so",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libgcc_s.so.1"
+  },
+  {
+    "path": "./lib/libcrypt.so.1",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libcrypt-2.3.3.so"
+  },
+  {
+    "path": "./lib/libnsl.so.1",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libnsl-2.3.3.so"
+  },
+  {
+    "path": "./lib/libnss_files.so.2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libnss_files-2.3.3.so"
+  },
+  {
+    "path": "./lib/ld-2.3.3.so",
+    "type": "0",
+    "size": 99796,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "2f007b0809684fde0ac446ad203135c10b4318eb8c10d4160a9f59b32c3c52de"
+  },
+  {
+    "path": "./lib/libc-2.3.3.so",
+    "type": "0",
+    "size": 1109540,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "5afbf3074dfa9ba0478d6670f220ef4d7ec065a255ee856d9093d39210f23812"
+  },
+  {
+    "path": "./lib/libc.so.6",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libc-2.3.3.so"
+  },
+  {
+    "path": "./lib/libnss_files-2.3.3.so",
+    "type": "0",
+    "size": 39672,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3617630f90293938710a723a28fdf88ddcaad0d238be91986ef51b07ab92fe99"
+  },
+  {
+    "path": "./lib/libdl-2.3.3.so",
+    "type": "0",
+    "size": 10684,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "95e1b346e04a0270d72c2bc45f135307d52cda3a2ec27c105c2df835b16bc4f4"
+  },
+  {
+    "path": "./lib/libncurses.so.5",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libncurses.so.5.4"
+  },
+  {
+    "path": "./lib/libnss_dns.so.2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libnss_dns-2.3.3.so"
+  },
+  {
+    "path": "./lib/ld-linux.so.3",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "ld-2.3.3.so"
+  },
+  {
+    "path": "./lib/libcrypt-2.3.3.so",
+    "type": "0",
+    "size": 22692,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "68f6c537587773dd6e80183bce65bb8089042e52e235dce4822fe28b8b577aa6"
+  },
+  {
+    "path": "./lib/libnss_compat.so.2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libnss_compat-2.3.3.so"
+  },
+  {
+    "path": "./lib/libgcc_s.so.1",
+    "type": "0",
+    "size": 38480,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ff996dc11e27b6b2fcba9f88e9c74e7dfc640d685b2c4164cb14cb9a04c74ece"
+  },
+  {
+    "path": "./lib/libext2fs.so.2.4",
+    "type": "0",
+    "size": 103052,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "f4b095744449f933439cc7f24212ff5dbdcd3d00cdce7e7b3d1385223df5d3c3"
+  },
+  {
+    "path": "./lib/libm-2.3.3.so",
+    "type": "0",
+    "size": 697744,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b3aa1ce9b9770fdd447c5c5190f5956d4a6556ecc793d2e36230d11f29e90283"
+  },
+  {
+    "path": "./lib/libnss_compat-2.3.3.so",
+    "type": "0",
+    "size": 27044,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "8518d408ea5fcf02110d8da6c72ca628651c69ed7b41d6655d86c884e0fba485"
+  },
+  {
+    "path": "./lib/libthread_db-1.0.so",
+    "type": "0",
+    "size": 20964,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d433304abd8077a87c16dd76ee5a8346ff8bb7c39b5e39a2569fda2619cb924c"
+  },
+  {
+    "path": "./lib/libthread_db.so.1",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libthread_db-1.0.so"
+  },
+  {
+    "path": "./lib/libpthread.so.0",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libpthread-0.10.so"
+  },
+  {
+    "path": "./lib/libdl.so.2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libdl-2.3.3.so"
+  },
+  {
+    "path": "./lib/libnsl-2.3.3.so",
+    "type": "0",
+    "size": 71848,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "64850905c49d86009453a17922cfb8a8eda3f8aeb57853e8cb4a8b899241a445"
+  },
+  {
+    "path": "./lib/libresolv.so.2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "libresolv-2.3.3.so"
+  },
+  {
+    "path": "./lib/libresolv-2.3.3.so",
+    "type": "0",
+    "size": 61028,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "296ec6c1f6a65323de2e7505b6061e83be823c7698b5da0cc944db4ae186a350"
+  },
+  {
+    "path": "./lib/libpthread-0.10.so",
+    "type": "0",
+    "size": 69788,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c932fad1e83821f438add6a1e293e3ae6c41dc1e46d252053b346c73bf467474"
+  },
+  {
+    "path": "./lib/modules",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./lib/modules/icx_uart_sw.ko",
+    "type": "0",
+    "size": 6752,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "a4ced2bbf466f0eb2a0387ed21fcc6c3c8e86a1f1871a06685f3152041134901"
+  },
+  {
+    "path": "./lib/modules/icx1111_watch_variable.ko",
+    "type": "0",
+    "size": 4360,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3ea09a5d32fef6bfbb8c2b7c598396edf656f420b353b4b644b38e9801c95b56"
+  },
+  {
+    "path": "./lib/modules/icx1087_power.ko",
+    "type": "0",
+    "size": 14756,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d801254c74db49331b1adaaebbfcdfcce8be0dab0790d129b93ca961d177f140"
+  },
+  {
+    "path": "./lib/modules/icx1087_led.ko",
+    "type": "0",
+    "size": 4972,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "689d7f6b6579484fc273344ca6df043d2ed7c96a1bd26e875a4fafd96773adfd"
+  },
+  {
+    "path": "./lib/modules/icx1087_key.ko",
+    "type": "0",
+    "size": 9528,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "12f1b3a7ff63ae27f0a3d3a808c71121da7ae7673048b43dd57628e25252a920"
+  },
+  {
+    "path": "./lib/modules/icx1111_ncan.ko",
+    "type": "0",
+    "size": 15308,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "31ba4e51cb9526ce8339027a47922370294d88f59c3c080f00f33f13c6c7db73"
+  },
+  {
+    "path": "./lib/modules/icx1087_nvp.ko",
+    "type": "0",
+    "size": 22688,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c0639bc1f31c0208ee71381c11777950d5af157baf23bde6ecde6cbd148ab377"
+  },
+  {
+    "path": "./lib/modules/i2c-dev.ko",
+    "type": "0",
+    "size": 11264,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "14fdbf32e8baba2a972e6ef725969edd71d938ed6a5b34d5b10aafd6af353764"
+  },
+  {
+    "path": "./lib/modules/icx1087-nand-p.ko",
+    "type": "0",
+    "size": 57080,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "eb19680b9b45e374b32d4084bccf4153b0fed97ce0e4dd9a3d342d268d636f8a"
+  },
+  {
+    "path": "./lib/modules/s1r72v17_usbc_icx1087.ko",
+    "type": "0",
+    "size": 54440,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3f86b64ffc3ce43b37c4918a2266c1f3fddf6f462865254db4dac76d5e49d150"
+  },
+  {
+    "path": "./lib/modules/icx1115_nc_key_test.ko",
+    "type": "0",
+    "size": 3276,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bee4b5c488e1125561c1e67bc0b51ee44b1545b3f7964b626cf67b4a566e8a21"
+  },
+  {
+    "path": "./lib/modules/mg.ko",
+    "type": "0",
+    "size": 68920,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "72e5a18e3f291ab54f907d626a6b81427f10210d6d5f6274edb464274f153d57"
+  },
+  {
+    "path": "./lib/modules/dtv.ko",
+    "type": "0",
+    "size": 24616,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b1a007c4a54028c972be2c378877bce8abf0ef83fb6205027d32356308ead9af"
+  },
+  {
+    "path": "./lib/modules/g_nwm_mtp.ko",
+    "type": "0",
+    "size": 19796,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d56806ce072c0e31d473472174f4bfa95a573c969f277c5e3d4c68c224778cb3"
+  },
+  {
+    "path": "./lib/modules/icx1111_radio_tuner.ko",
+    "type": "0",
+    "size": 11024,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "bec45bd07e94e2a2f34163e276619f61e43c5790f3970d9d729ec813b02544bc"
+  },
+  {
+    "path": "./lib/modules/g_nwm.ko",
+    "type": "0",
+    "size": 23384,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "7520b55e440c3d518a21c9ab659a88755483b7dc73ad33d6cf3b445e299617fd"
+  },
+  {
+    "path": "./lib/modules/icx1087-nand-i.ko",
+    "type": "0",
+    "size": 65032,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "b1b718a5c993d24a07ca60ff99a038fdf23c1614abfb5daffce81c8043379892"
+  },
+  {
+    "path": "./lib/modules/icx1101_led.ko",
+    "type": "0",
+    "size": 11256,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ac48bad09bd4ea58eb496b18839679f7e82a644bcb89215476d51edaccbc2f4b"
+  },
+  {
+    "path": "./lib/modules/mgscsi.ko",
+    "type": "0",
+    "size": 66552,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "27e9ae59a30d1c3999534838010b1288840c787b798fe46bc58657b7eb30cac6"
+  },
+  {
+    "path": "./lib/modules/icx1087_usbconn.ko",
+    "type": "0",
+    "size": 10764,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "26b57aad0efd8e0fb4653421be4025a497f3e645b9262cb9c0bff250636323e2"
+  },
+  {
+    "path": "./lib/modules/mgscc.ko",
+    "type": "0",
+    "size": 18412,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "6d21a130941d56ee5b10b1d31781b7a13ac1db09f0bafd6655476b01b65f0c8d"
+  },
+  {
+    "path": "./lib/modules/i2c-core.ko",
+    "type": "0",
+    "size": 23896,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "c3f46a064c71d14ef03adc9ac3ec2b1093f4ce7d857ca2db314e340baf555ba4"
+  },
+  {
+    "path": "./lib/modules/icx1101_rtc_extend.ko",
+    "type": "0",
+    "size": 3324,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "29d59e75807407324e6b5393785ced2fe83758ad1d2377d8df72c8eb317e54ab"
+  },
+  {
+    "path": "./lib/modules/mp201regs.ko",
+    "type": "0",
+    "size": 26060,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "75aa31407165371a54862d8ad365b4e97944dedfd93b5cb20d57ab00f8d1a6cd"
+  },
+  {
+    "path": "./lib/modules/g_nwm_msc.ko",
+    "type": "0",
+    "size": 41860,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "dd6e6c7427e81494abd7751d3adfdcb760afad338c00820cf498e6690c6583d3"
+  },
+  {
+    "path": "./lib/modules/i2c-mp200.ko",
+    "type": "0",
+    "size": 13176,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "01b150b0774a8d7c540cda790ae5e7ee749e2a7ed274be3168c64d296683ef53"
+  },
+  {
+    "path": "./lib/modules/mp200_msb.ko",
+    "type": "0",
+    "size": 9740,
+    "mode": "0o644",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "ab57d4e157f2c4dbc969dbc61e8c874cc130417f0554265ee261103aaa09bb2e"
+  },
+  {
+    "path": "./lib/libncurses.so.5.4",
+    "type": "0",
+    "size": 268420,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "273bec9cb4170c1a667ab5235957516cb97f5843b011cd78edcaf0f28007cc7d"
+  },
+  {
+    "path": "./bin",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./bin/chmod",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/gzip",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/sleep",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/tail",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/chvt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/mv",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/cmp",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/logger",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/reset",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/awk",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/bzcat",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/uname",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/tar",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/time",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/mount",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/tr",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/date",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/basename",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/unzip",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/busybox",
+    "type": "0",
+    "size": 660160,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "3c9d2ddd7fd6649cccca6feb4e7008a369cf5963dda807c02927e84f43eca980"
+  },
+  {
+    "path": "./bin/pwd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/chgrp",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/yes",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/uptime",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/-sh",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "bash"
+  },
+  {
+    "path": "./bin/touch",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/sort",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/more",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/strings",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/xargs",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/rm",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/dmesg",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/sh",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/cp",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/whoami",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/grep",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/slabtop",
+    "type": "0",
+    "size": 12984,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "1a6c3cf959665947660f14a60ee3c2358f5ce98643fc7cf44cde47c9a71e8f72"
+  },
+  {
+    "path": "./bin/hexdump",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/login",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/[",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/wget",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/dirname",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/true",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/false",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/ln",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/gunzip",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/chroot",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/hostname",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/ash",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/md5sum",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/install",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/fgrep",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/vmstat",
+    "type": "0",
+    "size": 22488,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "42c2b9c5e72ea4988974a7cc2a59fd1aff4cd454a1fca89b37cab44849aade00"
+  },
+  {
+    "path": "./bin/less",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/kill",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/[[",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/which",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/chown",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/stty",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/tty",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/cut",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/top",
+    "type": "0",
+    "size": 59432,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "0a83d724d7444953c0ffac5d653aaa24ae842bd3ad002ebf01971a14e5c8cc20"
+  },
+  {
+    "path": "./bin/tee",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/deallocvt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/umount",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/cat",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/telnet",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/readlink",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/echo",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/env",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/clear",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/netstat",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/dd",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/free",
+    "type": "0",
+    "size": 8608,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "046ea90ffcfaec538aa1d00888d077788488da9cb6fbbde98a16ef5e7a8bb0cf"
+  },
+  {
+    "path": "./bin/ls",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/zcat",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/mknod",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/ps",
+    "type": "0",
+    "size": 70076,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0,
+    "sha256": "d56d019f381339ac028d168ef23bcc18e5a5923bd74328abe6f6cccaed278df6"
+  },
+  {
+    "path": "./bin/uniq",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/id",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/killall",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/find",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/usleep",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/od",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/wc",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/pidof",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "../sbin/killall5"
+  },
+  {
+    "path": "./bin/uncompress",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "gzip"
+  },
+  {
+    "path": "./bin/expr",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/ping",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/test",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/sync",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/head",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/bunzip2",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/rmdir",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/du",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/vi",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/nslookup",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/sed",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/egrep",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/df",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/openvt",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/mktemp",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./bin/mkdir",
+    "type": "2",
+    "size": 0,
+    "mode": "0o777",
+    "uid": 0,
+    "gid": 0,
+    "target": "busybox"
+  },
+  {
+    "path": "./home",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./root",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./root/gemini",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./root/gemini/data",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./db",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  },
+  {
+    "path": "./local",
+    "type": "5",
+    "size": 0,
+    "mode": "0o755",
+    "uid": 0,
+    "gid": 0
+  }
+]

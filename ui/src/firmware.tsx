@@ -4,7 +4,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { isTauri } from '@tauri-apps/api/core';
 import { tr, useLanguage } from './i18n';
 
-type Probe = { candidates: {vendor_id: string; product_id: string; product: string | null; serial: string | null; bus: string; ports: number[]; speed: string | null}[] };
+type Probe = { candidates: {profile: {label: string; models: string[]; firmware: {id: string; compatible_models: string[]}}; vendor_id: string; product_id: string; product: string | null; serial: string | null; bus: string; ports: number[]; speed: string | null}[] };
 type Package = {sha256: string; bytes: number; stock_103_exact_match: boolean; components: {index: number; bytes: number; sha256: string}[]};
 
 export function Firmware({ locked, api, run }: {
@@ -29,13 +29,15 @@ export function Firmware({ locked, api, run }: {
             <Button disabled={locked} onClick={() => void run(async () => {setProbe(null); setProbe(await api('firmware/probe', {}) as Probe);})}>{tr('只读检测 USB')}</Button>
             <Button disabled={locked || !isTauri()} onClick={() => void run(inspect)}>{tr('检查本地固件')}</Button>
         </div>
-        {probe && <div role="status"><p>{tr('发现 {0} 台 A91x 系列候选设备', probe.candidates.length)}</p>
+        {probe && <div role="status"><p>{tr('Detected {0} candidate devices', probe.candidates.length)}</p>
             {probe.candidates.map((d, i) => <div key={i}>
-                <p>{d.product || tr('未知型号')} · {d.vendor_id}:{d.product_id} · {d.speed || tr('未知速度')}</p>
+                <p>{d.profile.label} · {d.profile.models.join(" / ")}</p>
+                <p>{tr("Shared firmware: {0}", d.profile.firmware.compatible_models.join(" / "))}</p>
+                <p>{d.product || d.profile.label} · {d.vendor_id}:{d.product_id} · {d.speed || tr('未知速度')}</p>
                 <p>{tr('序列号：{0}', d.serial || tr('未提供'))}</p>
                 <p>{tr('USB 总线：{0}；端口：{1}', d.bus, d.ports.join('.'))}</p>
             </div>)}
-            <p>{tr('USB 标识由 A916/A918/A919 共用，尚未验证具体型号。电量与已安装固件版本尚不可读。')}</p>
+            <p>{tr('USB candidates do not verify an exact model. Battery and installed firmware remain unknown.')}</p>
         </div>}
         {pkg && <div role="status">
             <p style={{overflowWrap: 'anywhere'}}>{name}</p>

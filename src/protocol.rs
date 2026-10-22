@@ -251,7 +251,7 @@ pub fn validate_device(root: &Path) -> Result<()> {
         canonical.join("DCIM").is_dir()
             && canonical.join("VIDEO").is_dir()
             && canonical.join("PICTURE").is_dir(),
-        "Not an expected A918 root directory"
+        "Not a supported OMGAUDIO device root directory"
     );
     Ok(())
 }

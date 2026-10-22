@@ -96,3 +96,7 @@ model-specific image provenance; determine NVP flag clearing and interrupted
 write behavior. Any later hardware validation requires separate authorization
 and an independently established recovery method. Until then no flash executor,
 automatic retry, rollback button or firmware-write UI may be enabled.
+
+## 2026-10-19 offline follow-up
+
+[Device-side installation analysis](DEVICE_INSTALL_CHAIN.md) adds complete normal-initrd/rootfs inventories, resolved logical NVP flag mapping, normal-driver metadata/read/status branches and synthetic power-loss models. It does not recover the resident flag consumer or fwpup, establish a successful rescue path, or authorize hardware access. Earlier evidence and its limits remain preserved.

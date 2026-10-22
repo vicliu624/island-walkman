@@ -21,6 +21,14 @@ REA and Ghidra were research tools, not runtime dependencies. Sony firmware, Son
 
 Sony and WALKMAN are trademarks of their respective owners. This project is independent and is not endorsed by Sony.
 
+The offline research directory `docs/audits/resident-source-search-2026-10-19/official-source/` retains selected unmodified files from Sony's model-listed U-Boot source distribution, with their original copyright notices and `COPYING.txt` GPL terms. Provenance and upstream file hashes are recorded beside them. These reference sources are not compiled or linked into the desktop application and are not device firmware binaries. The matching kernel NVP header retained there is likewise a GPL research reference, with its original Sony notice.
+
+The follow-up `docs/audits/rootfs-layout-2026-10-19/official-source/nand_config.h.txt` is another unmodified GPL research reference from the same U-Boot archive; its original notice and exact upstream hash are retained. The GPL text remains in the preceding research directory's `COPYING.txt`.
+
 The application icon is `demo/assets/logo.png` from [Animal Island UI](https://github.com/guokaigdg/animal-island-ui), copyright guokaigdg, under its MIT license. Generated platform icons retain this attribution. Use does not imply endorsement by its author.
 
 The customized Windows installer template derives from Tauri (`crates/tauri-bundler/src/bundle/windows/nsis/installer.nsi`), copyright Tauri Programme within The Commons Conservancy, under MIT OR Apache-2.0. Upstream license texts are retained in `licenses/tauri/`.
+
+## Optional A918 disk applications
+
+The bundled standalone Tamagotchi iD ARM application includes the GPL-3.0 color core from mameise/ParamixStudio (commit 3676ecd5c49e9e40b118d59dde43cd0bc30fc4e6). It is an independently executed player application, not a library linked into the desktop music core. Corresponding application sources are distributed as apps-source.zip; license and provenance are in third-party-licenses/licenses/COLOR-CORE-*. The Sony firmware and game ROM/reset input are not licensed by this open-source notice. Commercial ROMs and initialization saves are excluded from public source and installers.

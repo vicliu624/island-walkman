@@ -1,0 +1,19 @@
+{
+  "physical_device_access": false,
+  "target_code_executed": false,
+  "flashing_enabled": false,
+  "query_records": 758,
+  "unique_records": 758,
+  "previous_200_present": 200,
+  "new_records": 558,
+  "full_item_metadata": 37,
+  "file_catalog_entries": 736,
+  "expanded_target_filename_hits": [],
+  "new_resident_images": 0,
+  "new_fwpup": 0,
+  "python_tests_passed": 70,
+  "new_pagination_tests": 5,
+  "version": "0.4.0-alpha.5 consistent",
+  "documentation_checks": "passed; new report links explicitly verified",
+  "limits": "Catalog and selected item file-list coverage only; no other-model payload contents or hardware recovery qualified."
+}

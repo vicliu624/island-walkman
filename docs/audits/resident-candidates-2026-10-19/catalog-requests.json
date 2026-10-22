@@ -1,0 +1,98 @@
+[
+  {
+    "name": "ia-exact-models",
+    "url": "https://archive.org/advancedsearch.php?q=%22NW-A916%22+OR+%22NW-A918%22+OR+%22NW-A919%22+OR+%22NW-A910%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%22NW-A916%22+OR+%22NW-A918%22+OR+%22NW-A919%22+OR+%22NW-A910%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "bytes": 11270,
+    "sha256": "2808480fed5828202eb1f6b20a549fa5856575e149503fffd68a7faade632fbd",
+    "num_found": 16,
+    "returned": 16
+  },
+  {
+    "name": "ia-compact-models",
+    "url": "https://archive.org/advancedsearch.php?q=%22NWA916%22+OR+%22NWA918%22+OR+%22NWA919%22+OR+%22NW_A91X%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%22NWA916%22+OR+%22NWA918%22+OR+%22NWA919%22+OR+%22NW_A91X%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "bytes": 511,
+    "sha256": "2d793dcbac739fcfddb795b3eec379fb73d604a3d907ac73d035130fd0eda500",
+    "num_found": 0,
+    "returned": 0
+  },
+  {
+    "name": "ia-platform",
+    "url": "https://archive.org/advancedsearch.php?q=%22ICX1101%22+OR+%22FUINITRD%22+OR+%22FUKERNEL%22+OR+%22linuxrc_fwup%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%22ICX1101%22+OR+%22FUINITRD%22+OR+%22FUKERNEL%22+OR+%22linuxrc_fwup%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "bytes": 550,
+    "sha256": "c0c250598b178aea5e846eeb0cb410aa78cad3e7834eed81ac67839d6ba302c6",
+    "num_found": 0,
+    "returned": 0
+  },
+  {
+    "name": "ia-fwpup",
+    "url": "https://archive.org/advancedsearch.php?q=%22fwpup%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%22fwpup%22&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "bytes": 266,
+    "sha256": "b88f91cff36ee4499399cf72c6191fe4b3f78e220b687b4ea4ad03b34bdf170b",
+    "num_found": 0,
+    "returned": 0
+  },
+  {
+    "name": "ia-walkman-software",
+    "url": "https://archive.org/advancedsearch.php?q=%28title%3Awalkman+OR+description%3Awalkman%29+AND+mediatype%3Asoftware&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%28title%3Awalkman+OR+description%3Awalkman%29+AND+mediatype%3Asoftware&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "bytes": 272550,
+    "sha256": "6bf7a0630d58683b0c605e1d4ae79325878ee36bd649b2f19fb4ddcba3fe4ccd",
+    "num_found": 89,
+    "returned": 89
+  },
+  {
+    "name": "ia-sony-firmware",
+    "url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=mediatype&fl%5B%5D=description",
+    "bytes": 90991,
+    "sha256": "1ba43e7ff031a4a9f4e8d28ce4e34f7e76e081ea4b8e65ebb1e54df47cbd4435",
+    "num_found": 758,
+    "returned": 200
+  },
+  {
+    "name": "cdx-official-distribution",
+    "url": "https://web.archive.org/cdx/search/cdx?url=walkman.update.sony.net%2Ffw%2Fpc%2FA910%2F%2A&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength&limit=1000",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://web.archive.org/cdx/search/cdx?url=walkman.update.sony.net%2Ffw%2Fpc%2FA910%2F%2A&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength&limit=1000",
+    "bytes": 391,
+    "sha256": "52147f1be878bd06651a3590c369473990e2803e284ac88b1ba736bf6b3a5317",
+    "returned": 2
+  },
+  {
+    "name": "cdx-old-distribution",
+    "url": "https://web.archive.org/cdx/search/cdx?url=www.sony.jp%2Fsupport%2Fwalkman%2Fdownload%2F%2Aa916%2A&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength&limit=1000",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://web.archive.org/cdx/search/cdx?url=www.sony.jp%2Fsupport%2Fwalkman%2Fdownload%2F%2Aa916%2A&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength&limit=1000",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "returned": 0
+  },
+  {
+    "name": "cdx-source-distribution",
+    "url": "https://web.archive.org/cdx/search/cdx?url=prodgpl.blob.core.windows.net%2Fdownload%2FAudio%2FNW-A916%2F%2A&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength&limit=1000",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://web.archive.org/cdx/search/cdx?url=prodgpl.blob.core.windows.net%2Fdownload%2FAudio%2FNW-A916%2F%2A&output=json&filter=statuscode%3A200&collapse=urlkey&fl=timestamp%2Coriginal%2Cmimetype%2Cstatuscode%2Cdigest%2Clength&limit=1000",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "returned": 0
+  }
+]

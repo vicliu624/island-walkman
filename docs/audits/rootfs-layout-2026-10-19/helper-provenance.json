@@ -1,0 +1,153 @@
+{
+  "offline_only": true,
+  "target_code_executed": false,
+  "inputs": {
+    "wrldr": {
+      "sha256": "6d1b2f2a0d7c336cdcc9a84667561d101cfec12e2ebc878867dc043c49d061a1",
+      "bytes": 14184
+    },
+    "nvpflag": {
+      "sha256": "90aa0b11ef01c0997a1db28faf664d3eed931675e7c272b7232d74ed3591e7ac",
+      "bytes": 7140
+    }
+  },
+  "listings": [
+    {
+      "file": "decompilation/wrldr/000084ac.c.txt",
+      "sha256": "376e1b4147828303fa442ba18ec22fcaea433604ae4f7b32e72b8095250f58fe"
+    },
+    {
+      "file": "decompilation/wrldr/00008570.c.txt",
+      "sha256": "eac5704d1331e59a9ca1e0e106c365e8c8e49d9f7aa4337f420c10e5f24a248b"
+    },
+    {
+      "file": "decompilation/wrldr/000085a8.c.txt",
+      "sha256": "3ead34ee2ab0237b39d2f83ec41de221de0ca918a41040ef13e5d67e4e262b32"
+    },
+    {
+      "file": "decompilation/wrldr/000085d4.c.txt",
+      "sha256": "02f848162138ee3100d82c239691822198ea095d1815aa2f03a536b9f6640afd"
+    },
+    {
+      "file": "decompilation/wrldr/000085f0.c.txt",
+      "sha256": "e36946f323894b4b2bf599ad1a6f07b31ef5ae8df3badf712c40c7d3a3c05f8e"
+    },
+    {
+      "file": "decompilation/wrldr/00008618.c.txt",
+      "sha256": "ec718366232c9011fc22004a8ed1c141b3d722ea8236c013e59bc27a23cb5b70"
+    },
+    {
+      "file": "decompilation/wrldr/0000889c.c.txt",
+      "sha256": "a0da61bcd8d36f2c2b01e096fe422529f74241fdd1c7788c7126480c4f33a0fe"
+    },
+    {
+      "file": "decompilation/wrldr/00008bb0.c.txt",
+      "sha256": "aee2cdd9e4289d27a89ce5c0c7b45f08688cb4601e16ea944deadfd88cb06c2f"
+    },
+    {
+      "file": "decompilation/wrldr/00009178.c.txt",
+      "sha256": "4e8ccaca5bd2553d8d705f1ac00f257fca65fde3cdcaa185e5f3c023d8b201fc"
+    },
+    {
+      "file": "decompilation/wrldr/0000933c.c.txt",
+      "sha256": "0f8dccd540aad0f150b157e6ea24540a68576655b5c7322056134d1bab416b31"
+    },
+    {
+      "file": "decompilation/wrldr/00009604.c.txt",
+      "sha256": "08d57cf233cc43e87c2a5da56dccc94718e5563e542c11ed6e2d28ea04da8b78"
+    },
+    {
+      "file": "decompilation/wrldr/00009914.c.txt",
+      "sha256": "89bac88f2ef38d109379f3740fa3ea5b15e3ee49dab8b3894b416de1bfc68b21"
+    },
+    {
+      "file": "decompilation/wrldr/00009af8.c.txt",
+      "sha256": "a5ad82cb04def80fd95a7dc64a3af0829f3f6b0aba2aaad2b5ba6d852cde8d32"
+    },
+    {
+      "file": "decompilation/wrldr/00009e80.c.txt",
+      "sha256": "4c372f1e8d1871cd6ac74774bf8e38da2dab65eebb80c39c47dd510f33050d1b"
+    },
+    {
+      "file": "decompilation/wrldr/00009f24.c.txt",
+      "sha256": "12037b99899428d6980223e1b31a8e7a6f141e1dcb14b2c736e0a61c68dc2650"
+    },
+    {
+      "file": "decompilation/wrldr/0000a194.c.txt",
+      "sha256": "6fb9847157fdd5e1453f7959a588a83a2a8c910f6414c28be948fee762aa375e"
+    },
+    {
+      "file": "decompilation/wrldr/0000a460.c.txt",
+      "sha256": "5d2699bb2879a29e83f6247f8fbb3f74f86ec81b9b7a33e0b1568d869ca79d6f"
+    },
+    {
+      "file": "decompilation/wrldr/0000a670.c.txt",
+      "sha256": "c6a9be6417e61fa332cecb8c7d79220f0cbf82c05a9c5432119a6c57aa85d494"
+    },
+    {
+      "file": "decompilation/wrldr/0000a680.c.txt",
+      "sha256": "54f17eb5d09748726f700294db7b00250dcc7ef9b2b7bf70e522dcf1d4fa55fc"
+    },
+    {
+      "file": "decompilation/wrldr/0000a698.c.txt",
+      "sha256": "57d20ad68d7a1de8e3f853637a91ee3d2be1186d7311bf3d0960ac9156e2133f"
+    },
+    {
+      "file": "decompilation/wrldr/0000a7e8.c.txt",
+      "sha256": "2bc5faf80bb9c1c98ad745b20bbcef45e64e135f33670a8ecaf3e319086c6c40"
+    },
+    {
+      "file": "decompilation/wrldr/0000a7f8.c.txt",
+      "sha256": "c0843204339145ffe2da40fd972229c43fa4408054b20ccff3a17a40a2e8804b"
+    },
+    {
+      "file": "decompilation/wrldr/0000a7fc.c.txt",
+      "sha256": "f6f035381b7d0f961b19b79f5ff43a479b7e8751582c51f6508bf489698c2b31"
+    },
+    {
+      "file": "decompilation/wrldr/0000a8b0.c.txt",
+      "sha256": "9bf4c80a3d8e7ebf6bfeec4a9552033d1dfb4ac0900071cbd833eea951d77860"
+    },
+    {
+      "file": "decompilation/nvpflag/0000852c.c.txt",
+      "sha256": "a6097bd00b5a5bb7da5bac297132aba66d7d5c6c0f5a283b147781500b90ea37"
+    },
+    {
+      "file": "decompilation/nvpflag/00008614.c.txt",
+      "sha256": "fd542b5982748adb9d254bd754caa5ea0cf435be8dcba051548fc12491a5b8e1"
+    },
+    {
+      "file": "decompilation/nvpflag/0000864c.c.txt",
+      "sha256": "907e071a347c4c356f6476f385a243897c948ceb9ccd8ffff562e7c5657aa9f2"
+    },
+    {
+      "file": "decompilation/nvpflag/00008678.c.txt",
+      "sha256": "684d796b3daa81f4d9951319677b132bf1a3882543b90fee10d4f03a43066748"
+    },
+    {
+      "file": "decompilation/nvpflag/00008694.c.txt",
+      "sha256": "20096282a5f0284e96212acaa0d1e1145c95c2d114ad72cee21273f88fbc8b9d"
+    },
+    {
+      "file": "decompilation/nvpflag/000086bc.c.txt",
+      "sha256": "eda6c4209ed5639931e147645c6936a3607ec8fc52fe1251481c0e043f32254f"
+    },
+    {
+      "file": "decompilation/nvpflag/0000882c.c.txt",
+      "sha256": "420a44567d4430cf605f2305187fd3175b1d94a9033484da2768f763b9630f36"
+    },
+    {
+      "file": "decompilation/nvpflag/00008be8.c.txt",
+      "sha256": "c68cf25076f3499f9c530bcc88f1ac9264d79f82329a01c77dfa6809935c3d78"
+    },
+    {
+      "file": "decompilation/nvpflag/00009040.c.txt",
+      "sha256": "ffe724bedbebb92981ca9f28ede951b9f2647d71f50ece88125be70a0d4175b7"
+    },
+    {
+      "file": "decompilation/nvpflag/000090f4.c.txt",
+      "sha256": "8b168d271ce93118d8a1080ff8ebde416c2598a05b04eff9f0389d909619eaf1"
+    }
+  ],
+  "limits": "Static decompiler listings and literal bindings, not execution, driver verification or a proven resident-install caller."
+}

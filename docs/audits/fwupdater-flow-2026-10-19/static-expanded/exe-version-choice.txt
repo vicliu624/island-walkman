@@ -1,0 +1,39 @@
+
+C:\Users\VicLi\Documents\Projects\island-walkman\data\firmware-analysis\FWUpdater.exe:	file format coff-i386
+
+Disassembly of section .text:
+
+00401000 <.text>:
+  40798d: e8 8e a3 ff ff               	calll	0x401d20 <.text+0xd20>
+  407992: 8b 0d 78 23 42 00            	movl	4334456, %ecx
+  407998: 3b c8                        	cmpl	%eax, %ecx
+  40799a: 75 07                        	jne	0x4079a3 <.text+0x69a3>
+  40799c: b8 cb 00 00 00               	movl	$203, %eax
+  4079a1: eb 0a                        	jmp	0x4079ad <.text+0x69ad>
+  4079a3: 1b c0                        	sbbl	%eax, %eax
+  4079a5: 83 e0 fe                     	andl	$-2, %eax
+  4079a8: 05 cc 00 00 00               	addl	$204, %eax
+  4079ad: 8b 75 08                     	movl	8(%ebp), %esi
+  4079b0: 6a 01                        	pushl	$1
+  4079b2: 50                           	pushl	%eax
+  4079b3: 6a 02                        	pushl	$2
+  4079b5: 56                           	pushl	%esi
+  4079b6: e8 b5 a6 ff ff               	calll	0x402070 <.text+0x1070>
+  4079bb: 83 c4 10                     	addl	$16, %esp
+  4079be: 83 f8 01                     	cmpl	$1, %eax
+  4079c1: 75 21                        	jne	0x4079e4 <.text+0x69e4>
+  4079c3: 85 f6                        	testl	%esi, %esi
+  4079c5: 74 52                        	je	0x407a19 <.text+0x6a19>
+  4079c7: 6a 06                        	pushl	$6
+  4079c9: 56                           	pushl	%esi
+  4079ca: ff 15 1c c2 41 00            	calll	*4309532
+  4079d0: 8b c7                        	movl	%edi, %eax
+  4079d2: 8b 4d f4                     	movl	-12(%ebp), %ecx
+  4079d5: 64 89 0d 00 00 00 00         	movl	%ecx, %fs:0
+  4079dc: 59                           	popl	%ecx
+  4079dd: 5f                           	popl	%edi
+  4079de: 5e                           	popl	%esi
+  4079df: 5b                           	popl	%ebx
+  4079e0: 8b e5                        	movl	%ebp, %esp
+  4079e2: 5d                           	popl	%ebp
+  4079e3: c3                           	retl

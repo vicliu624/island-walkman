@@ -1,0 +1,16 @@
+[
+  {
+    "identifier": "sony-vaio-vgn-cr-13-g-system-recovery-disc-1",
+    "term": "furt",
+    "actual_word": "further",
+    "exact_case_table_signature": false,
+    "meaning": "Ordinary English description text, not NAND bytes or a management table."
+  },
+  {
+    "identifier": "vaio_20240129",
+    "term": "furt",
+    "actual_word": "further",
+    "exact_case_table_signature": false,
+    "meaning": "Ordinary English description text, not NAND bytes or a management table."
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "url": "https://prodgpl.blob.core.windows.net/download/Audio/common/QiZvSLw4mqaJgT2UwQgvJg/mtd-utils-2.6.9_1.1-6.0.0.0501450.src.rpm",
+  "link_source": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+  "bytes": 1132487,
+  "sha256": "3ee445de4d2d798493d31a25077b4c2406615692898add78e4fd1e906eaf4875",
+  "content_md5_base64": "QiZvSLw4mqaJgT2UwQgvJg==",
+  "headers": {
+    "Content-Length": "1132487",
+    "Content-Type": "application/octet-stream",
+    "Content-MD5": "QiZvSLw4mqaJgT2UwQgvJg==",
+    "Last-Modified": "Tue, 12 Nov 2019 07:28:07 GMT",
+    "ETag": "0x8D76741DD46ADBC",
+    "Server": "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+    "x-ms-request-id": "97f2e5fc-001e-0029-648b-5fc678000000",
+    "x-ms-version": "2009-09-19",
+    "x-ms-lease-status": "unlocked",
+    "x-ms-blob-type": "BlockBlob",
+    "Date": "Mon, 19 Oct 2026 05:30:59 GMT",
+    "Connection": "close"
+  },
+  "executed": false
+}

@@ -1,0 +1,44 @@
+{
+  "offline_only": true,
+  "target_code_executed": false,
+  "archives": [
+    {
+      "file": "u-boot-1.1.1.local.tgz",
+      "bytes": 6231505,
+      "sha256": "682f6ae908e1ebfb93ee89ccb81c57ca6895d57eca6c31a8fd9772ab5171de6f",
+      "content_md5_base64": "Yzr0tMdtfPga8BR2UZ5mBA==",
+      "archive_members": 3497,
+      "installer_name_matches": [],
+      "regular_members_scanned": 3146,
+      "oversized_regular_members_skipped": [],
+      "installer_literal_hits": [
+        {
+          "member": "./board/mp201xx/icx1087/icx1087_nand.c",
+          "terms": [
+            "linuxrc_fwup"
+          ],
+          "sha256": "bb301198759e79c830e311c5b4b340d1143addc0f0e5dddd4d7a6ec13f789964"
+        }
+      ]
+    },
+    {
+      "file": "linux-kernel-2.6.10.local.verified.tgz",
+      "bytes": 49068350,
+      "sha256": "176e239b7052efbdda8e1beb5eb0baf6b7037cf90ff1d0af5df7b772fec90cab",
+      "content_md5_base64": "dGrjoG4c3xeun8ikHfHErg==",
+      "archive_members": 18890,
+      "installer_name_matches": [],
+      "regular_members_scanned": 17773,
+      "oversized_regular_members_skipped": [],
+      "installer_literal_hits": []
+    },
+    {
+      "file": "mtd-utils-2.6.9_1.1-6.0.0.0501450.src.rpm",
+      "bytes": 1132487,
+      "sha256": "3ee445de4d2d798493d31a25077b4c2406615692898add78e4fd1e906eaf4875",
+      "content_md5_base64": "QiZvSLw4mqaJgT2UwQgvJg=="
+    }
+  ],
+  "retained_u_boot_sources_verified": 8,
+  "qualification": "Source availability is not installed-binary equivalence or flash/recovery qualification."
+}

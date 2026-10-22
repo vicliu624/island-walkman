@@ -1,0 +1,1135 @@
+{
+  "evidence_kind": "source_derived_symbolic_models_not_physical_tests",
+  "physical_device_access": false,
+  "sony_code_executed": false,
+  "firmware_write_enabled": false,
+  "source_sha256": {
+    "firmware_research/device_install_model.py": "feae1627e4555ebe60073820e5d84059aa3b7b092e760561f0f9642882e73392",
+    "firmware_research/ext2_reader.py": "8b92c78cdbff2ec79763b4bcfe7677a31eac385f701f91c375db340815b4c257",
+    "firmware_research/elf_reader.py": "c17bf35064ca87b694b9e8b41a4537d46c70090e73380f7ced5d354511d4c5f8",
+    "test_device_install.py": "c5d20854c41f458f3976c662b8076730b23ec80c7483223e295c1ecd39086d2b"
+  },
+  "script_cases": [
+    {
+      "scenario": {
+        "name": "normal_shell_path",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "normal_shell_path",
+        "outcome": "script_exit_0_installed_build_not_verified",
+        "script_exit": 0,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "sync",
+          "unmount"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "old_version",
+        "version_text": "20070507Z",
+        "failed_step": null,
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "old_version",
+        "outcome": "early_exit_no_installation",
+        "script_exit": 0,
+        "trace": [
+          "check_version"
+        ],
+        "old_root": "untouched_by_this_script",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "empty_version_stdout",
+        "version_text": "",
+        "failed_step": null,
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "empty_version_stdout",
+        "outcome": "early_exit_no_installation",
+        "script_exit": 0,
+        "trace": [
+          "check_version"
+        ],
+        "old_root": "untouched_by_this_script",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_cd_root",
+        "version_text": "20080714A",
+        "failed_step": "cd_root",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_cd_root",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "display_error_and_exit"
+        ],
+        "old_root": "untouched_by_this_script",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_format_root",
+        "version_text": "20080714A",
+        "failed_step": "format_root",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_format_root",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "display_error_and_exit"
+        ],
+        "old_root": "not_guaranteed_once_format_begins",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_mount_root",
+        "version_text": "20080714A",
+        "failed_step": "mount_root",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_mount_root",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_cd_mnt",
+        "version_text": "20080714A",
+        "failed_step": "cd_mnt",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_cd_mnt",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_read_update_filename",
+        "version_text": "20080714A",
+        "failed_step": "read_update_filename",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_read_update_filename",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_check_package_exists",
+        "version_text": "20080714A",
+        "failed_step": "check_package_exists",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_check_package_exists",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_cd_after_extract",
+        "version_text": "20080714A",
+        "failed_step": "cd_after_extract",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_cd_after_extract",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_sync",
+        "version_text": "20080714A",
+        "failed_step": "sync",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_sync",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "sync",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "failure_unmount",
+        "version_text": "20080714A",
+        "failed_step": "unmount",
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "failure_unmount",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "sync",
+          "unmount",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "masked_producer_failure",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": null,
+        "fwpup_exit": 7,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "masked_producer_failure",
+        "outcome": "masked_producer_failure_script_exit_0",
+        "script_exit": 0,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "sync",
+          "unmount"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "tar_failure",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": null,
+        "fwpup_exit": 0,
+        "tar_exit": 2
+      },
+      "result": {
+        "scenario": "tar_failure",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "producer_and_consumer_fail",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": null,
+        "fwpup_exit": 7,
+        "tar_exit": 2
+      },
+      "result": {
+        "scenario": "producer_and_consumer_fail",
+        "outcome": "script_failure_no_rollback_in_shell",
+        "script_exit": 1,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "display_error_and_exit"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_check_version",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "check_version",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_check_version",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version"
+        ],
+        "old_root": "untouched_by_this_script",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_cd_root",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "cd_root",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_cd_root",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root"
+        ],
+        "old_root": "untouched_by_this_script",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_format_root",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "format_root",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_format_root",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root"
+        ],
+        "old_root": "not_guaranteed_once_format_begins",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_mount_root",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "mount_root",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_mount_root",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_cd_mnt",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "cd_mnt",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_cd_mnt",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_read_update_filename",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "read_update_filename",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_read_update_filename",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_check_package_exists",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "check_package_exists",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_check_package_exists",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_opaque_fwpup_tar_pipeline",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "opaque_fwpup_tar_pipeline",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_opaque_fwpup_tar_pipeline",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_cd_after_extract",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "cd_after_extract",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_cd_after_extract",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_sync",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "sync",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_sync",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "sync"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    },
+    {
+      "scenario": {
+        "name": "power_cut_unmount",
+        "version_text": "20080714A",
+        "failed_step": null,
+        "power_cut_step": "unmount",
+        "fwpup_exit": 0,
+        "tar_exit": 0
+      },
+      "result": {
+        "scenario": "power_cut_unmount",
+        "outcome": "power_lost_recovery_unknown",
+        "script_exit": null,
+        "trace": [
+          "check_version",
+          "cd_root",
+          "format_root",
+          "mount_root",
+          "cd_mnt",
+          "read_update_filename",
+          "check_package_exists",
+          "opaque_fwpup_tar_pipeline",
+          "pipeline_status_from_tar_only",
+          "cd_after_extract",
+          "sync",
+          "unmount"
+        ],
+        "old_root": "formatted_old_root_unavailable",
+        "component_write_order": "unknown_fwpup_binary_unavailable",
+        "upgrade_flag_after_restart": "unknown_boot_consumer_and_clear_policy",
+        "flag_clear_observed_in_shell": false,
+        "rollback_verified": false,
+        "independent_recovery_verified": false,
+        "firmware_write_enabled": false
+      }
+    }
+  ],
+  "flag_write_cases": [
+    {
+      "caller": "gemini",
+      "requested_word": 1884641126,
+      "write_result": -5,
+      "caller_accepts": false,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "gemini",
+      "requested_word": 1884641126,
+      "write_result": 0,
+      "caller_accepts": false,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "gemini",
+      "requested_word": 1884641126,
+      "write_result": 1,
+      "caller_accepts": false,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "gemini",
+      "requested_word": 1884641126,
+      "write_result": 2,
+      "caller_accepts": false,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "gemini",
+      "requested_word": 1884641126,
+      "write_result": 3,
+      "caller_accepts": false,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "gemini",
+      "requested_word": 1884641126,
+      "write_result": 4,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": true,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 1884641126,
+      "write_result": -5,
+      "caller_accepts": false,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 1884641126,
+      "write_result": 0,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": true,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 1884641126,
+      "write_result": 1,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": true,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 1884641126,
+      "write_result": 2,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": true,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 1884641126,
+      "write_result": 3,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": true,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 1884641126,
+      "write_result": 4,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": true,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    },
+    {
+      "caller": "apl_conn",
+      "requested_word": 4294967295,
+      "write_result": 4,
+      "caller_accepts": true,
+      "caller_may_continue_to_reboot": false,
+      "persistence_verified": false,
+      "firmware_write_enabled": false
+    }
+  ],
+  "nvp_tail_cases": [
+    {
+      "name": "new_complete_tail",
+      "records": [
+        {
+          "tag": 112,
+          "sequence": 10,
+          "read_ok": true,
+          "data_matches_expected": true
+        },
+        {
+          "tag": 112,
+          "sequence": 11,
+          "read_ok": true,
+          "data_matches_expected": true
+        }
+      ],
+      "selected": 1,
+      "scope": "Second tail scan in an already selected NVP block, not boot recovery"
+    },
+    {
+      "name": "last_read_fails",
+      "records": [
+        {
+          "tag": 112,
+          "sequence": 10,
+          "read_ok": true,
+          "data_matches_expected": true
+        },
+        {
+          "tag": 112,
+          "sequence": 11,
+          "read_ok": false,
+          "data_matches_expected": true
+        }
+      ],
+      "selected": 0,
+      "scope": "Second tail scan in an already selected NVP block, not boot recovery"
+    },
+    {
+      "name": "erased_after_complete",
+      "records": [
+        {
+          "tag": 112,
+          "sequence": 10,
+          "read_ok": true,
+          "data_matches_expected": true
+        },
+        {
+          "tag": 255,
+          "sequence": 0,
+          "read_ok": true,
+          "data_matches_expected": true
+        }
+      ],
+      "selected": 0,
+      "scope": "Second tail scan in an already selected NVP block, not boot recovery"
+    },
+    {
+      "name": "metadata_only",
+      "records": [
+        {
+          "tag": 112,
+          "sequence": 10,
+          "read_ok": true,
+          "data_matches_expected": true
+        },
+        {
+          "tag": 112,
+          "sequence": 11,
+          "read_ok": true,
+          "data_matches_expected": false
+        }
+      ],
+      "selected": 1,
+      "scope": "Second tail scan in an already selected NVP block, not boot recovery"
+    },
+    {
+      "name": "sequence_wrap",
+      "records": [
+        {
+          "tag": 112,
+          "sequence": 4294967295,
+          "read_ok": true,
+          "data_matches_expected": true
+        },
+        {
+          "tag": 112,
+          "sequence": 0,
+          "read_ok": true,
+          "data_matches_expected": true
+        }
+      ],
+      "selected": 0,
+      "scope": "Second tail scan in an already selected NVP block, not boot recovery"
+    }
+  ],
+  "nvp_read_cases": [
+    {
+      "supplied_bios_results": [
+        0
+      ],
+      "wrapper_result_and_attempts": [
+        0,
+        1
+      ]
+    },
+    {
+      "supplied_bios_results": [
+        -1,
+        0
+      ],
+      "wrapper_result_and_attempts": [
+        0,
+        2
+      ]
+    },
+    {
+      "supplied_bios_results": [
+        1,
+        0
+      ],
+      "wrapper_result_and_attempts": [
+        0,
+        2
+      ]
+    },
+    {
+      "supplied_bios_results": [
+        -1,
+        -1
+      ],
+      "wrapper_result_and_attempts": [
+        -5,
+        2
+      ]
+    },
+    {
+      "supplied_bios_results": [
+        1,
+        1
+      ],
+      "wrapper_result_and_attempts": [
+        -5,
+        2
+      ]
+    }
+  ],
+  "bios_status_cases": [
+    {
+      "supplied": {},
+      "result": "controller_status_success"
+    },
+    {
+      "supplied": {
+        "status": 193
+      },
+      "result": "program_or_erase_failure_one"
+    },
+    {
+      "supplied": {
+        "status": 64
+      },
+      "result": "panic_path"
+    },
+    {
+      "supplied": {
+        "status": 64,
+        "panic_context": true
+      },
+      "result": "program_or_erase_failure_one"
+    },
+    {
+      "supplied": {
+        "completed": false
+      },
+      "result": "timeout_error_minus_one"
+    },
+    {
+      "supplied": {
+        "completed": false,
+        "panic_on_timeout": true
+      },
+      "result": "panic_path"
+    }
+  ],
+  "scenario_count": 55,
+  "limitations": [
+    "Short writes are injected observations; no actual driver short-write path is established",
+    "fwpup internals and boot flag consumption/clearing remain opaque",
+    "No power circuitry, OOB torn writes, ECC or actual NAND storage is emulated",
+    "NVP selected-block tail scan is not the complete partition scanner or boot selector",
+    "Every script result retains unknown post-restart flag/recovery state"
+  ]
+}

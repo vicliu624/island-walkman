@@ -1,0 +1,918 @@
+/*
+ * icx1087_nand.c
+ *
+ * Copyright 2006,2007 Sony Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
+#include <common.h>
+
+#ifdef CONFIG_ICX1087
+
+#include <asm/byteorder.h>
+#include "bios_smu.h"
+#include "bios_nand.h"
+#include "nand_config.h"
+#include "icx1087.h"
+
+
+/************************/
+/* Macros				*/
+/************************/
+
+/* for NAND */
+#define	NAND_READ_RETRY		5
+
+#define NAND_BLK_LOADER_START	1
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+#define NAND_BLK_LOADER_END_P2K		40	
+#define NAND_BLK_KERNEL_SIZE_P2K	64
+#define NAND_BLK_SETVAL_SIZE_P2K	72
+#define	NAND_BLK_BAD_LIMIT_P2K		448
+
+#define NAND_BLK_LOADER_END_P4K		24	
+#define NAND_BLK_KERNEL_SIZE_P4K	48
+#define NAND_BLK_SETVAL_SIZE_P4K	72
+#define	NAND_BLK_BAD_LIMIT_P4K		224
+#else
+#define NAND_BLK_LOADER_END     40
+#define NAND_BLK_KERNEL_SIZE    64
+#define NAND_BLK_SETVAL_SIZE    72
+#define	NAND_BLK_BAD_LIMIT		448
+
+#define	NAND_BLK_LOADER_LMT		(NAND_BLK_LOADER_END + NAND_BLK_BAD_LIMIT)
+#define	NAND_BLK_KERNEL_LMT		(NAND_BLK_KERNEL_SIZE + NAND_BLK_BAD_LIMIT)
+#define	NAND_BLK_SETVAL_LMT		(NAND_BLK_SETVAL_SIZE + NAND_BLK_BAD_LIMIT)
+#endif
+
+/* for Loader Management */
+#define MNG_SIG_LOADER			0x64414F6C		/* "lOAd" */
+#define TBL_SIG_PART			0x74524170		/* "pARt" */
+#define TBL_SIG_UBOOT			0x74544275		/* "uBTt" */
+#define TBL_SIG_FUKRNL			0x744B5566		/* "fUKt" */
+#define TBL_SIG_FUINRD			0x74525566		/* "fURt" */
+#define TBL_SIG_BAD				0x74444162		/* "bADt" */
+
+#define	MNG_SIG_KRNL			0x6C4E526B		/* "kRNl" */
+#define TBL_SIG_KRNL			0x744C4E6B		/* "kNLt" */
+#define TBL_SIG_INRD			0x74445269		/* "iRDt" */
+
+/* for booting Linux */
+#define	LOAD_KERNEL_ADDR		(0x30008000)	/* Entry Point		*/
+#define	LOAD_KERNEL_END_ADDR	(0x31700000)
+
+#define CFG_USER_BOOTARGS	"root=/dev/ram init=/linuxrc_fwup mem=23M rw devfs=mount video=qfb: ip=none"
+#define CFG_EMRG_BOOTARGS	"root=/dev/ram init=/linuxrc mem=23M rw devfs=mount video=qfb: ip=none"
+#define CFG_INST_BOOTARGS	"root=/dev/ram init=/linuxrc_inst mem=23M rw devfs=mount video=qfb: ip=none"
+
+/* proc */
+#define	blk2page(b, p)		((b << 7) + p)
+#define page2blk(p)			((p >> 7) + ((p & 0x7F) ? 1 : 0))
+/* 2007.04.17 fuj */
+#ifndef CONFIG_ICX1111
+#define	byte2page(d)		((d >> 11) + ((d & 0x7FF) ? 1 : 0))
+#endif
+
+
+/************************/
+/* Structure			*/
+/************************/
+
+/* for Management Block Table */
+#define	MNG_TBL_NUM		((NAND_PAGE_SIZE - 4 - sizeof(UINT32)) / sizeof(UINT32))
+typedef struct MngTbl {
+	char    sig[4];
+	UINT32  size;
+	UINT32  blk[MNG_TBL_NUM];
+} MngTbl_t;
+
+/* for Partition Table */
+#define	MNG_PRT_NUM		((NAND_PAGE_SIZE - 4) / sizeof(UINT32))
+typedef struct MngPrt {
+	char    sig[4];
+	UINT32  blk[MNG_PRT_NUM];
+} MngPrt_t;
+
+/* for NVP */
+typedef struct {
+	const UINT8		id;
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+  		  int		size;
+#else
+  	const int		size;
+#endif
+		  UINT32	serial;
+		  int		block;
+} NvpInfo_t;
+
+
+/************************/
+/* Variables			*/
+/************************/
+
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+/* System Information */
+UINT32	icx11xx_sys_info = ICX11xx_SI_DFLT;
+#endif
+
+/* NVP */
+SetVal_t icx1087_set_val;
+
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+#define	SETVAL_IMG_SIZE_2K	128
+#define	SETVAL_IMG_SIZE_4K	 64
+#endif
+
+#define	SETVAL_EXTBUF2SERIAL(b)	(((UINT32)b[5]<<24)	\
+								|((UINT32)b[4]<<16)	\
+								|((UINT32)b[3]<<8)	\
+								|((UINT32)b[2]))
+
+static NvpInfo_t nand_nvp_info[] = {
+	{ ID_SETVAL_SETTING,   1, 0, -1 },
+	{ ID_SETVAL_OPIMG,   128, 0, -1 },
+	{ ID_SETVAL_HLDIMG,  128, 0, -1 },
+	{ ID_SETVAL_LBATIMG, 128, 0, -1 },
+	{ ID_SETVAL_PWD,       1, 0, -1 },
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+	{ ID_SETVAL_SI,		   1, 0, -1 },
+#endif
+};
+#define SETVAL_NUM (sizeof(nand_nvp_info)/sizeof(NvpInfo_t))
+
+/* 2007.04.17 fuj */
+/* for NAND parameters */
+#ifdef CONFIG_ICX1111
+static unsigned int nand_page_size;
+static unsigned int nand_blk_loader_end;
+static unsigned int nand_blk_bad_limit;
+
+#define	NAND_BLK_LOADER_LMT		(nand_blk_loader_end + nand_blk_bad_limit)
+#endif
+
+/* buffer */
+static unsigned char nandbuf[NAND_PAGE_SIZE];
+static unsigned char extbuf[6];
+
+/* for booting Linux */
+static unsigned int initrd_start;
+static unsigned int initrd_size;
+
+
+/************************/
+/* Prototype			*/
+/************************/
+
+static void nand_analyze_nvp( void );
+static void nand_boot_err( void );
+static void setup_tag( bd_t*, char* );
+
+
+/************************/
+/* Functions			*/
+/************************/
+
+/**
+ * NAND page read with retry
+ *   Input  : blk		: block no.
+ *			: page		: page no.
+ *			: buf		: destination address of buffer
+ *			: ebuf		: address of redundancy area buffer
+ *   Output : BIOS_OK		: success
+ *			: BIOS_ERR_*	: fail to read 
+ */
+static int nand_read( unsigned int blk, unsigned int page,
+					  void *buf, unsigned char *ebuf )
+{
+	int i;
+	int rc;
+
+	for (i=0; i<NAND_READ_RETRY; i++) {
+		if ((rc = nandReadPage(0, blk2page(blk, page), buf, ebuf)) == BIOS_OK) {
+			break;
+		}
+	}
+	return rc;
+}
+
+/**
+ * Search Management block 
+ *   Input  : sblk		: start block to search
+ *			: eblk		: end block to search
+ *			: msig		: pointer to management signature
+ *			: tsig		: pointer to table signature
+ *			: tpage		: pointer to return Table buffer
+ *			: errflg	: flag to display error message
+ *   Output : BIOS_OK		: success
+ *			: BIOS_ERR_*	: fail to search
+ */
+static int nand_search_tbl( unsigned int sblk, unsigned int eblk,
+							unsigned int msig, unsigned int tsig, void *tpage, int errflg )
+{
+	unsigned int ib;
+	unsigned int ip = 0;
+
+	for( ib = sblk; ib < eblk; ib++ ) {
+		/* search Management block */
+		if( nandReadPage(0, blk2page(ib, 0), nandbuf, extbuf) ) {
+			if( errflg )
+				printf("cannot read NAND(search signature): Block=%d, Page=0\n", ib);
+			continue;										/* go to next block	*/
+		}
+		if( msig != *(unsigned int *)nandbuf ) {
+			continue;										/* go to next block	*/
+		}
+		
+		/* search Table page */
+		for( ip = 1; ip < NAND_PAGE_BLK; ip++ ) {
+			if( nandReadPage(0, blk2page(ib, ip), tpage, extbuf) ) {
+				if( errflg )
+					printf("cannot read NAND(search table): Block=%d, Page=%d\n", ib, ip);
+				break;										/* go to next block	*/
+			}
+			if( tsig == *(unsigned int *)tpage )
+				return BIOS_OK;						/* success if reach here	*/
+
+			/* go to next page	*/
+		}
+	}
+	if( errflg )
+		printf("cannot find a signature(%08Xh, %08Xh): Block=%d, Page=%d\n",
+			   	msig, tsig, ib, ip);
+
+	return BIOS_ERR_TIMEOUT;
+}
+
+/**
+ * Load Images from NAND
+ *   Input  : tbl		: pointer to management table
+ *			: dst		: pointer to destination buffer
+ *			: sumflg	: do check sum (0:no/1:yes)
+ *   Output : BIOS_OK		: success
+ *			: BIOS_ERR_*	: fail to search
+ */
+static int nand_load_image( MngTbl_t *tbl, void *dst, int sumflg )
+{
+	unsigned int nb, np, ib, rp;
+	unsigned int ip = 0;
+	unsigned int *adr;
+	unsigned int i, vs, ns;
+	int rty;
+
+	nb = page2blk(tbl->size);
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+	ns = nand_page_size / sizeof(unsigned int);
+#else
+	ns = NAND_PAGE_SIZE / sizeof(unsigned int);
+#endif
+
+	for( rty = 0; rty < NAND_READ_RETRY; rty++ ) {
+		adr = (unsigned int *)dst;
+		rp = tbl->size;
+		vs = 0;
+
+		/* read image */
+		for( ib = 0; ib < nb; ib++ ) {
+			np = (rp & ~((unsigned int)0x7F)) ? NAND_PAGE_BLK : rp;
+			for( ip = 0; ip < np; ip++ ) {
+				/* read a page */
+				if( nand_read(tbl->blk[ib], ip, (void *)adr, extbuf) ) {
+					printf("fail to read linux image(%08Xh): Block=%d, Page=%d\n",
+							*((unsigned int *)tbl->sig), ib, ip);
+					return BIOS_ERR_TIMEOUT;		/* fail to read	*/
+				}
+				/* calcurate sum */
+				if( sumflg ) {
+					for( i = 0; i < ns; i++ )
+						vs = vs ^ *adr++;
+				}
+				else {
+					adr += ns;
+				}
+			}
+			rp -= NAND_PAGE_BLK;
+		}
+		/* check sum */
+		if( sumflg ) {
+			if( vs == 0 )
+				return BIOS_OK;
+		}
+		else {
+			return BIOS_OK;
+		}
+	}
+	printf("SUM check error(%08Xh): Block=%d, Page=%d\n",
+			*((unsigned int *)tbl->sig), ib, ip);
+
+	return BIOS_ERR_TIMEOUT;
+}
+
+/**
+ * Analyze NVP area
+ *   Input  : none
+ *   Output : success or false(1/0)
+ */
+static void nand_analyze_nvp( void )
+{
+	MngPrt_t ptbl;
+	unsigned int ib;
+	int rty;
+	int area;
+	UINT32 serial;
+
+	/* read management table */
+	for( rty = 0; rty < NAND_READ_RETRY; rty++ ) {
+		if( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,
+				 			MNG_SIG_LOADER, TBL_SIG_PART, (void *)&ptbl, 0) ) {
+				continue;
+		}
+		/* success to read Kernel information if reach here */
+		break;
+	}
+	if( rty >= NAND_READ_RETRY ) return;	/* fail to read setting value	*/
+
+	/* search valid block */
+	for( ib = ptbl.blk[1]; ib < ptbl.blk[2]; ib++ ) {
+		/* read first page of block		*/
+		if( nand_read( ib, 0, nandbuf, extbuf ) != BIOS_OK )
+			continue;
+
+		/* check ID	*/
+		for( area = 0; area < SETVAL_NUM; area++ ) {
+			if( extbuf[0] == nand_nvp_info[area].id )
+				break;
+		}
+		if( area >= SETVAL_NUM )
+			continue;
+
+		/* check serial number */
+		serial = SETVAL_EXTBUF2SERIAL(extbuf);
+		if( serial <= nand_nvp_info[area].serial )
+			continue;
+
+		/* if multi page area */
+		if( nand_nvp_info[area].size != 1) {
+			/* check last page of first data in block */
+			nand_read( ib, nand_nvp_info[area].size-1, nandbuf, extbuf );
+			if( extbuf[0] != nand_nvp_info[area].id )
+				continue;
+			if( SETVAL_EXTBUF2SERIAL(extbuf) != (serial+nand_nvp_info[area].size-1) )
+				continue;
+		}
+
+		/* valid block */
+		nand_nvp_info[area].block = ib;
+		nand_nvp_info[area].serial = serial;
+	}
+}
+
+/**
+ * Initialize NAND driver
+ *   Called from display_opening(mp200.c)
+ *   Input  : none
+ *   Output : none
+ */
+void icx1087_init_nand( void )
+{
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+	unsigned char idbuf[8];
+	int imgsize;
+	int i;
+
+	nandInitialize(NULL, idbuf);
+
+	/* initilize NAND parameters */
+	if ((idbuf[3] & NAND_PID_MSK) == NAND_PID_4K) {
+		nand_page_size      = NAND_PAGE_SIZE_4K;
+		nand_blk_loader_end = NAND_BLK_LOADER_END_P4K;
+		nand_blk_bad_limit  = NAND_BLK_BAD_LIMIT_P4K;
+		imgsize = SETVAL_IMG_SIZE_4K;
+	}
+	else {
+		nand_page_size = NAND_PAGE_SIZE_2K;
+		nand_blk_loader_end = NAND_BLK_LOADER_END_P2K;
+		nand_blk_bad_limit  = NAND_BLK_BAD_LIMIT_P2K;
+		imgsize = SETVAL_IMG_SIZE_2K;
+	}
+
+	for (i = 0; i < SETVAL_NUM; i++) {
+		if ((nand_nvp_info[i].id == ID_SETVAL_OPIMG)
+		 || (nand_nvp_info[i].id == ID_SETVAL_HLDIMG)
+		 || (nand_nvp_info[i].id == ID_SETVAL_LBATIMG))
+			nand_nvp_info[i].size = imgsize;
+	}
+
+	nandSetPageSize(nand_page_size);
+#else
+	nandInitialize(NULL);
+#endif
+	nand_analyze_nvp();
+}
+
+/**
+ * Boot Linux kernel/initrd from NAND
+ *   Called from display_opening(mp200.c)
+ *   Input  : mode : boot mode (Normal / Emergency F/W Update)
+ *   Output : SDRAM address that Linux kernel/initrd is loaded
+ */
+void nand_boot_linux( UINT8 mode )
+{
+	DECLARE_GLOBAL_DATA_PTR;
+
+    bd_t *bd = gd->bd;
+    char *commandline;
+	MngTbl_t ktbl, itbl;
+	MngPrt_t *ptbl;
+	unsigned int skblk, ekblk;
+	int rty;
+	void (*theKernel)(int zero, int arch, uint params);
+	int fu_flg = 1;
+
+	/* check F/W update & set command line */
+	if( (BIOS_MCR_INPW(SMU_MODE_ST) & SMU_MODE_ST_MASK) == SMU_MODE_ST_MS )
+		setenv("bootargs", CFG_INST_BOOTARGS);			/* installation	*/
+ 	else if( mode == ICX1087_BOOT_EMRG)
+		setenv("bootargs", CFG_EMRG_BOOTARGS);			/* emergency	*/
+	else if( ICX1087_CHK_FWUP() )
+		setenv("bootargs", CFG_USER_BOOTARGS);			/* user F/W up	*/
+	else
+		fu_flg = 0;
+
+	/* read Management information */
+	if( fu_flg ) {
+		/*** F/W update	***/
+		printf("\nLoading Linux(for F/W update)...\n");
+
+		/* read management table */
+		for( rty = 0; rty < NAND_READ_RETRY; rty++ ) {
+			if( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,
+				 	  			MNG_SIG_LOADER, TBL_SIG_FUKRNL, (void *)&ktbl, 1) ) {
+				continue;
+			}
+			if( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,
+				 	  			MNG_SIG_LOADER, TBL_SIG_FUINRD, (void *)&itbl, 1) ) {
+				continue;
+			}
+			/* success to read Management information if reach here */
+			break;
+		}
+	}
+	else {
+		/*** Normal boot ****/
+		printf("\nLoading Linux...\n");
+
+		/* read management table */
+		ptbl = (MngPrt_t *)&ktbl;
+		for( rty = 0; rty < NAND_READ_RETRY; rty++ ) {
+			/* partition information */
+			if( nand_search_tbl(NAND_BLK_LOADER_START, NAND_BLK_LOADER_LMT,
+				 	  			MNG_SIG_LOADER, TBL_SIG_PART, (void *)ptbl, 1) ) {
+				continue;
+			}
+			skblk = ptbl->blk[0];
+			ekblk = ptbl->blk[1];
+			/* kernel information */
+			if( nand_search_tbl(skblk, ekblk, MNG_SIG_KRNL, TBL_SIG_KRNL, (void *)&ktbl, 1) ) {
+				continue;
+			}
+			if( nand_search_tbl(skblk, ekblk, MNG_SIG_KRNL, TBL_SIG_INRD, (void *)&itbl, 1) ) {
+				continue;
+			}
+			/* success to read Kernel information if reach here */
+			break;
+		}
+	}
+	if( rty >= NAND_READ_RETRY )	nand_boot_err();		/* never return */
+
+	/* load Kernel & Initrd */
+	theKernel = (void (*)(int, int, uint))NULL;
+	if( nand_load_image(&ktbl, (void *)LOAD_KERNEL_ADDR, 1) == BIOS_OK ) {
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+		initrd_size = itbl.size * nand_page_size; 
+#else
+		initrd_size = itbl.size * NAND_PAGE_SIZE; 
+#endif
+		initrd_start = LOAD_KERNEL_END_ADDR - initrd_size;
+		if( nand_load_image(&itbl, (void *)initrd_start, 1) == BIOS_OK ) {
+			theKernel = (void (*)(int, int, uint))LOAD_KERNEL_ADDR;
+		}
+	}
+
+	if( theKernel ) {
+		disable_interrupts();
+
+		/* create TAG */
+		commandline = getenv ("bootargs");
+		setup_tag(bd, commandline);
+
+		cleanup_before_linux();
+		*(volatile ulong *)(CFG_TIMERBASE + 0) = 0x00;		/* Timer Stop		*/
+
+		printf("Starting Linux...\n\n"); 					/* Jump to kernel	*/
+
+		if( fu_flg )
+			ICX1087_CLR_BOOTFLG();
+
+		theKernel(0, bd->bi_arch_number, bd->bi_boot_params);
+	}
+	nand_boot_err();	/* never return */
+}
+
+/**
+ * Get setting value data from NAND
+ *   Input  : none
+ *   Output : success or false(1/0)
+ *	 Note	: This routine read only one block or less.
+ */
+int icx1087_get_setval( unsigned char id, void *buf )
+{
+	int				i;
+	unsigned int	ip;
+	UINT32 			serial;
+	int				page = -1;
+	void 			*adr = 0;
+
+/* 2007.04.17 fuj */
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+	if((id == ID_SETVAL_PWD) || (id == ID_SETVAL_SI)) {
+		if( buf == NULL )
+			return 0;
+		adr = buf;
+		memset(adr, 0, NAND_PAGE_SIZE);
+	}
+	else if( id != ID_SETVAL_SETTING ) {
+		return 0;
+	}
+#else
+	if( id == ID_SETVAL_SETTING )
+		adr = (void *)&icx1087_set_val;
+	else if(id == ID_SETVAL_PWD )
+		adr = buf;
+	else
+		return 0;
+
+	if( adr == NULL )
+		return 0;
+#endif
+
+	for( i = 0; i < SETVAL_NUM; i++ ) {
+		if( nand_nvp_info[i].id == id )
+			break;
+	}
+	if( i >= SETVAL_NUM )
+		return 0;
+
+/* 2007.04.17 fuj */
+#ifndef CONFIG_ICX1111
+	memset(adr, 0, NAND_PAGE_SIZE);
+#endif
+
+	if( nand_nvp_info[i].block < 0 )
+		return 0;
+
+	nand_nvp_info[i].serial = 0;
+
+	/* search last page in the block */
+	for( ip = 0; ip < NAND_PAGE_BLK; ip++ ) {
+		if( nand_read(nand_nvp_info[i].block, ip, nandbuf, extbuf) != BIOS_OK )
+			continue;
+	
+		/* found a setting value */
+		if( (page >= 0) && (extbuf[0] == 0xFF) )
+			break;
+
+		/* maybe bad page */
+		if( extbuf[0] != id )
+			continue;
+	
+		/* check a serial number */
+		serial = SETVAL_EXTBUF2SERIAL(extbuf);
+		if( serial > nand_nvp_info[i].serial ) {
+			nand_nvp_info[i].serial = serial;
+			page = ip;
+		}
+	}
+
+	if(page >= 0) {
+		if( nand_read(nand_nvp_info[i].block, page, nandbuf, extbuf) == BIOS_OK ) {
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+			if( id == ID_SETVAL_SETTING ) {
+				icx1087_set_val.beep = NAND_EXTRACT_BEEP(nandbuf, NAND_PAGE_SIZE_2K);
+				icx1087_set_val.fwup = NAND_EXTRACT_FWUP(nandbuf, NAND_PAGE_SIZE_2K);
+/* 2007.05.31 fuj : Applied RTC wake-up */
+				icx1087_set_val.year = NAND_EXTRACT_RTC_YEAR(nandbuf, NAND_PAGE_SIZE_2K);
+				icx1087_set_val.mdhm = NAND_EXTRACT_RTC_MDHM(nandbuf, NAND_PAGE_SIZE_2K);
+			}
+			else {
+				memcpy(adr, nandbuf, nand_page_size);
+			}
+#else
+			memcpy(adr, nandbuf, NAND_PAGE_SIZE);
+#endif
+			return 1;
+		}
+	}
+
+	/* fail to read if reach here */
+	return 0;
+}
+
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+
+#define	NAND_PWD_OFST	700
+
+int icx1087_get_pwd(unsigned char *pwdbuf)
+{
+	int rc;
+
+	/* get pwd from NVP */
+    rc = icx1087_get_setval(ID_SETVAL_PWD, nandbuf);
+	if(rc != 0)
+		memcpy(pwdbuf, (void *)((UINT32)nandbuf + NAND_PWD_OFST), FLG_BOOT_PWD_LEN);
+
+	return rc;
+}
+#endif
+
+/* 2007.04.17 fuj */
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+/**
+ * Get System Information from NAND
+ *   Input  : none
+ *   Output : none
+ *	 Note	: This routine read only one block or less.
+ */
+void icx11xx_get_sysinfo( void )
+{
+	int rc;
+	UINT32 pullctl;
+
+	/* get system information from NAND */
+	rc = icx1087_get_setval(ID_SETVAL_SI, nandbuf);
+
+	icx11xx_sys_info = NAND_EXTRACT_SI(nandbuf, NAND_PAGE_SIZE_2K);
+	if(rc == 0)
+		icx11xx_sys_info = ICX11xx_SI_DFLT;
+
+	/* set NAND_XWP */
+	if (ICX11xx_CHK_SI_REV(ICX11xx_SI_REV_DOBER)) {
+		pullctl = BIOS_MCR_INPW(SMU_PULLCTL_NAND);
+		BIOS_MCR_OUTPW(SMU_PULLCTL_NAND, pullctl & ~SMU_PULLCTL_NAND_XWP);
+
+		BIOS_MCR_OUTPH(GPIO_GPIO2_EO, GPIO_GPIO2_WP);	/* GPIO47 set to output */
+		BIOS_MCR_OUTPW(GPIO_GPIO2_DO,                   /* WP = H */
+				       (GPIO_GPIO2_WP<<16)|(GPIO_GPIO2_WP&0xFFFF));
+	}
+}
+#endif
+
+	
+/**
+ * Get image data from NAND
+ *   Input  : id	: Id of setting data
+ * 			: adr	: Pointer to SDRAM address that data is loaded
+ *			: size	: Length
+ *   Output : success or false(1/0)
+ *	 Note	: This routine read only one block or less.
+ */
+int nand_get_image( unsigned char id, void *adr, unsigned int size )
+{
+	NvpInfo_t		*info;
+	unsigned int	ip, np;
+	void 			*bufadr;
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+	unsigned int	rem = 0;
+	int				i, num;
+	unsigned int	cp;
+#endif
+
+	/* get NVP information */
+	if( id == ID_SETVAL_OPIMG )
+		info = &nand_nvp_info[1];
+	else if( id == ID_SETVAL_HLDIMG )
+		info = &nand_nvp_info[2];
+	else if( id == ID_SETVAL_LBATIMG )
+		info = &nand_nvp_info[3];
+	else
+		return 0;
+
+	/* check block of information */
+	if( info->block < 0 )
+		return 0;
+
+	/* read image data */
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+	np  = size / nand_page_size;
+	rem = size % nand_page_size;
+#else
+	np = byte2page(size);
+#endif
+	bufadr = adr;
+
+/* 2007.05.15 fuj */
+#ifdef CONFIG_ICX1111
+	/* search the last content in the block */
+	ip = 0xFFFFFFFF;
+	num = NAND_PAGE_BLK / info->size;
+	for( i = 0; i < num; i++ ) {
+		cp = i * info->size;
+		/* top of the content */
+		if( nand_read( info->block, cp, nandbuf, extbuf ) != BIOS_OK )
+			break;
+		if( (extbuf[0] != id)
+		 || (SETVAL_EXTBUF2SERIAL(extbuf) != (info->serial+cp)) )
+			break;
+		/* end of the content */
+		if( nand_read( info->block, cp+info->size-1, nandbuf, extbuf ) != BIOS_OK )
+			break;
+		if( (extbuf[0] != id)
+		 || (SETVAL_EXTBUF2SERIAL(extbuf) != (info->serial+cp+info->size-1)) )
+			break;
+
+		ip = cp;
+		np += ip;
+	}
+	if( ip == 0xFFFFFFFF )
+		return 0;
+
+	for( ; ip < np; ip++ ) {				/* read image data	*/
+#else
+
+	for( ip = 0; ip < np; ip++ ) {			/* read image data	*/
+#endif
+		if( (nand_read( info->block, ip, bufadr, extbuf ) == BIOS_OK) && (extbuf[0] == id) )
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+			bufadr += nand_page_size;
+#else
+			bufadr += NAND_PAGE_SIZE;
+#endif
+		else 								/* fail to read		*/
+			break;							/* -> to next block */
+	}
+	if( ip >= np ) {						/* check remain		*/
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+		if(rem) {
+			if( (nand_read( info->block, ip, nandbuf, extbuf ) != BIOS_OK) || (extbuf[0] != id) )
+				return 0;
+			memcpy(bufadr, nandbuf, rem);
+			ip++;
+		}
+
+		for( ; ip < info->size; ip++ ) {
+#else
+		for( ip = np; ip < NAND_PAGE_BLK; ip++ ) {
+#endif
+			if( (nand_read( info->block, ip, nandbuf, extbuf ) != BIOS_OK) || (extbuf[0] != id) )
+				break;
+		}
+											/* succeed to read	*/
+		if( ip >= info->size ) return 1;
+	}	
+	/* fail to read if reach here */
+	return 0;
+}
+
+/**
+ * Boot Error
+ *   Input  : none
+ *   Output : none
+ */
+static void nand_boot_err( void )
+{
+	printf("!! Failed to boot Linux!\n");
+	while(1);
+}
+
+/**
+ * Create TAG
+ *   Input  : none
+ *   Output : none
+ */
+
+static void setup_tag( bd_t *bd, char *commandline )
+{
+	struct tag *params;
+    char *p;
+/* 2007.03.06 fuj : Modified memory size */
+#ifndef CONFIG_ICX1111
+	int i;
+#endif
+
+	params = (struct tag *)bd->bi_boot_params;
+	/* core */
+    params->hdr.tag = ATAG_CORE;
+    params->hdr.size = tag_size (tag_core);
+
+    params->u.core.flags = 0;
+    params->u.core.pagesize = 0;
+    params->u.core.rootdev = 0;
+
+    params = tag_next (params);
+
+	/* memory */
+/* 2007.03.06 fuj : Modified memory size */
+#ifdef CONFIG_ICX1111
+	params->hdr.tag = ATAG_MEM;
+	params->hdr.size = tag_size (tag_mem32);
+
+	params->u.mem.start = bd->bi_dram[0].start;
+
+	if( ICX11xx_CHK_SI_MEM(ICX11xx_SI_MEM_64M) )
+		params->u.mem.size = ICX11xx_ATAG_MEM_64M;
+	else
+		params->u.mem.size = ICX11xx_ATAG_MEM_32M;
+
+	params = tag_next (params);
+#else
+	for( i = 0; i < CONFIG_NR_DRAM_BANKS; i++ ) {
+	    params->hdr.tag = ATAG_MEM;
+	    params->hdr.size = tag_size (tag_mem32);
+
+	    params->u.mem.start = bd->bi_dram[i].start;
+	    params->u.mem.size = bd->bi_dram[i].size;
+
+	    params = tag_next (params);
+	}
+#endif
+
+	/* command line */
+    if( commandline ) {
+    	for( p = commandline; *p == ' '; p++ );
+    	if( *p != '\0' ) {
+    		params->hdr.tag = ATAG_CMDLINE;
+    		params->hdr.size =
+				(sizeof (struct tag_header) + strlen (p) + 1 + 4) >> 2;
+
+			strcpy (params->u.cmdline.cmdline, p);
+
+			params = tag_next (params);
+		}
+	}
+
+	/* initrd */
+	params->hdr.tag = ATAG_INITRD2;
+	params->hdr.size = tag_size (tag_initrd);
+
+	params->u.initrd.start = initrd_start;
+	params->u.initrd.size = initrd_size;
+
+	params = tag_next (params);
+
+/* 2007.03.06 fuj : Applied system information */
+#ifdef CONFIG_ICX1111
+	/* revision(=system information) */
+	setup_revision_tag (&params);
+#endif
+
+	/* end tag */
+    params->hdr.tag = ATAG_NONE;
+    params->hdr.size = 0;
+
+}
+
+/* 2007.03.06 fuj : Applied system information */
+#ifdef CONFIG_ICX1111
+void setup_revision_tag (struct tag **params)
+{
+	/* revision(=system information) */
+	(*params)->hdr.tag = ATAG_REVISION;
+	(*params)->hdr.size = tag_size (tag_revision);
+
+	(*params)->u.revision.rev = icx11xx_sys_info;
+
+	*params = tag_next (*params);
+}
+#endif
+
+#endif /* CONFIG_ICX1087 */
+

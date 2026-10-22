@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import subprocess
 import tomllib
+import importlib.util
 
 root = Path(__file__).resolve().parents[1]
 for name in ['README.md','CHANGELOG.md','LICENSE','THIRD_PARTY_NOTICES.md','docs/PROTOCOL.md']:
@@ -18,3 +19,8 @@ assert '[Unreleased]' in (root/'CHANGELOG.md').read_text()
 assert tomllib.loads((root/'Cargo.toml').read_text())['package']['license']=='MIT'
 assert (root/'LICENSE').read_text(encoding='utf-8-sig').startswith('MIT License')
 print('English documentation, required files, relative links and MIT metadata checks passed.')
+
+spec=importlib.util.spec_from_file_location("app_version",root/"tools/version.py")
+version=importlib.util.module_from_spec(spec);spec.loader.exec_module(version)
+version.check(root)
+print("Application SemVer and lockfiles agree.")

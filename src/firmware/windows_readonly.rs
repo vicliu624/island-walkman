@@ -171,6 +171,7 @@ fn packet_for(query: ReadQuery, address: &[u8; 8], data: *mut c_void) -> Result<
 }
 
 pub fn probe(volume: &str, usb_serial: &str) -> Result<serde_json::Value> {
+    let _operation = crate::device_operation::acquire()?;
     ensure!(
         volume.len() == 2
             && volume.as_bytes()[0].is_ascii_alphabetic()
@@ -181,14 +182,13 @@ pub fn probe(volume: &str, usb_serial: &str) -> Result<serde_json::Value> {
     let matches = nusb::list_devices()
         .wait()?
         .filter(|d| {
-            d.vendor_id() == 0x054c
-                && d.product_id() == 0x032a
+            crate::devices::usb_profile(d.vendor_id(), d.product_id()).is_some()
                 && d.serial_number() == Some(usb_serial)
         })
         .count();
     ensure!(
         matches == 1,
-        "Exactly one matching Sony A91x USB device is required"
+        "Exactly one matching supported USB device is required"
     );
     // Windows SPTI requires read/write handle access even for DATA_IN. Opening
     // an existing volume does not write it. This module has no data-out request.
@@ -214,15 +214,15 @@ pub fn probe(volume: &str, usb_serial: &str) -> Result<serde_json::Value> {
     let info_bytes = read_query(&file, ReadQuery::DeviceInfo, &address)?;
     let info = responses::device_info(&info_bytes)?;
     ensure!(
-        info.vendor == "SONY" && info.model == "NW-A918",
-        "Information response does not identify the requested A918"
+        crate::devices::firmware_profile(&info.vendor, &info.model).is_some(),
+        "Information response does not identify a supported firmware family"
     );
     verify_binding(&file, usb_serial)?;
     let power_result = read_query(&file, ReadQuery::PowerStatus, &address)
         .and_then(|b| responses::power_status(&b));
     let power = power_result.as_ref().ok();
     Ok(
-        serde_json::json!({"source":"windows_fixed_read_only_scsi","usb_serial":usb_serial,"device":info,"power":power,"power_error":power_result.as_ref().err().map(|e|format!("{e:#}")),"fixed_queries_attempted":["device_info","power_status"],"safety":super::session::preflight(Some(&info),power)}),
+        serde_json::json!({"source":"windows_fixed_read_only_scsi","usb_serial":usb_serial,"device":info.report()?,"power":power,"power_error":power_result.as_ref().err().map(|e|format!("{e:#}")),"fixed_queries_attempted":["device_info","power_status"],"safety":super::session::preflight(Some(&info),power)}),
     )
 }
 

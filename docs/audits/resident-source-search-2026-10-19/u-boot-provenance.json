@@ -1,0 +1,205 @@
+{
+  "publisher_page": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+  "publisher_page_sha256": "3c2303e05e15439f9064b66f0411a33351bc2c8f5596dafc55a5ae5d101984e2",
+  "declared_models": [
+    "NW-A916",
+    "NW-A918",
+    "NW-A919"
+  ],
+  "archive_url": "https://prodgpl.blob.core.windows.net/download/Audio/NW-A916/u-boot-1.1.1.local.tgz",
+  "archive_bytes": 6231505,
+  "archive_sha256": "682f6ae908e1ebfb93ee89ccb81c57ca6895d57eca6c31a8fd9772ab5171de6f",
+  "content_md5_base64": "Yzr0tMdtfPga8BR2UZ5mBA==",
+  "archive_members": 3497,
+  "matching_named_boot_or_installer_binaries": [],
+  "artifact_kind": "official_model_listed_bootloader_source_not_a_qualified_flash_image",
+  "license_file": "official-source/COPYING.txt",
+  "source_files": [
+    {
+      "member": "./COPYING",
+      "file": "official-source/COPYING.txt",
+      "sha256": "a45932c79317d15116eadbf1c9c6fc59117ec3c4621db3a876066defa723963b",
+      "anchors": []
+    },
+    {
+      "member": "./Makefile",
+      "file": "official-source/Makefile.txt",
+      "sha256": "c49b9c89ff44d243e7f161cdac6fe58abe2ae844d1f586bac0641a6c15b2b78b",
+      "anchors": []
+    },
+    {
+      "member": "./common/cmd_icx1087_nand.c",
+      "file": "official-source/common/cmd_icx1087_nand.c.txt",
+      "sha256": "e2b1a167d739f044b951b9c287a32a0822600f238b543891514c25bd2d3fba00",
+      "anchors": []
+    },
+    {
+      "member": "./include/configs/mp201mini.h",
+      "file": "official-source/include/configs/mp201mini.h.txt",
+      "sha256": "d790945e224a543639eb76375f83f4b2e01dce9c067fe9934ff1b58ddec96ec9",
+      "anchors": [
+        {
+          "line": 58,
+          "text": "#define CONFIG_IDENT_STRING     \" 20070928A for ICX1101 on Mob40 at 20060726\""
+        }
+      ]
+    },
+    {
+      "member": "./board/mp201xx/mp200.c",
+      "file": "official-source/board/mp201xx/mp200.c.txt",
+      "sha256": "973c279c5300a0081ebb4d8f94756edd1cf76e3805c96b84353be6f39d497e7e",
+      "anchors": [
+        {
+          "line": 277,
+          "text": "ICX1087_CLR_BOOTFLG();"
+        },
+        {
+          "line": 290,
+          "text": "/*\t\tICX1087_CLR_BOOTFLG(); */"
+        }
+      ]
+    },
+    {
+      "member": "./board/mp201xx/icx1087/icx1087.h",
+      "file": "official-source/board/mp201xx/icx1087/icx1087.h.txt",
+      "sha256": "ccbac8a0ab0096f9b060759315d6928b4eeeddb6e050ecd4c0511bea44f1dca3",
+      "anchors": [
+        {
+          "line": 172,
+          "text": "#define\tVBAT_THRESHOLD_FWUP_DSY\t0xC2"
+        },
+        {
+          "line": 248,
+          "text": "#define\tFLG_BOOT_FWUP\t\t0x70555766"
+        },
+        {
+          "line": 252,
+          "text": "#define\tNAND_EXTRACT_FWUP(b, s)\t(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32))))"
+        },
+        {
+          "line": 289,
+          "text": "#define\tICX1087_CHK_FWUP()\t(icx1087_set_val.fwup == FLG_BOOT_FWUP)"
+        },
+        {
+          "line": 316,
+          "text": "#define\tBOOT_FLAG\t\t\t0x744F6F42\t\t/* \"BoOt\"\t\t\t*/"
+        },
+        {
+          "line": 318,
+          "text": "/* #define\tBOOT_FLAG_ADR\t\t0x30000100 */\t\t/* = Tag address\t*/"
+        },
+        {
+          "line": 319,
+          "text": "#define\tBOOT_FLAG_ADR\t\t(LCD_DATABUF + 0x00100000 - 4)"
+        },
+        {
+          "line": 321,
+          "text": "#define\tICX1087_SET_BOOTFLG()\tBIOS_MCR_OUTPW(BOOT_FLAG_ADR, BOOT_FLAG)"
+        },
+        {
+          "line": 322,
+          "text": "#define\tICX1087_CLR_BOOTFLG()\tBIOS_MCR_OUTPW(BOOT_FLAG_ADR, 0)"
+        },
+        {
+          "line": 323,
+          "text": "#define\tICX1087_IS_BOOTFLG()\t(BIOS_MCR_INPW(BOOT_FLAG_ADR) == BOOT_FLAG)"
+        }
+      ]
+    },
+    {
+      "member": "./board/mp201xx/icx1087/icx1087_nand.c",
+      "file": "official-source/board/mp201xx/icx1087/icx1087_nand.c.txt",
+      "sha256": "bb301198759e79c830e311c5b4b340d1143addc0f0e5dddd4d7a6ec13f789964",
+      "anchors": [
+        {
+          "line": 67,
+          "text": "#define TBL_SIG_FUKRNL\t\t\t0x744B5566\t\t/* \"fUKt\" */"
+        },
+        {
+          "line": 68,
+          "text": "#define TBL_SIG_FUINRD\t\t\t0x74525566\t\t/* \"fURt\" */"
+        },
+        {
+          "line": 71,
+          "text": "#define\tMNG_SIG_KRNL\t\t\t0x6C4E526B\t\t/* \"kRNl\" */"
+        },
+        {
+          "line": 79,
+          "text": "#define CFG_USER_BOOTARGS\t\"root=/dev/ram init=/linuxrc_fwup mem=23M rw devfs=mount video=qfb: ip=none\""
+        },
+        {
+          "line": 307,
+          "text": "vs = vs ^ *adr++;"
+        },
+        {
+          "line": 317,
+          "text": "if( vs == 0 )"
+        },
+        {
+          "line": 457,
+          "text": "else if( ICX1087_CHK_FWUP() )"
+        },
+        {
+          "line": 458,
+          "text": "setenv(\"bootargs\", CFG_USER_BOOTARGS);\t\t\t/* user F/W up\t*/"
+        },
+        {
+          "line": 470,
+          "text": "MNG_SIG_LOADER, TBL_SIG_FUKRNL, (void *)&ktbl, 1) ) {"
+        },
+        {
+          "line": 474,
+          "text": "MNG_SIG_LOADER, TBL_SIG_FUINRD, (void *)&itbl, 1) ) {"
+        },
+        {
+          "line": 496,
+          "text": "if( nand_search_tbl(skblk, ekblk, MNG_SIG_KRNL, TBL_SIG_KRNL, (void *)&ktbl, 1) ) {"
+        },
+        {
+          "line": 499,
+          "text": "if( nand_search_tbl(skblk, ekblk, MNG_SIG_KRNL, TBL_SIG_INRD, (void *)&itbl, 1) ) {"
+        },
+        {
+          "line": 536,
+          "text": "ICX1087_CLR_BOOTFLG();"
+        },
+        {
+          "line": 625,
+          "text": "icx1087_set_val.fwup = NAND_EXTRACT_FWUP(nandbuf, NAND_PAGE_SIZE_2K);"
+        },
+        {
+          "line": 813,
+          "text": "while(1);"
+        }
+      ]
+    },
+    {
+      "member": "./board/mp201xx/icx1087/icx1087_pm.c",
+      "file": "official-source/board/mp201xx/icx1087/icx1087_pm.c.txt",
+      "sha256": "29bccb05b7605aebb097ac26ef8b14f5b228f02307b1028cedc6f7c382dd2d3e",
+      "anchors": [
+        {
+          "line": 532,
+          "text": "if (ICX1087_CHK_FWUP())"
+        },
+        {
+          "line": 533,
+          "text": "icx1087_vbat_low = VBAT_THRESHOLD_FWUP_DSY;"
+        },
+        {
+          "line": 542,
+          "text": "if (ICX1087_CHK_FWUP())"
+        },
+        {
+          "line": 550,
+          "text": "if (ICX1087_CHK_FWUP())"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Sony model listing and source markers establish provenance/relevance, not installed loader byte equivalence",
+    "No resident fUKt/fURt image or fwpup binary is supplied by the selected source files",
+    "No source was compiled/executed; flashing and device access remain unavailable"
+  ]
+}

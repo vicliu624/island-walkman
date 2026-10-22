@@ -1,0 +1,37 @@
+[
+  {
+    "file": "catalog-index.json",
+    "bytes": 217562,
+    "sha256": "5ecb039aed6e98493d1f98d59f20f60edc435d364e2ca51d4b7da0d02b7dd35e"
+  },
+  {
+    "file": "coverage.json",
+    "bytes": 565,
+    "sha256": "180c98f8ef4015b8066cb39d8429e86790ff256140e205c0104c922537bc778f"
+  },
+  {
+    "file": "false-positive-review.json",
+    "bytes": 500,
+    "sha256": "3ec82f116b047339944b9658624332a1728f4273e0de3a8b013f129737ea6312"
+  },
+  {
+    "file": "metadata-review.json",
+    "bytes": 85975,
+    "sha256": "43dfc7fe870c4aa5a3e7997c0a138162aa851776eb15f6b79febbaa138823b0e"
+  },
+  {
+    "file": "page-requests.json",
+    "bytes": 3495,
+    "sha256": "a06a65848abab6fa700daf3bc7c51c38b67b028b6b7b34f05d10f56a6984914a"
+  },
+  {
+    "file": "triage.json",
+    "bytes": 272506,
+    "sha256": "ab51504ea693fb9b497fd88f62d2c73b3a024c65e7157863d976c459e52b8603"
+  },
+  {
+    "file": "validation.json",
+    "bytes": 668,
+    "sha256": "2db47f1e3551b9878a5d9335861830d40156688b3f57498b60fc2e54167cb5a8"
+  }
+]

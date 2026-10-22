@@ -1,0 +1,47 @@
+[
+  {
+    "file": "candidate-ledger.json",
+    "bytes": 2382,
+    "sha256": "83168a5d8a9731242b5fa26730c7426de8b66084725b6c7251bf0509e326de0d"
+  },
+  {
+    "file": "catalog-requests.json",
+    "bytes": 6205,
+    "sha256": "61877afaa9ee5eca6574dddb052eaa7a5180e13db820773f8d025f572d77aa07"
+  },
+  {
+    "file": "catalog-results.json",
+    "bytes": 52970,
+    "sha256": "d91bdf09a10c14f81ccf61d632a381c211d9432bd5c13d64b161be7bdf0f602b"
+  },
+  {
+    "file": "extra-source-members.json",
+    "bytes": 234804,
+    "sha256": "33c5b6eac381e57a3a3aba66914022ea377f228a44e486a51aeaf211264fed15"
+  },
+  {
+    "file": "github-search.json",
+    "bytes": 31257,
+    "sha256": "7ece4ba09000c6e2a497be591745a78029905aa5b3a61ab3095ace93db4d171b"
+  },
+  {
+    "file": "local-image-triage.json",
+    "bytes": 4032,
+    "sha256": "fed8dc22f0ec788fd006c48b8088df1e3450ed42e83257de78e20bceaaf5ecdb"
+  },
+  {
+    "file": "official-distribution-cdx.json",
+    "bytes": 391,
+    "sha256": "52147f1be878bd06651a3590c369473990e2803e284ac88b1ba736bf6b3a5317"
+  },
+  {
+    "file": "official-extra-source.json",
+    "bytes": 1568,
+    "sha256": "2f07fdfafdc849d3faa56808a8c8335d07602a35ec233163f645c95aea2be4fb"
+  },
+  {
+    "file": "validation.json",
+    "bytes": 672,
+    "sha256": "89749f9fade858c688703fca113acf2c4a20c8e4cd6866dbf4ec400628dae27e"
+  }
+]

@@ -1,0 +1,349 @@
+/*
+ * icx1087.h
+ *
+ * Copyright 2006,2007 Sony Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
+#include <common.h>
+
+#ifdef CONFIG_ICX1087
+
+#include "bios_common.h"
+#include "bios_smu.h"
+#include "bios_gio.h"
+#include "bios_lcd.h"
+
+
+/**********/
+/* Option */
+/**********/
+/* #define	CONFIG_VBAT_ZERO */				/* for USB certification	*/
+#define CONFIG_DET_ADP						/* valid to detecp ADP		*/
+/* #define	CONFIG_DISPLAY_PWC_STATE */		/* display PWC information	*/
+#define	CONFIG_RTC_COMP_DATE				/* compare RTC date			*/
+
+/**********************************/
+/* Set up to Boot ICX1087/ICX1111 */
+/**********************************/
+
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+/* system information */
+#define	ICX11xx_SI_DFLT			0xFFFFFFFF
+
+#define	ICX11xx_SI_MSK_REV		0x0000003F	/* board revision			*/
+#define	ICX11xx_SI_MSK_MEM		0x000000C0	/* size of Memory			*/
+#define	ICX11xx_SI_MSK_LCD		0x00000700	/* a kind of LCD modules	*/
+/* 2007.05.30 fuj : Added a flag of DPD control */
+#define	ICX11xx_SI_MSK_DPD		0x00020000	/* Deep power down			*/
+/* 2007.08.02 fuj : Applied DSY battery table */
+#define	ICX11xx_SI_MSK_BTT		0x00700000	/* Battery table			*/
+
+#define	ICX11xx_SI_REV_DOBER	0x00000000
+#define	ICX11xx_SI_REV_IRIS_1	0x00000001
+#define	ICX11xx_SI_MEM_32M		0x00000000
+#define	ICX11xx_SI_MEM_64M		0x00000040
+#define	ICX11xx_SI_LCD_SONY		0x00000000
+#define	ICX11xx_SI_LCD_EPSON	0x00000100
+#define	ICX11xx_SI_LCD_TMD		0x00000200
+#define	ICX11xx_SI_LCD_TMD_18QVGA	0x00000300
+/* 2007.08.02 fuj : Applied DSY battery table */
+#define	ICX11xx_SI_BTT_DOBER	0x00000000
+#define	ICX11xx_SI_BTT_DSY		0x00100000
+
+extern UINT32 icx11xx_sys_info;
+
+#define	ICX11xx_CHK_SI_REV(p)	((icx11xx_sys_info & ICX11xx_SI_MSK_REV) == p)
+#define	ICX11xx_CHK_SI_LCD(p)	((icx11xx_sys_info & ICX11xx_SI_MSK_LCD) == p)
+#define	ICX11xx_CHK_SI_MEM(p)	((icx11xx_sys_info & ICX11xx_SI_MSK_MEM) == p)
+/* 2007.05.30 fuj : Added a flag of DPD control */
+#define	ICX11xx_CHK_SI_DPD()	(icx11xx_sys_info & ICX11xx_SI_MSK_DPD)
+/* 2007.08.02 fuj : Applied DSY battery table */
+#define	ICX11xx_CHK_SI_BTT(p)	((icx11xx_sys_info & ICX11xx_SI_MSK_BTT) == p)
+#endif
+
+/* boot mode */
+#define	ICX1087_MODE_MS()													\
+	((BIOS_MCR_INPW(SMU_MODE_ST) & SMU_MODE_ST_MASK)==SMU_MODE_ST_MS)
+#define	ICX1087_BOOT_NRML	0x00
+#define	ICX1087_BOOT_EMRG	0x01
+
+/* notify to Linux */
+#define KEY_SRAM_ADR        0xA003FFF0
+#define PM_SRAM_ADR         0xA003FFF4
+#define RSV_SRAM_ADR        0xA003FFF8
+
+#define KEY_MAGIC_NUM       0x12340000
+#define PM_VBAT_LOW         0x00000001
+#define PM_VBAT_NONE        0x00000002
+/* 2007.05.28 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+#define	PM_RTC_ALARM		0x00000004
+#endif
+
+/* wrapper */
+#define	icx1087_setup()						\
+	{										\
+		BIOS_MCR_OUTPW(KEY_SRAM_ADR, 0);	\
+		BIOS_MCR_OUTPW(PM_SRAM_ADR, 0);		\
+		BIOS_MCR_OUTPW(RSV_SRAM_ADR, 0);	\
+		gioPwc_init();						\
+		gioPwc_iosel(PWC_GPIO_IOSEL2, PWC_GPIO2_INIT, 1);	\
+		gioPwc_ioout(PWC_GPIO_IOOUT2, PWC_GPIO2_INIT, 1);	\
+	}
+#define	icx1087_exit_setup()				\
+	{										\
+		gioPwc_exit();						\
+	}
+
+
+/****************/
+/* for KEY		*/
+/****************/
+#define KEY_PAD_DFLT		0xFFFF
+#define KEY_PAD_MASK		0xFFFF
+#define KEY_AD_MASK			0x00FF
+
+extern       UINT16 icx1087_key_data;
+extern const UINT8  icx1087_key_ad_tbl[];
+
+#define	ICX1087_KEY_PRESSED()												\
+	(																		\
+	 (((icx1087_key_data >> 8) & KEY_AD_MASK) < icx1087_key_ad_tbl[7]) ||	\
+	  ((icx1087_key_data & KEY_AD_MASK) < icx1087_key_ad_tbl[7])		 	\
+	)
+#define	ICX1087_CHK_EMRG()													\
+	(																		\
+	 (((icx1087_key_data >> 8) & KEY_AD_MASK) >= icx1087_key_ad_tbl[2]) &&	\
+	 (((icx1087_key_data >> 8) & KEY_AD_MASK) <  icx1087_key_ad_tbl[3]) &&	\
+	  ((icx1087_key_data & KEY_AD_MASK) >= icx1087_key_ad_tbl[2])	    &&	\
+	  ((icx1087_key_data & KEY_AD_MASK) <  icx1087_key_ad_tbl[3])	      	\
+	)
+#define ICX1087_KEY_PLAY()													\
+	(((icx1087_key_data >> 8) & KEY_AD_MASK) < icx1087_key_ad_tbl[0])
+
+/* 2007.05.17 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+#define	ICX11xx_CANCEL_HOLD_TO		0
+#define	ICX11xx_CANCEL_HOLD_OFF		1
+#define	ICX11xx_CANCEL_HOLD_PSW		2
+#define	ICX11xx_CANCEL_HOLD_RTC		3
+#endif
+
+extern UINT8 icx1087_get_hold( void );
+extern UINT8 icx1087_chk_hold( void );
+extern void  icx1087_get_keypad( void );
+extern void  icx1087_set_keypad( void );
+
+
+/****************/
+/* for PM		*/
+/****************/
+/* 2006.11.24 fuj */
+/* #define	VBAT_THRESHOLD_LOW		0xB1 */
+/* #define	VBAT_THRESHOLD_FWUP		0xB4 */
+/* #define	VBAT_THRESHOLD_VLOW		0xAD */
+/* #define	VBAT_THRESHOLD_LOW_V3	0xB4 */
+/* #define	VBAT_THRESHOLD_FWUP_V3	0xB7 */
+/* #define	VBAT_THRESHOLD_VLOW_V3	0xB0 */
+#define	VBAT_THRESHOLD_LOW		0xB7
+#define	VBAT_THRESHOLD_FWUP		0xBA
+#define	VBAT_THRESHOLD_VLOW		0xAD
+#define	VBAT_THRESHOLD_LOW_V3	0xBB
+#define	VBAT_THRESHOLD_FWUP_V3	0xBE
+#define	VBAT_THRESHOLD_VLOW_V3	0xB0
+/* 2007.08.02 fuj : applied DSY battery table */
+#define	VBAT_THRESHOLD_LOW_DSY	0xBF
+#define	VBAT_THRESHOLD_FWUP_DSY	0xC2
+#define	VBAT_THRESHOLD_VLOW_DSY	0xB4
+
+#define	ICX1087_PSW_USB		0x20
+#define	ICX1087_PSW_ADP		0x10
+
+extern UINT8 icx1087_vbat_data;
+extern UINT8 icx1087_vbat_low;
+extern UINT8 icx1087_vbat_vlow;
+extern UINT8 icx1087_fact1_data;
+/* 2007.05.29 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+extern UINT8 icx11xx_fact3_data;
+#endif
+extern UINT8 icx1087_lsiver;
+
+#define	icx1087_det_key()												\
+	(																	\
+	 (icx1087_fact1_data & PWC_INTC_MASK_KEY) == PWC_INTC_FACT_KEYPAD	\
+	)
+#define	icx1087_det_hold()												\
+	(																	\
+	 (icx1087_fact1_data & PWC_INTC_FACT_HOLD) == PWC_INTC_FACT_HOLD	\
+	)
+/* 2006.11.21 fuj : applied cradle wake up */
+#define	icx1087_det_cradle()											\
+	(																	\
+	 (icx1087_fact1_data & PWC_INTC_FACT_CRADLE) == PWC_INTC_FACT_CRADLE\
+	)
+#define icx1087_set_lowbatt()											\
+	{																	\
+	 BIOS_MCR_INPW(PM_SRAM_ADR) |= PM_VBAT_LOW;							\
+	}
+#define icx1087_set_nonebatt()											\
+	{																	\
+	 BIOS_MCR_INPW(PM_SRAM_ADR) |= PM_VBAT_NONE;						\
+	}
+/* 2007.05.28 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+#define icx11xx_set_rtc()                                               \
+	{                                                                   \
+	 BIOS_MCR_INPW(PM_SRAM_ADR) |= PM_RTC_ALARM;                        \
+	}
+#endif
+
+#define ICX1087_VBAT_LOW()	(icx1087_vbat_data < icx1087_vbat_low)
+#define ICX1087_VBAT_VLOW()	(icx1087_vbat_data < icx1087_vbat_vlow)
+#define ICX1087_VBAT_NONE()	(icx1087_vbat_data == 0)
+
+extern void icx1087_get_pm(void);
+extern int  icx1087_det_psw(UINT8);
+extern int  icx1087_chk_lowbatt(void);
+extern void icx1087_power_off(void);
+extern void icx1087_set_limiter(void);
+/* 2007.05.17 fuj : Applied RTC wake-up */
+#ifdef CONFIG_ICX1111
+extern int	icx11xx_det_rtc(void);
+extern int	icx11xx_chk_rtc(void);
+extern int  icx11xx_chk_rtc_date(int);
+#endif
+
+
+/****************/
+/* for NAND		*/
+/****************/
+#define	ID_SETVAL_SETTING	0x70
+#define	ID_SETVAL_OPIMG		0x71
+#define ID_SETVAL_HLDIMG	0x72
+#define ID_SETVAL_LBATIMG	0x75
+#define ID_SETVAL_PWD		0x77
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+#define ID_SETVAL_SI		0x73
+#endif
+
+#define	FLG_BOOT_BEEP		0x70454562
+#define	FLG_BOOT_FWUP		0x70555766
+
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+#define	NAND_EXTRACT_FWUP(b, s)	(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32))))	
+#define	NAND_EXTRACT_BEEP(b, s)	(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32)*2)))	
+/* 2007.05.31 fuj : Applied RTC wake-up */
+#define	NAND_EXTRACT_RTC_MDHM(b, s)		\
+								(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32)*9)))	
+#define	NAND_EXTRACT_RTC_YEAR(b, s)		\
+								(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32)*10)))	
+
+typedef struct SetVal {
+	UINT32	beep;
+	UINT32	fwup;
+/* 2007.05.31 fuj : Applied RTC wake-up */
+	UINT32	year;
+	UINT32	mdhm;
+} SetVal_t;
+#else
+typedef struct SetVal {
+	char	others[2040];
+	UINT32	beep;
+	UINT32	fwup;
+} SetVal_t;
+#endif
+
+#define	FLG_BOOT_PWD_LEN	32
+
+/* 2007.04.17 fuj */
+#ifndef CONFIG_ICX1111
+typedef struct DebugParam {
+	char	others1[700];
+	char	pwd[FLG_BOOT_PWD_LEN];
+	char	others2[1316];
+} DebugParam_t;
+#endif
+
+extern SetVal_t icx1087_set_val;
+
+#define	ICX1087_CHK_BEEP()	(icx1087_set_val.beep != FLG_BOOT_BEEP)
+#define	ICX1087_CHK_FWUP()	(icx1087_set_val.fwup == FLG_BOOT_FWUP)
+
+extern void icx1087_init_nand( void );
+extern int icx1087_get_setval( unsigned char, void * );
+extern void nand_boot_linux( UINT8 );
+extern int nand_get_image( unsigned char, void *, unsigned int );
+
+/* 2007.04.17 fuj */
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+#define	NAND_EXTRACT_SI(b, s)	(*(UINT32 *)((UINT32)b + (s - sizeof(UINT32))))	
+
+extern void icx11xx_get_sysinfo( void );
+extern int  icx1087_get_pwd( unsigned char * );
+
+#define	ICX11xx_ATAG_MEM_64M	(55 * 1024 * 1024)	/* 55M byte */
+#define	ICX11xx_ATAG_MEM_32M	(23 * 1024 * 1024)	/* 23M byte */
+#endif
+
+
+/****************/
+/* for LCD		*/
+/****************/
+#define LCD_IMG_OPENING     ID_SETVAL_OPIMG
+#define LCD_IMG_HOLD        ID_SETVAL_HLDIMG
+#define LCD_IMG_LOWBATT     ID_SETVAL_LBATIMG
+
+#define	BOOT_FLAG			0x744F6F42		/* "BoOt"			*/
+/* 2007.08.06 fuj : BOOTFLG will be cleared in Kernel(USB driver) */
+/* #define	BOOT_FLAG_ADR		0x30000100 */		/* = Tag address	*/
+#define	BOOT_FLAG_ADR		(LCD_DATABUF + 0x00100000 - 4)
+
+#define	ICX1087_SET_BOOTFLG()	BIOS_MCR_OUTPW(BOOT_FLAG_ADR, BOOT_FLAG)
+#define	ICX1087_CLR_BOOTFLG()	BIOS_MCR_OUTPW(BOOT_FLAG_ADR, 0)
+#define	ICX1087_IS_BOOTFLG()	(BIOS_MCR_INPW(BOOT_FLAG_ADR) == BOOT_FLAG)
+
+extern void icx1087_disp_lcd( UINT8, UINT8 );
+extern void icx1087_off_lcd( void );
+/* 2007.03.06 fuj : Applied various models */
+#ifdef CONFIG_ICX1111
+extern void icx11xx_init_lcd(void);
+extern void icx11xx_exit_lcd(void);
+
+extern LcdParam_t *icx11xx_lcd_param;
+#endif
+
+
+/****************/
+/* for BEEP		*/
+/****************/
+#define	BEEP_TIME_CONTINUE	0				/* coutinuous */
+#define BEEP_TIME_100MS		100000			/* 100ms    */
+
+extern void icx1087_init_beep(void);
+extern void icx1087_exit_beep(void);
+extern void icx1087_disable_beep(void);
+extern void icx1087_on_beep(UINT32);
+extern void icx1087_off_beep(void);
+
+#endif /* CONFIG_ICX1087 */
+

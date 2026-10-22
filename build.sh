@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 cd -- "$(dirname -- "$0")"
+python3 tools/version.py --check
 (cd ui && npm ci && npm run build)
 python3 tools/collect-notices.py
 cargo test --locked

@@ -1,0 +1,9 @@
+{
+  "url": "https://prodgpl.blob.core.windows.net/download/Audio/NW-A916/linux-kernel-2.6.10.local.tgz",
+  "bytes": 49068350,
+  "sha256": "176e239b7052efbdda8e1beb5eb0baf6b7037cf90ff1d0af5df7b772fec90cab",
+  "content_md5_base64": "dGrjoG4c3xeun8ikHfHErg==",
+  "range_count": 47,
+  "official_link_page": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+  "executed": false
+}

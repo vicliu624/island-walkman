@@ -1,0 +1,29 @@
+[
+  {
+    "path": "flash_eraseall-badblocks-nandonly.patch",
+    "bytes": 1302,
+    "sha256": "803b6c390090d99868ad7cefcdc1984be9c6cc4d405c309356a3dd1627c15327"
+  },
+  {
+    "path": "flash_eraseall-errno-invert.patch",
+    "bytes": 854,
+    "sha256": "483b835d6ea8ef7062ff609726ebe54b33013df27ba62b06073482e7227f1760"
+  },
+  {
+    "path": "flash_eraseall-skip-bad.patch",
+    "bytes": 1632,
+    "sha256": "28379901e8108cc46a5e18414a8c350debb105a4ecfe6c07aa82da58befd6286"
+  },
+  {
+    "path": "mtd-utils-2.6.9_1.1.tar.gz",
+    "bytes": 1128304,
+    "sha256": "330cb1aaddd91db3e606052d5ab6f5b97a9d100ef6e7506b70445b8c3db42f3d",
+    "source_members": 665,
+    "fwpup_matches": []
+  },
+  {
+    "path": "mtd-utils.spec",
+    "bytes": 5477,
+    "sha256": "3dbae4ac9b9a3309e65c224d6093bbe1ffafad5805aebbcfcfd756fed842cc90"
+  }
+]

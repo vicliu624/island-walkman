@@ -1,0 +1,38 @@
+[
+  {
+    "name": "busybox-1.1.0.tar.gz",
+    "url": "https://prodgpl.blob.core.windows.net/download/Audio/common/uNAtw8NVFFndE7qayoNr1g/busybox-1.1.0.tar.gz",
+    "publisher_page": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+    "target_code_executed": false,
+    "bytes": 1695886,
+    "sha256": "8b03a57ebe228a67f6435e6a89e6d70079c96b70a52f672a3283a9d99692b13c",
+    "content_md5_base64": "uNAtw8NVFFndE7qayoNr1g==",
+    "archive_members": 1002,
+    "regular_files_scanned": 914,
+    "matches": []
+  },
+  {
+    "name": "sysvinit-2.85.tar.gz",
+    "url": "https://prodgpl.blob.core.windows.net/download/Audio/common/ii2PHtWikJ2gQTL++kSQXg/sysvinit-2.85.tar.gz",
+    "publisher_page": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+    "target_code_executed": false,
+    "bytes": 92758,
+    "sha256": "916a4fa6bd5b5dfd984e5222bbe21d8cd7b83c256b198c0b8cf9dbda545aa6ed",
+    "content_md5_base64": "ii2PHtWikJ2gQTL++kSQXg==",
+    "archive_members": 65,
+    "regular_files_scanned": 59,
+    "matches": []
+  },
+  {
+    "name": "dosfstools-2.11.local.tgz",
+    "url": "https://prodgpl.blob.core.windows.net/download/Audio/NW-A916/dosfstools-2.11.local.tgz",
+    "publisher_page": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+    "target_code_executed": false,
+    "bytes": 73123,
+    "sha256": "851bcf0cd47597ee1147c265e5700c1f8f16bbf611a21ba72c25ac63f8662593",
+    "content_md5_base64": "yJalpFeESLbWfahL2d8VdA==",
+    "archive_members": 8,
+    "regular_files_scanned": 8,
+    "matches": []
+  }
+]

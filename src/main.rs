@@ -1,8 +1,11 @@
 #![cfg_attr(all(windows, not(debug_assertions)), windows_subsystem = "windows")]
+mod apps;
 mod database;
 #[cfg(feature = "desktop")]
 mod desktop;
 mod device_io;
+mod device_operation;
+mod devices;
 mod firmware;
 mod metadata;
 mod protocol;
@@ -84,7 +87,7 @@ fn main() -> anyhow::Result<()> {
             .read_to_end(&mut bytes)?;
         let value = match query {
             firmware::responses::ReadQuery::DeviceInfo => {
-                serde_json::to_value(firmware::responses::device_info(&bytes)?)?
+                firmware::responses::device_info(&bytes)?.report()?
             }
             firmware::responses::ReadQuery::PowerStatus => {
                 serde_json::to_value(firmware::responses::power_status(&bytes)?)?

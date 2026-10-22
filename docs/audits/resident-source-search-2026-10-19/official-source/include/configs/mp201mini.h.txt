@@ -1,0 +1,346 @@
+/*
+ * (C) Copyright 2006 NEC Electronics Corporation.
+ * Configuation settings for the ET-MP200-KIT board.
+ *
+ * (C) Copyright 2005 NEC Electronics Corporation.
+ * Configuation settings for the MP200 MCT board.
+ *
+ * (C) Copyright 2003
+ * Texas Instruments.
+ * Kshitij Gupta <kshitij@ti.com>
+ * Configuation settings for the TI OMAP Innovator board.
+ *
+ * See file CREDITS for list of people who contributed to this
+ * project.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
+ */
+
+/*
+ * Copyright 2006,2007 Sony Corporation. 
+ */
+
+#ifndef __CONFIG_H
+#define __CONFIG_H
+
+/*
+ * If we are developing, we might want to start armboot from ram
+ * so we MUST NOT initialize critical regs like mem-timing ...
+ */
+#define CONFIG_INIT_CRITICAL			/* undef for developing */
+
+/*
+ * High Level Configuration Options
+ * (easy to change)
+ */
+#define CONFIG_ARM926EJS		1	/* This is an arm926ejs CPU core  */
+#define CONFIG_MP200			1	/* in a MP200 core    */
+#define CONFIG_MP200_PLL		248	/* HPLL frequency is 248MHz */
+/*#define CONFIG_MP200_PLL		192*/	/* HPLL frequency is 192MHz */
+#define CONFIG_MULTICPU_BOOT		0	/* 3PE boot = 1 / 1PE boot = 0 */
+#define CONFIG_SYNC_BURST		0	/* SyncBurst OFF = 0 / 1cycle = 1 */
+
+/* 2006.03.07 fuj */
+#ifdef CONFIG_ICX1087
+#define CONFIG_IDENT_STRING     " 20070928A for ICX1101 on Mob40 at 20060726"
+#endif /* CONFIG_ICX1087 */
+
+#define CFG_MP200_ARCH			242
+/* 2006.03.17 fuj */
+#ifdef CONFIG_ICX1087
+#define CFG_KERNEL_PHY          0x00100000
+#else
+#define CFG_KERNEL_PHY			0x00200040
+#endif /* CONFIG_ICX1087 */
+
+#define NANDFLASH
+#define SUSPEND_RESUME
+/* 2006.10.18 fuj */
+#ifdef CONFIG_ICX1087
+#define AB0CS01WAIT			0x01020301
+#define AB0CS01WAIT_W		0x00040300
+#else
+#define AB0CS01WAIT			0x00010401
+#endif
+#define CONNECT_ICE
+
+/* MP201 only define */
+#define CONFIG_SDRAM_TYPE		0	/* 512Mbit = 1 / 256Mbit = 0 */
+/*#define COMB_SEL_CPI	*/			/* use CPI   (not use SPI1) */
+/*#define COMB_SEL_PWM0	*/			/* use PWM0  (not use MS) */
+/*#define COMB_SEL_PWM1	*/			/* use PWM1  (not use MS) */
+
+#define WARMBOOT_SRAM               /* copy to SRAM */
+/* ----------------- */
+
+#undef  CONFIG_USE_IRQ				/* we don't need IRQ/FIQ stuff */
+
+/*
+ * tftpboot
+ */
+#define CONFIG_IPADDR			192.168.0.225
+#define CONFIG_SERVERIP			192.168.0.1
+
+#define CONFIG_NETMASK			255.255.255.0
+#define CONFIG_GATEWAYIP		192.168.0.1
+#define CONFIG_HOSTNAME			ET-MP211-KIT
+/* 2006.03.07 fuj */
+#ifdef CONFIG_ICX1087
+#define CONFIG_BOOTFILE         uImage
+
+#define CONFIG_CMDLINE_TAG      1
+#define CONFIG_SETUP_MEMORY_TAGS 1
+
+/* 2006.03.20 fuj */
+#ifdef CONFIG_ICX1111
+#define CONFIG_REVISION_TAG		1
+#endif /* CONFIG_ICX1111 */
+
+#else
+#define CONFIG_BOOTFILE			xipuImage
+
+#define CONFIG_CMDLINE_TAG		1	/* enable passing of ATAGs  */
+#endif /* CONFIG_ICX1087 */
+
+
+
+/*
+ * Size of malloc() pool
+ */
+#define CFG_MALLOC_LEN			(CFG_ENV_SIZE + 128*1024)
+#define CFG_GBL_DATA_SIZE		128	/* size in bytes reserved for initial data */
+
+/*
+ * SMC9111I
+ */
+#define CONFIG_DRIVER_SMC91111
+#define CONFIG_SMC91111_BASE		0x20010000
+
+/*
+ * NS16550 Configuration
+ */
+#define CFG_NS16550
+#define CFG_NS16550_SERIAL
+#define CFG_NS16550_REG_SIZE		(-4)
+#define CFG_NS16550_CLK			(12000000)	/* can be 12M/32Khz or 48Mhz */
+#define CFG_NS16550_COM1		0x50000000	/* uart1, bluetooth uart */
+
+/*
+ * select serial console configuration
+ */
+#define CONFIG_SERIAL1			1		/* we use SERIAL 1 on MP200 */
+
+/* allow to overwrite serial and ethaddr */
+#define CONFIG_ENV_OVERWRITE
+#define CONFIG_CONS_INDEX		1
+/* 2006.03.13 fuj */
+#ifdef CONFIG_ICX1087
+#define CONFIG_BAUDRATE         115200
+#define CFG_BAUDRATE_TABLE      { 115200 }
+
+/* 2006.08.29 fuj */
+#define	CONFIG_SILENT_CONSOLE	y
+#else
+#define CONFIG_BAUDRATE			57600
+#define CFG_BAUDRATE_TABLE		{ 57600 }
+#endif /* CONFIG_ICX1087 */
+
+/* 2006.04.27 fuj : Add clock command */
+/* 2006.06.29 fuj : For boot Linux from NAND */
+/* 2006.11.17 fuj : disabled command that load file over serial line */
+#define CONFIG_COMMANDS ( (CONFIG_CMD_DFL | CFG_CMD_PING | CFG_CMD_NANDBOOT) \
+		                 & ~(CFG_CMD_LOADS | CFG_CMD_LOADB) )
+#define CFG_CONSOLE_IS_IN_ENV
+#define CFG_CONSOLE_ENV_OVERWRITE
+
+/* this must be included AFTER the definition of CONFIG_COMMANDS (if any) */
+#include <cmd_confdefs.h>
+
+/* 2006.09.04 fuj : disable BOOTDELAY count */
+#ifdef CONFIG_ICX1087
+#define CONFIG_BOOTDELAY			0
+#define	CONFIG_ZERO_BOOTDELAY_CHECK	1
+/* 2006.11.17 fuj */
+#define	CONFIG_PWD					y
+#else
+#define CONFIG_BOOTDELAY		3
+#endif
+
+/* 2006.03.07 fuj */
+#ifdef CONFIG_ICX1087
+/* 2006.06.29 fuj : For boot Linux from NAND */
+#define CONFIG_BOOTCOMMAND      "nandboot"
+
+/* 2007.03.06 fuj : Modified memory size */
+#ifdef CONFIG_ICX1111
+
+#define CONFIG_CRAMFSCMD		"setenv bootargs console=ttyS0,115200n8 noinitrc root=/dev/mtdblock/2 devfs=mount init=/linuxrc ro video=qfb: ip=none\;bootm 32000000"
+
+#define CONFIG_NFSCMD			"setenv bootargs console=ttyS0,115200n8 noinitrd root=/dev/nfs rw devfs=mount video=qfb: nfsroot=\$(serverip):\$(rootpath),nolock,tcp ip=\$(ipaddr)\;bootm 32000000"
+
+#define CONFIG_NORNANDCMD		"setenv bootargs console=ttyS0,115200n8 root=/dev/mtdblock/4 devfs=mount init=/linuxrc ro video=qfb: ip=none\;nandboot"
+
+#define CONFIG_NANDCMD			"setenv bootargs console=ttyS0,115200n8 root=/dev/mtdblock/1 devfs=mount init=/linuxrc ro video=qfb: ip=none\;nandboot"
+
+#else	/* CONFIG_ICX1111 */
+
+#define CONFIG_CRAMFSCMD		"setenv bootargs mem=23M console=ttyS0,115200n8 noinitrc root=/dev/mtdblock/2 devfs=mount init=/linuxrc ro video=qfb: ip=none\;bootm 32000000"
+
+#define CONFIG_NFSCMD			"setenv bootargs mem=23M console=ttyS0,115200n8 noinitrd root=/dev/nfs rw devfs=mount video=qfb: nfsroot=\$(serverip):\$(rootpath),nolock,tcp ip=\$(ipaddr)\;bootm 32000000"
+
+#define CONFIG_NORNANDCMD		"setenv bootargs mem=23M console=ttyS0,115200n8 root=/dev/mtdblock/4 devfs=mount init=/linuxrc ro video=qfb: ip=none\;nandboot"
+
+#define CONFIG_NANDCMD			"setenv bootargs mem=23M console=ttyS0,115200n8 root=/dev/mtdblock/1 devfs=mount init=/linuxrc ro video=qfb: ip=none\;nandboot"
+
+#endif	/* CONFIG_ICX1111 */
+
+#define CONFIG_ROOTPATH			/export/rootfs
+#else
+#define CONFIG_BOOTARGS			"root=/dev/null noinitrd init=/linuxrc console=ttyS0,57600n8n mem=16M ro video=qfb: ip=none rootflags=physaddr=0x00600000"
+
+#define CONFIG_BOOTCOMMAND		"run cramfscmd"
+
+#define CONFIG_CRAMFSCMD		"setenv bootargs root=/dev/null noinitrd init=/linuxrc console=ttyS0,57600n8n mem=16M ro video=qfb: ip=none rootflags=physaddr=0x00600000\;bootm 00200000"
+
+#define CONFIG_NFSCMD			"setenv bootargs root=/dev/nfs noinitrd console=ttyS0,57600n8n mem=16M ro video=qfb: nfsroot=\$(serverip):\$(rootpath),timeo=30 ip=\$(ipaddr):\$(serverip):\$(gatewayip):\$(netmask):\$(hostname):eth0:off\;bootm 00200000"
+
+#define CONFIG_ROOTPATH			/export/target
+#endif /* CONFIG_ICX1087 */
+
+#define CONFIG_NET_RETRY_COUNT		100000
+
+
+/*
+ * Miscellaneous configurable options
+ */
+#define CFG_LONGHELP					/* undef to save memory     */
+#define CFG_PROMPT			"MP200 # "	/* Monitor Command Prompt   */
+#define CFG_CBSIZE			256		/* Console I/O Buffer Size  */
+/* Print Buffer Size */
+#define CFG_PBSIZE			(CFG_CBSIZE+sizeof(CFG_PROMPT)+16)
+#define CFG_MAXARGS			16		/* max number of command args   */
+#define CFG_BARGSIZE			CFG_CBSIZE	/* Boot Argument Buffer Size    */
+
+#define CFG_MEMTEST_START		0x32000000	/* memtest works on */
+#define CFG_MEMTEST_END			0x34000000	/* 32 MB in DRAM    */
+
+#undef	CFG_CLKS_IN_HZ					/* everything, incl board info, in Hz */
+
+/* 2006.03.07 fuj */
+#ifdef CONFIG_ICX1087
+#define CFG_LOAD_ADDR           0x32000000  /* default load address */
+#else
+#define CFG_LOAD_ADDR			0x00200000	/* default load address */
+#endif /* CONFIG_ICX1087 */
+
+
+/* The 1610 has 6 timers, they can be driven by the RefClk (12Mhz) or by
+ * DPLL1. This time is further subdivided by a local divisor.
+ */
+#define CFG_TIMERBASE			0xC0000000	/* use timer 0 */
+#define CFG_HZ				32000		/* Timer 32kHz */
+
+/*-----------------------------------------------------------------------
+ * Stack sizes
+ *
+ * The stack sizes are set up in start.S using the settings below
+ */
+#define CONFIG_STACKSIZE		(128*1024)	/* regular stack */
+#ifdef CONFIG_USE_IRQ
+#define CONFIG_STACKSIZE_IRQ		(4*1024)	/* IRQ stack */
+#define CONFIG_STACKSIZE_FIQ		(4*1024)	/* FIQ stack */
+#endif
+
+/*-----------------------------------------------------------------------
+ * Physical Memory Map
+ */
+/* 2006.03.07 fuj (SDRAM) */
+#ifdef CONFIG_ICX1087
+#define CONFIG_NR_DRAM_BANKS        1       /* we have 1 bank of DRAM */
+#define PHYS_SDRAM_1            0x30000000  /* SDRAM Bank #1 */
+#define PHYS_SDRAM_1_SIZE       0x02000000  /* 32 MB */
+#else
+#define CONFIG_NR_DRAM_BANKS		2		/* we have 2 bank of DRAM */
+#if CONFIG_SDRAM_TYPE	/* 512Mbit */
+#define PHYS_SDRAM_1			0x30000000	/* SDRAM Bank #1 */
+#define PHYS_SDRAM_1_SIZE		0x02000000	/* 32 MB */
+#define PHYS_SDRAM_2			0x32000000	/* SDRAM Bank #2 */
+#define PHYS_SDRAM_2_SIZE		0x02000000	/* 32 MB */
+#else			/* 256Mbit */
+#define PHYS_SDRAM_1			0x30000000	/* SDRAM Bank #1 */
+#define PHYS_SDRAM_1_SIZE		0x01000000	/* 16 MB */
+#define PHYS_SDRAM_2			0x31000000	/* SDRAM Bank #2 */
+#define PHYS_SDRAM_2_SIZE		0x01000000	/* 16 MB */
+#endif			/* 256Mbit */
+#endif /* CONFIG_ICX1087 */
+
+#define PHYS_FLASH_1			0x00000000
+/* 2006.03.07 fuj (NOR FLASH) */
+#ifndef CONFIG_ICX1087
+#define PHYS_FLASH_2			0x02000000
+#endif /* !CONFIG_ICX1087 */
+#define CFG_FLASH_BASE			PHYS_FLASH_1
+
+/*-----------------------------------------------------------------------
+ * FLASH and environment organization
+ */
+/* 2006.03.07 fuj (NOR FLASH) */
+#ifdef CONFIG_ICX1087
+#define CFG_MAX_FLASH_BANKS     1       /* max number of memory banks */
+#define CFG_MAX_FLASH_SECT      (270)       /* max number of sectors on one chip */
+/* addr of environment */
+#define CFG_ENV_ADDR            (CFG_FLASH_BASE + 0x000E0000)
+#else
+#define CFG_MAX_FLASH_BANKS		1		/* max number of memory banks */
+#define CFG_MAX_FLASH_SECT		(259)		/* max number of sectors on one chip */
+/* addr of environment */
+#define CFG_ENV_ADDR			(CFG_FLASH_BASE + 0x001E0000)
+#endif /* CONFIG_ICX1087 */
+
+/* timeout values are in ticks */
+#define CFG_FLASH_ERASE_TOUT		(20*CFG_HZ)	/* Timeout for Flash Erase */
+#define CFG_FLASH_WRITE_TOUT		(20*CFG_HZ)	/* Timeout for Flash Write */
+
+#define CFG_ENV_IS_IN_FLASH		1
+#define CFG_ENV_SIZE			0x00020000	/* Total Size of Environment Sector */
+/* 2006.03.17 fuj (NOR FLASH) */
+#ifdef CONFIG_ICX1087
+#define CFG_ENV_OFFSET          0x000E0000  /* environment starts here  */
+#else
+#define CFG_ENV_OFFSET			0x001E0000	/* environment starts here  */
+#endif
+
+
+/*-----------------------------------------------------------------------
+ * Default extra environment
+ */
+
+/* 2006.06.29 fuj : For boot Linux from NAND */
+#ifdef CONFIG_ICX1087
+#define CONFIG_EXTRA_ENV_SETTINGS	\
+	"cramfscmd="	CONFIG_CRAMFSCMD		"\0"	\
+	"nfscmd="	CONFIG_NFSCMD			"\0"	\
+	"nornandcmd="	CONFIG_NORNANDCMD			"\0"	\
+	"nandcmd="	CONFIG_NANDCMD			"\0"	\
+	"syncburst="	MK_STR(CONFIG_SYNC_BURST)	"\0"
+#else
+#define CONFIG_EXTRA_ENV_SETTINGS	\
+	"cramfscmd="	CONFIG_CRAMFSCMD		"\0"	\
+	"nfscmd="	CONFIG_NFSCMD			"\0"	\
+	"syncburst="	MK_STR(CONFIG_SYNC_BURST)	"\0"
+#endif /* CONFIG_ICX1087 */
+
+#endif							/* __CONFIG_H */

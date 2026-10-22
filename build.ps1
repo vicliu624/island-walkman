@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath $PSScriptRoot
+python tools/version.py --check
+if ($LASTEXITCODE -ne 0) { throw 'Application version mismatch' }
 Push-Location ui
 try {
     npm ci

@@ -1,0 +1,18 @@
+{
+  "query": "(title:sony OR creator:sony) AND (title:firmware OR title:recovery OR title:backup)",
+  "sort": "identifier asc",
+  "total": 758,
+  "unique": 758,
+  "prior_response_sha256": "1ba43e7ff031a4a9f4e8d28ce4e34f7e76e081ea4b8e65ebb1e54df47cbd4435",
+  "page_counts": [
+    200,
+    200,
+    200,
+    158
+  ],
+  "prior_total": 758,
+  "prior_returned": 200,
+  "previously_unreviewed": 558,
+  "prior_missing": [],
+  "limits": "Complete catalog metadata coverage for this query snapshot; not complete file-content or global archive coverage."
+}

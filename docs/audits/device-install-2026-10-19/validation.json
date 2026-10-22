@@ -1,0 +1,59 @@
+{
+  "application_version": "0.4.0-alpha.5",
+  "own_native_cli_sha256": "ea623c9cf71c30bc95a252756fd5490b46d2ee8c5fc20eef2691d9f11cbd0cb3",
+  "source_devices_sha256": "2120355ba04a3f3004034d11338ddaf525d4fc819abb773b3cc189ceb9d04aec",
+  "python_tests": {
+    "passed": 60,
+    "new_device_tests": 21
+  },
+  "rust_tests": {
+    "passed": 107,
+    "ignored": 1
+  },
+  "frontend_build_and_248_translation_checks_passed": true,
+  "native_safety_checks": [
+    {
+      "flags": [],
+      "safety": {
+        "blockers": [
+          "firmware upload and activation transport not validated",
+          "live response semantics not validated",
+          "resident installer and recovery path not verified",
+          "hardware flashing not authorized",
+          "model-specific battery threshold and status policy not established",
+          "candidate model and version metadata not authenticated",
+          "supported model identity and serial binding not verified",
+          "battery percentage unavailable"
+        ],
+        "firmware_write_enabled": false,
+        "fixed_read_only_queries_available_on_windows": true,
+        "raw_vendor_queries_enabled": false
+      }
+    },
+    {
+      "flags": [
+        "--allow-device-write"
+      ],
+      "safety": {
+        "blockers": [
+          "firmware upload and activation transport not validated",
+          "live response semantics not validated",
+          "resident installer and recovery path not verified",
+          "hardware flashing not authorized",
+          "model-specific battery threshold and status policy not established",
+          "candidate model and version metadata not authenticated",
+          "supported model identity and serial binding not verified",
+          "battery percentage unavailable"
+        ],
+        "firmware_write_enabled": false,
+        "fixed_read_only_queries_available_on_windows": true,
+        "raw_vendor_queries_enabled": false
+      }
+    }
+  ],
+  "catalog_created": false,
+  "sony_code_executed": false,
+  "physical_device_access": false,
+  "desktop_hardware_smoke_performed": false,
+  "flashing_opened": false
+}

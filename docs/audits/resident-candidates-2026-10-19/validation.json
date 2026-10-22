@@ -1,0 +1,16 @@
+{
+  "offline_and_public_metadata_only": true,
+  "device_access": false,
+  "target_code_executed": false,
+  "firmware_write_enabled": false,
+  "qualified_new_resident_image": false,
+  "new_fwpup": false,
+  "extra_official_source_downloads_verified": 3,
+  "extra_source_regular_member_records": 1018,
+  "local_capacity_fixture_headers_checked": 10,
+  "python_tests_passed": 65,
+  "script_compile_check": "passed",
+  "new_document_links_and_language": "passed",
+  "version_check": "0.4.0-alpha.5 consistent",
+  "limits": "No power-loss or resident binary qualification. Public catalog results are bounded; broad Sony query covered only 200 of 758 records."
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "normal_file_update_symbolic",
+    "scenario": {},
+    "outcome": "numeric_version_matched",
+    "elapsed_ms": 11800,
+    "activation_count": 1,
+    "selected_operations": ["activation_request", "update_host_registry_cache", "open_and_compare_snapshot", "delete_staged_package", "read_installed_numeric_version", "completion_message_401"],
+    "expected_events": [[500,"activation_request","fc000464626d6e0000000000"],[6500,"update_host_registry_cache",""],[10800,"open_and_compare_snapshot","1"],[11800,"delete_staged_package",""],[11800,"read_installed_numeric_version","1.03"],[11800,"completion_message_401",""]]
+  },
+  {
+    "name": "never_disappears",
+    "scenario": {"disconnect_at_ms": null},
+    "outcome": "device_did_not_disappear",
+    "elapsed_ms": 10500,
+    "activation_count": 1,
+    "selected_operations": ["presence", "delete_staged_package", "completion_message_401"],
+    "expected_events": [[6500,"presence","1"],[7500,"presence","1"],[8500,"presence","1"],[9500,"presence","1"],[10500,"presence","1"],[10500,"presence","1"]]
+  },
+  {
+    "name": "copy_consumes_shared_deadline",
+    "scenario": {"copy_ms":149000,"disconnect_at_ms":149000,"reconnect_at_ms":null},
+    "outcome": "reconnect_timeout_message_403",
+    "elapsed_ms": 151000,
+    "activation_count": 1,
+    "selected_operations": ["activation_request", "update_host_registry_cache", "delete_staged_package", "completion_message_401"],
+    "expected_events": [[149000,"activation_request","fc000464626d6e0000000000"],[151000,"update_host_registry_cache",""]]
+  },
+  {
+    "name": "last_poll_can_cross_soft_deadline",
+    "scenario": {"reconnect_at_ms":150500},
+    "outcome": "numeric_version_matched",
+    "elapsed_ms": 151800,
+    "activation_count": 1,
+    "selected_operations": ["activation_request", "open_and_compare_snapshot", "delete_staged_package", "read_installed_numeric_version", "completion_message_401"],
+    "expected_events": [[500,"activation_request","fc000464626d6e0000000000"],[150800,"open_and_compare_snapshot","1"],[151800,"delete_staged_package",""],[151800,"read_installed_numeric_version","1.03"],[151800,"completion_message_401",""]]
+  },
+  {
+    "name": "wrong_version_after_package_deleted",
+    "scenario": {"installed_version":"1.02"},
+    "outcome": "installed_version_mismatch",
+    "elapsed_ms": 11800,
+    "activation_count": 1,
+    "selected_operations": ["delete_staged_package", "read_installed_numeric_version", "completion_message_401"],
+    "expected_events": [[11800,"delete_staged_package",""],[11800,"read_installed_numeric_version","1.02"]]
+  }
+]

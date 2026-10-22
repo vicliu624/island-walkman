@@ -1,0 +1,85 @@
+/*
+ * nand_config.h
+ *
+ * Copyright 2006,2007 Sony Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
+
+#ifndef __NAND_CONFIG
+#define __NAND_CONFIG
+
+/* 2006.05.10 fuj : For ICX1087 */
+/* 2007.04.17 fuj */
+#ifdef CONFIG_ICX1111
+#define	NAND_PAGE_SIZE_2K	(2048)
+#define	NAND_PAGE_SIZE_4K	(4096)
+
+#define	NAND_PAGE_SIZE		NAND_PAGE_SIZE_4K
+#else
+#define	NAND_PAGE_SIZE		(2048)
+#endif
+#define NAND_PAGE_BLK		(128)
+
+/* MP201 register address */
+#define GIO_GPIO2_EO		0xC0050200		/* GIO */
+#define GIO_GPIO2_DO		0xC0050208
+#define	SMU_PCTL_NAND		0xC8010208		/* SMU */
+#define	SMU_PULLCTL_NAND	0xC801022C
+
+/* NAND pin function */
+#define SMU_PCTL_NAND_8BIT	0x00000088
+#define SMU_PULLCTL_NAND_8BIT	0x0000007f
+#define SMU_PCTL_NAND_16BIT	0x000000f7
+#define SMU_PULLCTL_NAND_16BIT	0x02000000
+
+/* timeout */
+#define NAND_TMO_100US  2500 /* 250MHz x 10clk¤È²¾Äê */
+#define NAND_READ_TIMEOUT  (NAND_TMO_100US * 5)
+#define NAND_WRITE_TIMEOUT  (NAND_TMO_100US * 100)
+#define NAND_ERASE_TIMEOUT  (NAND_TMO_100US * 500)
+#define NAND_ACCESS_EDO2WAIT  0x00222200 /* WE/RE  H 3clk/L 3clk */
+#define NAND_ACCESS_EDO1WAIT  0x00111100 /* WE/RE  H 2clk/L 2clk */
+#define NAND_ACCESS_EDO0WAIT  0x00000000 /* WE/RE  H 1clk/L 1clk  AHB <= 66MHz */
+#define NAND_ACCESS_1WAIT	0x00130100 /* WEH 1,WEP 2, REH 2, REP 4 */
+#define NAND_ACCESS_WAIT	0x01C52200  /* (CLH/ALH 0, CLS/ALS 1, REH 12, RP 5, WH 2, WP 2) + 1 */
+#define NAND_ACCESS_TOSHIBA	0x00351100  /* (CLH/ALH 0, CLS/ALS 0, REH  3, RP 5, WH 1, WP 1) + 1 */
+#define NAND_ACCESS_SAMSUNG	0x01C31200  /* (CLH/ALH 0, CLS/ALS 1, REH 12, RP 3, WH 1, WP 2) + 1 */
+#define NAND_ACCESS_HYNIX	0x01C32200  /* (CLH/ALH 0, CLS/ALS 1, REH 12, RP 3, WH 2, WP 2) + 1 */
+
+#define NAND_MSR_INIT		(NAND_MSR_FBDC|NAND_MSR_PSIZE_2048|NAND_ACCESS_WAIT)	/* 2048B/page  8bit width */
+#define NAND_MSR_TOSHIBA	(NAND_MSR_FBDC|NAND_MSR_PSIZE_2048|NAND_ACCESS_TOSHIBA)	/* 2048B/page  8bit width */
+#define NAND_MSR_SAMSUNG	(NAND_MSR_FBDC|NAND_MSR_PSIZE_2048|NAND_ACCESS_SAMSUNG) /* 2048B/page  8bit width */
+#define NAND_MSR_HYNIX		(NAND_MSR_FBDC|NAND_MSR_PSIZE_2048|NAND_ACCESS_HYNIX)   /* 2048B/page  8bit width */
+
+/* ID */
+#define	NAND_MID_TOSHIBA	0x98
+#define	NAND_MID_SAMSUNG	0xEC
+#define	NAND_MID_HYNIX		0xAD
+#define	NAND_DID_2G			0xD5
+/* 2007.04.17 fuj */
+#define	NAND_PID_MSK		0x03
+#define	NAND_PID_2K			0x01
+#define	NAND_PID_4K			0x02
+
+/* Write protect port */
+#define GPIO_NAND_WP 47
+
+/* 2006.08.28 fuj : disable EDO */
+/* #define NAND_SUPPORT_EDO */
+
+#endif

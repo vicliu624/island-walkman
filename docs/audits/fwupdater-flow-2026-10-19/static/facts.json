@@ -1,0 +1,231 @@
+{
+  "evidence_kind": "static_binary_analysis_not_device_trace",
+  "binary_execution": false,
+  "physical_device_access": false,
+  "official_exe_sha256": "3cf7eb2e354d2e6d3f0cddd06ab67755696579a0d2cc85b68672ecc44ccb3c1c",
+  "official_dll_sha256": "2b7550cd945a8d71d139063fce0ce006bfa6b59ee940f17e5151bdb6e35ebe2f",
+  "ini_sha256": "a0d7df8f3c4adb0e2264a7247f2616ec6fbb5ec81336ddc73bb2c06236ed57f5",
+  "device_sections": [
+    {
+      "devicename": "NW-A916",
+      "vid": "0x054c",
+      "pid": "0x032A",
+      "classifytype": "5",
+      "devicepropertyproductinfo": "NW-A916",
+      "subidentification": "00000000",
+      "commandtype": "0",
+      "signature": "dbmn",
+      "version00": "1.03",
+      "fwpackage00": "NW_A91X.UPG",
+      "fwpackagewritepathname": "\\NW_A91X.UPG",
+      "timer": "1:40"
+    },
+    {
+      "devicename": "NW-A918",
+      "vid": "0x054c",
+      "pid": "0x032A",
+      "classifytype": "5",
+      "devicepropertyproductinfo": "NW-A918",
+      "subidentification": "00000000",
+      "commandtype": "0",
+      "signature": "dbmn",
+      "version00": "1.03",
+      "fwpackage00": "NW_A91X.UPG",
+      "fwpackagewritepathname": "\\NW_A91X.UPG",
+      "timer": "1:40"
+    },
+    {
+      "devicename": "NW-A919",
+      "vid": "0x054c",
+      "pid": "0x032A",
+      "classifytype": "5",
+      "devicepropertyproductinfo": "NW-A919",
+      "subidentification": "00000000",
+      "commandtype": "0",
+      "signature": "dbmn",
+      "version00": "1.03",
+      "fwpackage00": "NW_A91X.UPG",
+      "fwpackagewritepathname": "\\NW_A91X.UPG",
+      "timer": "1:40"
+    }
+  ],
+  "com_bindings": [
+    {
+      "interface": "main",
+      "exe_iid_va": "0x41c38c",
+      "iid_bytes": "eede699006b64a44932011f470740bf4",
+      "dll_com_map_va": "0x1002f7a8",
+      "object_offset": 0,
+      "vtable": "0x1002f774",
+      "slots": {
+        "0x0": "0x10006e60",
+        "0x4": "0x10006db0",
+        "0x8": "0x10006dd0",
+        "0xc": "0x1000af80",
+        "0x10": "0x10007f20",
+        "0x14": "0x100082c0",
+        "0x18": "0x10008560",
+        "0x1c": "0x1000b350",
+        "0x20": "0x100086c0",
+        "0x24": "0x1000b450"
+      }
+    },
+    {
+      "interface": "updater",
+      "exe_iid_va": "0x41c39c",
+      "iid_bytes": "eede699007b64a44932011f470740bf4",
+      "dll_com_map_va": "0x1002f7b4",
+      "object_offset": 4,
+      "vtable": "0x1002f74c",
+      "slots": {
+        "0x0": "0x10006e80",
+        "0x4": "0x10006e40",
+        "0x8": "0x10006e30",
+        "0xc": "0x10008a30",
+        "0x10": "0x1000b4c0",
+        "0x14": "0x10008cb0",
+        "0x18": "0x1000b530",
+        "0x1c": "0x1000b6e0",
+        "0x20": "0x10009a20"
+      }
+    },
+    {
+      "interface": "transfer",
+      "exe_iid_va": "0x41c3ac",
+      "iid_bytes": "eede699008b64a44932011f470740bf4",
+      "dll_com_map_va": "0x1002f7c0",
+      "object_offset": 8,
+      "vtable": "0x1002f738",
+      "slots": {
+        "0x0": "0x10006e90",
+        "0x4": "0x10006e00",
+        "0x8": "0x10006e50",
+        "0xc": "0x1000b600"
+      }
+    },
+    {
+      "interface": "device",
+      "exe_iid_va": "0x41c3bc",
+      "iid_bytes": "eede699009b64a44932011f470740bf4",
+      "dll_com_map_va": "0x1002f7cc",
+      "object_offset": 12,
+      "vtable": "0x1002f704",
+      "slots": {
+        "0x0": "0x10006ea0",
+        "0x4": "0x10006e20",
+        "0x8": "0x10006e10",
+        "0xc": "0x1000e830",
+        "0x10": "0x1000dc20",
+        "0x14": "0x1000d4f0",
+        "0x18": "0x1000d600",
+        "0x1c": "0x1000b950",
+        "0x20": "0x1000c450",
+        "0x24": "0x1000cb50",
+        "0x28": "0x1000cef0",
+        "0x2c": "0x1000a180"
+      }
+    }
+  ],
+  "constructor_bytes_verified": true,
+  "timer_seconds": 100,
+  "timeout_seconds_when_absent": 150,
+  "copy_error_map": {
+    "112": "0x80047008",
+    "5": "0x80047007",
+    "other": "0x80047006"
+  },
+  "activation_false_result_accepted_packed_status": "0xff020400",
+  "activation_false_result_mask": "0x00ff0000",
+  "model_limitations": [
+    "Not a CPU execution or hardware transcript",
+    "Specific pinned MSC file-upload branch",
+    "Directory/MTP/command-type-1 and Windows Me branches not fully simulated",
+    "Resident installer and physical recovery remain unverified"
+  ],
+  "disassembly": [
+    {
+      "file": "exe-selection.txt",
+      "input": "FWUpdater.exe",
+      "start_va": "0x404d90",
+      "end_va_exclusive": "0x40570d",
+      "sha256": "e1f4f3383b455647e7bec1a92288e3f204f81855151c203162d44b80d72b3ec2"
+    },
+    {
+      "file": "exe-timers.txt",
+      "input": "FWUpdater.exe",
+      "start_va": "0x405cf0",
+      "end_va_exclusive": "0x406650",
+      "sha256": "240d21c1476d1fc1e30bbb3f720559430f542fe15cd8969ff3dad6a7f7672864"
+    },
+    {
+      "file": "exe-dispatch.txt",
+      "input": "FWUpdater.exe",
+      "start_va": "0x408150",
+      "end_va_exclusive": "0x408450",
+      "sha256": "8239f5f361e579efd277965bb403f310721f203f8426d9c268c2fad6a2a79e94"
+    },
+    {
+      "file": "exe-worker.txt",
+      "input": "FWUpdater.exe",
+      "start_va": "0x408450",
+      "end_va_exclusive": "0x4089c0",
+      "sha256": "f26ea91a55bb1490f66639483c6f708553f469d827bd8936ad8446532cac9315"
+    },
+    {
+      "file": "exe-snapshot.txt",
+      "input": "FWUpdater.exe",
+      "start_va": "0x407d40",
+      "end_va_exclusive": "0x407ed6",
+      "sha256": "82b172dad3931f889b143e92c060b14df9770cb521aa54b2c0ff59a51851ef9e"
+    },
+    {
+      "file": "dll-constructor.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x10006eb0",
+      "end_va_exclusive": "0x10006f10",
+      "sha256": "b06ab6d4d6e12894eac15065754fc238d022c342c82e4b6b06a0e1e04e7d29ae"
+    },
+    {
+      "file": "dll-transfer-wrapper.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x1000b600",
+      "end_va_exclusive": "0x1000b6dd",
+      "sha256": "0dec20ae3c329a26f1bdca24040e2b6ebacfac4c324a326063ef3df66addc240"
+    },
+    {
+      "file": "dll-file-upload.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x10009100",
+      "end_va_exclusive": "0x10009640",
+      "sha256": "8b15312654c1ac486af5c0a2c816bb37bbb652d75398a5a4fc40433a3455fcd2"
+    },
+    {
+      "file": "dll-copy-error-tail.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x10007a10",
+      "end_va_exclusive": "0x10007dd1",
+      "sha256": "36005f1e2452663fc079f7eb208570ace002d71b97e5ff1fc911517cafa3a4ee"
+    },
+    {
+      "file": "dll-cleanup-wrapper.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x1000b6e0",
+      "end_va_exclusive": "0x1000b79b",
+      "sha256": "ed24048d18110ae6792f27c8b9bc161abcd8bbaa5c9ec5b08a5e6631abfc7bbc"
+    },
+    {
+      "file": "dll-delete.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x10009920",
+      "end_va_exclusive": "0x10009a19",
+      "sha256": "b3f3d0ecc28e6c6e46a2ad1101e16d47b819463ade4e462b653b2b3d38248f67"
+    },
+    {
+      "file": "dll-spti.txt",
+      "input": "FWUpdaterCom.dll",
+      "start_va": "0x10001180",
+      "end_va_exclusive": "0x10001306",
+      "sha256": "630b3c512aed5df12b4a17c46ccb1dde0dc0cbca4bcee78555f506af324e1388"
+    }
+  ]
+}

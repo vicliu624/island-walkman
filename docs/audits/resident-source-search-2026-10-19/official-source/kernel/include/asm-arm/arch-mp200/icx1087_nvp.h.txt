@@ -1,0 +1,138 @@
+/*
+ * Copyright 2006,2007 Sony Corporation. 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
+#ifndef _ICX1087_NVP_H_
+#define _ICX1087_NVP_H_
+
+typedef struct {
+	int           page;
+	unsigned char oob[6];
+	unsigned char dummy[2];
+	unsigned char data[4096];
+}icx1087_nvp_ioctl_t;
+
+#define ICX1087_NVP_IOC_MAGIC 'n'
+
+#define ICX1087_NVP_SHOW          _IO  (ICX1087_NVP_IOC_MAGIC, 0)
+#define ICX1087_NVP_WRITE         _IOW (ICX1087_NVP_IOC_MAGIC, 1, icx1087_nvp_ioctl_t *)
+#define ICX1087_NVP_READ          _IOWR(ICX1087_NVP_IOC_MAGIC, 2, icx1087_nvp_ioctl_t *)
+#define ICX1087_NVP_ERASE         _IOW (ICX1087_NVP_IOC_MAGIC, 3, icx1087_nvp_ioctl_t *)
+#define ICX1087_NVP_GET_KSB       _IOR (ICX1087_NVP_IOC_MAGIC, 4, int)
+#define ICX1087_NVP_GET_KBC       _IOR (ICX1087_NVP_IOC_MAGIC, 5, int)
+#define ICX1087_NVP_GET_PSB       _IOR (ICX1087_NVP_IOC_MAGIC, 6, int)
+#define ICX1087_NVP_GET_PBC       _IOR (ICX1087_NVP_IOC_MAGIC, 7, int)
+#define ICX1087_NVP_GET_NSB       _IOR (ICX1087_NVP_IOC_MAGIC, 8, int)
+#define ICX1087_NVP_GET_NBC       _IOR (ICX1087_NVP_IOC_MAGIC, 9, int)
+#define ICX1087_NVP_GET_CSB       _IOR (ICX1087_NVP_IOC_MAGIC,10, int)
+#define ICX1087_NVP_ERASE_ALL     _IO  (ICX1087_NVP_IOC_MAGIC,11)
+#define ICX1087_NVP_GET_NAND_INFO _IOWR(ICX1087_NVP_IOC_MAGIC,12, unsigned long)
+
+#define ICX1087_NVP_IOC_MAXNR 6
+
+int icx1087_nvp_write_data(int zn, unsigned char *buf, int size);
+int icx1087_nvp_read_data(int zn, unsigned char *buf, int size);
+
+#define icx1087_nvp_write_cng(_a,_b) icx1087_nvp_write_data(3,(_a),(_b))
+#define icx1087_nvp_read_cng(_a,_b)  icx1087_nvp_read_data(3,(_a),(_b))
+
+#define icx1087_nvp_write_ser(_a,_b) icx1087_nvp_write_data(4,(_a),(_b))
+#define icx1087_nvp_read_ser(_a,_b)  icx1087_nvp_read_data(4,(_a),(_b))
+
+#define icx1087_nvp_write_dcc(_a,_b) icx1087_nvp_write_data(7,(_a),(_b))
+#define icx1087_nvp_read_dcc(_a,_b)  icx1087_nvp_read_data(7,(_a),(_b))
+
+#define icx1087_nvp_write_dba(_a,_b) icx1087_nvp_write_data(12,(_a),(_b))
+#define icx1087_nvp_read_dba(_a,_b)  icx1087_nvp_read_data(12,(_a),(_b))
+
+#define icx1087_nvp_write_dbv(_a,_b) icx1087_nvp_write_data(13,(_a),(_b))
+#define icx1087_nvp_read_dbv(_a,_b)  icx1087_nvp_read_data(13,(_a),(_b))
+
+#define icx1087_nvp_write_tr0(_a,_b) icx1087_nvp_write_data(14,(_a),(_b))
+#define icx1087_nvp_read_tr0(_a,_b)  icx1087_nvp_read_data(14,(_a),(_b))
+
+#define icx1087_nvp_write_tr1(_a,_b) icx1087_nvp_write_data(15,(_a),(_b))
+#define icx1087_nvp_read_tr1(_a,_b)  icx1087_nvp_read_data(15,(_a),(_b))
+
+#define icx1087_nvp_write_mid(_a,_b) icx1087_nvp_write_data(16,(_a),(_b))
+#define icx1087_nvp_read_mid(_a,_b)  icx1087_nvp_read_data(16,(_a),(_b))
+
+#define icx1087_nvp_write_dor(_a,_b) icx1087_nvp_write_data(21,(_a),(_b))
+#define icx1087_nvp_read_dor(_a,_b)  icx1087_nvp_read_data(21,(_a),(_b))
+
+#define icx1087_nvp_write_syi(_a,_b) icx1087_nvp_write_data(24,(_a),(_b))
+#define icx1087_nvp_read_syi(_a,_b)  icx1087_nvp_read_data(24,(_a),(_b))
+
+#define icx1087_nvp_write_var(_a,_b) icx1087_nvp_write_data(25,(_a),(_b))
+#define icx1087_nvp_read_var(_a,_b)  icx1087_nvp_read_data(25,(_a),(_b))
+
+#define icx1087_nvp_write_pcd(_a,_b) icx1087_nvp_write_data(26,(_a),(_b))
+#define icx1087_nvp_read_pcd(_a,_b)  icx1087_nvp_read_data(26,(_a),(_b))
+
+#define icx1087_nvp_write_dbs(_a,_b) icx1087_nvp_write_data(27,(_a),(_b))
+#define icx1087_nvp_read_dbs(_a,_b)  icx1087_nvp_read_data(27,(_a),(_b))
+
+#define icx1087_nvp_write_rnd(_a,_b) icx1087_nvp_write_data(28,(_a),(_b))
+#define icx1087_nvp_read_rnd(_a,_b)  icx1087_nvp_read_data(28,(_a),(_b))
+
+#define icx1087_nvp_write_sdp(_a,_b) icx1087_nvp_write_data(30,(_a),(_b))
+#define icx1087_nvp_read_sdp(_a,_b)  icx1087_nvp_read_data(30,(_a),(_b))
+
+#define icx1087_nvp_write_ncp(_a,_b) icx1087_nvp_write_data(31,(_a),(_b))
+#define icx1087_nvp_read_ncp(_a,_b)  icx1087_nvp_read_data(31,(_a),(_b))
+
+#define icx1087_nvp_write_rtc(_a,_b) icx1087_nvp_write_data(34,(_a),(_b))
+#define icx1087_nvp_read_rtc(_a,_b)  icx1087_nvp_read_data(34,(_a),(_b))
+
+#define ICX1087_NVP_NODE_APP "/dev/icx1087_nvp/0"
+#define ICX1087_NVP_NODE_BTI "/dev/icx1087_nvp/1"
+#define ICX1087_NVP_NODE_HDI "/dev/icx1087_nvp/2"
+#define ICX1087_NVP_NODE_CNG "/dev/icx1087_nvp/3"
+#define ICX1087_NVP_NODE_SER "/dev/icx1087_nvp/4"
+#define ICX1087_NVP_NODE_DG0 "/dev/icx1087_nvp/5"
+#define ICX1087_NVP_NODE_DG1 "/dev/icx1087_nvp/6"
+#define ICX1087_NVP_NODE_DCC "/dev/icx1087_nvp/7"
+#define ICX1087_NVP_NODE_MDL "/dev/icx1087_nvp/8"
+#define ICX1087_NVP_NODE_FUP "/dev/icx1087_nvp/9"
+#define ICX1087_NVP_NODE_BOK "/dev/icx1087_nvp/10"
+#define ICX1087_NVP_NODE_SHP "/dev/icx1087_nvp/11"
+#define ICX1087_NVP_NODE_DBA "/dev/icx1087_nvp/12"
+#define ICX1087_NVP_NODE_DBV "/dev/icx1087_nvp/13"
+#define ICX1087_NVP_NODE_TR0 "/dev/icx1087_nvp/14"
+#define ICX1087_NVP_NODE_TR1 "/dev/icx1087_nvp/15"
+#define ICX1087_NVP_NODE_MID "/dev/icx1087_nvp/16"
+#define ICX1087_NVP_NODE_TST "/dev/icx1087_nvp/17"
+#define ICX1087_NVP_NODE_GTY "/dev/icx1087_nvp/18"
+#define ICX1087_NVP_NODE_FUI "/dev/icx1087_nvp/19"
+#define ICX1087_NVP_NODE_LBI "/dev/icx1087_nvp/20"
+#define ICX1087_NVP_NODE_DOR "/dev/icx1087_nvp/21"
+#define ICX1087_NVP_NODE_EDW "/dev/icx1087_nvp/22"
+#define ICX1087_NVP_NODE_UBP "/dev/icx1087_nvp/23"
+#define ICX1087_NVP_NODE_SYI "/dev/icx1087_nvp/24"
+#define ICX1087_NVP_NODE_VAR "/dev/icx1087_nvp/25"
+#define ICX1087_NVP_NODE_PCD "/dev/icx1087_nvp/26"
+#define ICX1087_NVP_NODE_DBS "/dev/icx1087_nvp/27"
+#define ICX1087_NVP_NODE_RND "/dev/icx1087_nvp/28"
+#define ICX1087_NVP_NODE_UFN "/dev/icx1087_nvp/29"
+#define ICX1087_NVP_NODE_SDP "/dev/icx1087_nvp/30"
+#define ICX1087_NVP_NODE_NCP "/dev/icx1087_nvp/31"
+#define ICX1087_NVP_NODE_KAS "/dev/icx1087_nvp/32"
+#define ICX1087_NVP_NODE_PNC "/dev/icx1087_nvp/33"
+#define ICX1087_NVP_NODE_RTC "/dev/icx1087_nvp/34"
+
+#endif

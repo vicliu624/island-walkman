@@ -1,0 +1,69 @@
+
+C:\Users\VicLi\Documents\Projects\island-walkman\data\firmware-analysis\FWUpdater.exe:	file format coff-i386
+
+Disassembly of section .text:
+
+00401000 <.text>:
+  403eb0: 51                           	pushl	%ecx
+  403eb1: 53                           	pushl	%ebx
+  403eb2: 55                           	pushl	%ebp
+  403eb3: 56                           	pushl	%esi
+  403eb4: 8b d9                        	movl	%ecx, %ebx
+  403eb6: 57                           	pushl	%edi
+  403eb7: c7 43 0c 00 00 00 00         	movl	$0, 12(%ebx)
+  403ebe: 8b 6b 14                     	movl	20(%ebx), %ebp
+  403ec1: 8b 75 00                     	movl	(%ebp), %esi
+  403ec4: 8d 7b 10                     	leal	16(%ebx), %edi
+  403ec7: 89 6c 24 10                  	movl	%ebp, 16(%esp)
+  403ecb: eb 03                        	jmp	0x403ed0 <.text+0x2ed0>
+  403ecd: 8d 49 00                     	leal	(%ecx), %ecx
+  403ed0: 85 ff                        	testl	%edi, %edi
+  403ed2: 74 07                        	je	0x403edb <.text+0x2edb>
+  403ed4: 8d 43 10                     	leal	16(%ebx), %eax
+  403ed7: 3b f8                        	cmpl	%eax, %edi
+  403ed9: 74 05                        	je	0x403ee0 <.text+0x2ee0>
+  403edb: e8 fd 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403ee0: 3b f5                        	cmpl	%ebp, %esi
+  403ee2: 74 6c                        	je	0x403f50 <.text+0x2f50>
+  403ee4: 83 7b 0c 00                  	cmpl	$0, 12(%ebx)
+  403ee8: 75 1b                        	jne	0x403f05 <.text+0x2f05>
+  403eea: 85 ff                        	testl	%edi, %edi
+  403eec: 75 05                        	jne	0x403ef3 <.text+0x2ef3>
+  403eee: e8 ea 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403ef3: 3b 77 04                     	cmpl	4(%edi), %esi
+  403ef6: 75 05                        	jne	0x403efd <.text+0x2efd>
+  403ef8: e8 e0 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403efd: 8b 46 08                     	movl	8(%esi), %eax
+  403f00: 89 43 0c                     	movl	%eax, 12(%ebx)
+  403f03: eb 39                        	jmp	0x403f3e <.text+0x2f3e>
+  403f05: 85 ff                        	testl	%edi, %edi
+  403f07: 75 05                        	jne	0x403f0e <.text+0x2f0e>
+  403f09: e8 cf 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403f0e: 3b 77 04                     	cmpl	4(%edi), %esi
+  403f11: 75 05                        	jne	0x403f18 <.text+0x2f18>
+  403f13: e8 c5 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403f18: 8b 4e 08                     	movl	8(%esi), %ecx
+  403f1b: e8 00 de ff ff               	calll	0x401d20 <.text+0xd20>
+  403f20: 8b 4b 0c                     	movl	12(%ebx), %ecx
+  403f23: 8b e8                        	movl	%eax, %ebp
+  403f25: e8 f6 dd ff ff               	calll	0x401d20 <.text+0xd20>
+  403f2a: 3b e8                        	cmpl	%eax, %ebp
+  403f2c: 76 10                        	jbe	0x403f3e <.text+0x2f3e>
+  403f2e: 3b 77 04                     	cmpl	4(%edi), %esi
+  403f31: 75 05                        	jne	0x403f38 <.text+0x2f38>
+  403f33: e8 a5 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403f38: 8b 4e 08                     	movl	8(%esi), %ecx
+  403f3b: 89 4b 0c                     	movl	%ecx, 12(%ebx)
+  403f3e: 3b 77 04                     	cmpl	4(%edi), %esi
+  403f41: 75 05                        	jne	0x403f48 <.text+0x2f48>
+  403f43: e8 95 6a 00 00               	calll	0x40a9dd <.text+0x99dd>
+  403f48: 8b 36                        	movl	(%esi), %esi
+  403f4a: 8b 6c 24 10                  	movl	16(%esp), %ebp
+  403f4e: eb 80                        	jmp	0x403ed0 <.text+0x2ed0>
+  403f50: 8b 43 0c                     	movl	12(%ebx), %eax
+  403f53: 5f                           	popl	%edi
+  403f54: 5e                           	popl	%esi
+  403f55: 5d                           	popl	%ebp
+  403f56: 5b                           	popl	%ebx
+  403f57: 59                           	popl	%ecx
+  403f58: c3                           	retl

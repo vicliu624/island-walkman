@@ -1,0 +1,11 @@
+{
+  "evidence_kind": "static_binary_bytes",
+  "input_sha256": "2b7550cd945a8d71d139063fce0ce006bfa6b59ee940f17e5151bdb6e35ebe2f",
+  "constructor_timeout_va": "0x100010a1",
+  "instruction_hex": "c7401005000000",
+  "timeout_member_offset": "0x10",
+  "default_timeout_seconds": 5,
+  "scope": "Default value only; actual per-instance overrides and physical driver timing not measured. SPTI worker copies member +0x10 into TimeOutValue.",
+  "sony_code_executed": false,
+  "physical_device_access": false
+}

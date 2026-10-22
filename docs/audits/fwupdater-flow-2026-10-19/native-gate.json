@@ -1,0 +1,46 @@
+{
+  "own_cli_sha256": "6174f15f40e65565443aa24e5834f376e5f3e30c12a0d3e105ae907257e12b40",
+  "physical_device_access": false,
+  "sony_code_executed": false,
+  "data_catalog_not_created": true,
+  "checks": [
+    {
+      "extra_flags": [],
+      "safety": {
+        "blockers": [
+          "firmware upload and activation transport not validated",
+          "live response semantics not validated",
+          "resident installer and recovery path not verified",
+          "hardware flashing not authorized",
+          "model-specific battery threshold and status policy not established",
+          "candidate model and version metadata not authenticated",
+          "supported model identity and serial binding not verified",
+          "battery percentage unavailable"
+        ],
+        "firmware_write_enabled": false,
+        "fixed_read_only_queries_available_on_windows": true,
+        "raw_vendor_queries_enabled": false
+      }
+    },
+    {
+      "extra_flags": [
+        "--allow-device-write"
+      ],
+      "safety": {
+        "blockers": [
+          "firmware upload and activation transport not validated",
+          "live response semantics not validated",
+          "resident installer and recovery path not verified",
+          "hardware flashing not authorized",
+          "model-specific battery threshold and status policy not established",
+          "candidate model and version metadata not authenticated",
+          "supported model identity and serial binding not verified",
+          "battery percentage unavailable"
+        ],
+        "firmware_write_enabled": false,
+        "fixed_read_only_queries_available_on_windows": true,
+        "raw_vendor_queries_enabled": false
+      }
+    }
+  ]
+}

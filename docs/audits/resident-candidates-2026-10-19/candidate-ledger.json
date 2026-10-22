@@ -1,0 +1,52 @@
+{
+  "no_qualified_resident_image": true,
+  "no_recovered_fwpup": true,
+  "items": [
+    {
+      "identifier": "setup_20240510",
+      "url": "https://archive.org/metadata/setup_20240510",
+      "metadata_sha256": "e26af272060013ed9bb6ee6af15556ef1f33b818948495733cb9af4f8b1176e3",
+      "listed_original_files": 682,
+      "qualification": "not_qualified",
+      "reason": "Uploader identifies NWZ-E353; excluded as another model.",
+      "payload_downloaded": false
+    },
+    {
+      "identifier": "wmsoft_ww",
+      "url": "https://archive.org/metadata/wmsoft_ww",
+      "metadata_sha256": "90ef2b5b6680bbda72d964620ef9468fbf23057b25a16d312e8550ade83f4a24",
+      "listed_original_files": 6,
+      "qualification": "not_qualified",
+      "reason": "Described as PC media-manager/conversion software; no A910 resident-image attribution.",
+      "payload_downloaded": false
+    },
+    {
+      "identifier": "jp.sony.omgjbox",
+      "url": "https://archive.org/metadata/jp.sony.omgjbox",
+      "metadata_sha256": "00fb66d187a8c4882a33d3e69de9d03da15de05f7fbb47e680b5121eca8b7e68",
+      "listed_original_files": 34,
+      "qualification": "not_qualified",
+      "reason": "Application software archive; examined file catalog supplies no A910 resident-image attribution.",
+      "payload_downloaded": false
+    },
+    {
+      "identifier": "media-manager-for-walkman-1.2",
+      "url": "https://archive.org/metadata/media-manager-for-walkman-1.2",
+      "metadata_sha256": "fee5b1bfb7c92148052661e79f147d338fcd57d070ab98147825a8c935609a26",
+      "listed_original_files": 7,
+      "qualification": "not_qualified",
+      "reason": "Described as Media Manager/Content Transfer/WMP disc; no A910 resident-image attribution.",
+      "payload_downloaded": false
+    },
+    {
+      "identifier": "sony-walkman-cd-rom",
+      "url": "https://archive.org/metadata/sony-walkman-cd-rom",
+      "metadata_sha256": "58ccd4330544fac2a2116d7bdba892f484ea194ac7af266622fcbbe25e409af1",
+      "listed_original_files": 6,
+      "qualification": "not_qualified",
+      "reason": "Described as MP3 Conversion Tool/Napster/WMP disc; no A910 resident-image attribution.",
+      "payload_downloaded": false
+    }
+  ],
+  "limits": "Metadata and catalogs only for these public disc/application items; unexamined payload content is not claimed absent."
+}

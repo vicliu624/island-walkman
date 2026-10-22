@@ -206,10 +206,20 @@ pub trait DeviceOps {
     }
     fn checkpoint(&mut self, _name: &str) {}
 }
-pub struct Native;
+pub struct Native {
+    profile: crate::device_io::Profile,
+}
+impl Native {
+    pub fn new(profile: crate::device_io::Profile) -> Self {
+        Self { profile }
+    }
+}
 impl DeviceOps for Native {
     fn copy(&mut self, source: &Path, target: &Path) -> Result<()> {
-        native_copy(source, target)
+        match self.profile {
+            crate::device_io::Profile::Compatible => crate::device_io::copy_file(source, target),
+            crate::device_io::Profile::Standard => native_copy(source, target),
+        }
     }
 }
 
@@ -1320,7 +1330,7 @@ fn commit<O: DeviceOps>(
     Ok(())
 }
 
-pub fn transient(error: &anyhow::Error) -> bool {
+fn storage_io_failure(error: &anyhow::Error) -> bool {
     error
         .chain()
         .filter_map(|e| e.downcast_ref::<std::io::Error>())
@@ -1329,12 +1339,31 @@ pub fn transient(error: &anyhow::Error) -> bool {
             {
                 matches!(
                     e.raw_os_error(),
-                    Some(6 | 21 | 32 | 121 | 1006 | 1117 | 1167)
+                    Some(23 | 29 | 30 | 121 | 1117 | 1392 | 1393)
                 )
             }
             #[cfg(not(windows))]
             {
-                matches!(e.raw_os_error(), Some(5 | 6 | 19 | 116))
+                matches!(e.raw_os_error(), Some(5 | 110))
+            }
+        })
+}
+
+pub fn transient(error: &anyhow::Error) -> bool {
+    if storage_io_failure(error) {
+        return false;
+    }
+    error
+        .chain()
+        .filter_map(|e| e.downcast_ref::<std::io::Error>())
+        .any(|e| {
+            #[cfg(windows)]
+            {
+                matches!(e.raw_os_error(), Some(6 | 21 | 32 | 1006 | 1167))
+            }
+            #[cfg(not(windows))]
+            {
+                matches!(e.raw_os_error(), Some(6 | 19 | 116))
             }
         })
 }
@@ -1481,9 +1510,12 @@ pub fn run<O: DeviceOps>(
                         }
                     }
                 }
-                let disconnected = matches!(resolve(&s, &roots()), Ok(None));
+                // A storage error is not evidence of a harmless disconnect.
+                // Do not probe or retry the device after such a failure.
+                let storage_failed = storage_io_failure(&error);
+                let disconnected = !storage_failed && matches!(resolve(&s, &roots()), Ok(None));
                 s.error = format!("{error:#}");
-                if (transient(&error) || disconnected) && failures < 3 {
+                if !storage_failed && (transient(&error) || disconnected) && failures < 3 {
                     failures += 1;
                     s.status = Status::WaitingDevice;
                     save(data, &mut s)?;
@@ -1584,6 +1616,13 @@ fn native_copy(from: &Path, to: &Path) -> Result<()> {
     if unsafe { CopyFileW(wide(from).as_ptr(), wide(to).as_ptr(), 1) } == 0 {
         return Err(std::io::Error::last_os_error().into());
     }
+    // CopyFileW completion alone is not an explicit durability barrier.
+    // Surface flush errors before the transaction verifies or commits this file.
+    OpenOptions::new()
+        .write(true)
+        .open(to)?
+        .sync_all()
+        .with_context(|| format!("Cannot flush device file: {}", to.display()))?;
     Ok(())
 }
 
@@ -1632,6 +1671,21 @@ mod tests {
         sync::{Arc, Mutex},
     };
 
+    #[test]
+    fn compatible_native_copy_preserves_bytes_and_rejects_existing_targets() {
+        let temp = tempfile::tempdir().unwrap();
+        let source = temp.path().join("SOURCE.DAT");
+        let target = temp.path().join("TARGET.DAT");
+        let bytes: Vec<u8> = (0..1488).map(|i| (i % 251) as u8).collect();
+        fs::write(&source, &bytes).unwrap();
+        let mut native = Native::new(crate::device_io::Profile::Compatible);
+        native.copy(&source, &target).unwrap();
+        assert_eq!(fs::read(&target).unwrap(), bytes);
+        fs::write(&source, b"different source").unwrap();
+        assert!(native.copy(&source, &target).is_err());
+        assert_eq!(fs::read(&target).unwrap(), bytes);
+    }
+
     #[derive(Default)]
     struct Ops {
         copies: usize,
@@ -1641,6 +1695,8 @@ mod tests {
         fail_rename: usize,
         fail_renames_from: usize,
         disk_full: bool,
+        storage_failure: bool,
+        storage_rename_failure: bool,
         always_fail: bool,
         corrupt: bool,
         crash: Option<&'static str>,
@@ -1658,9 +1714,19 @@ mod tests {
         let code = 5;
         std::io::Error::from_raw_os_error(code).into()
     }
+    fn connection_error() -> anyhow::Error {
+        #[cfg(windows)]
+        let code = 1167;
+        #[cfg(not(windows))]
+        let code = 19;
+        std::io::Error::from_raw_os_error(code).into()
+    }
     impl DeviceOps for Ops {
         fn copy(&mut self, source: &Path, target: &Path) -> Result<()> {
             self.copies += 1;
+            if self.storage_failure {
+                return Err(media_error());
+            }
             if self.disk_full {
                 #[cfg(windows)]
                 let code = 112;
@@ -1671,10 +1737,10 @@ mod tests {
             if let Some((from, to)) = self.unplug.take() {
                 fs::write(target, b"partial")?;
                 self.move_on_wait = Some((from, to));
-                return Err(media_error());
+                return Err(connection_error());
             }
             if self.always_fail || self.copies == self.fail_copy {
-                return Err(media_error());
+                return Err(connection_error());
             }
             native_copy(source, target)?;
             if self.corrupt {
@@ -1685,10 +1751,13 @@ mod tests {
         }
         fn rename(&mut self, source: &Path, target: &Path) -> Result<()> {
             self.renames += 1;
+            if self.storage_rename_failure {
+                return Err(media_error());
+            }
             if self.renames == self.fail_rename
                 || (self.fail_renames_from > 0 && self.renames >= self.fail_renames_from)
             {
-                return Err(media_error());
+                return Err(connection_error());
             }
             fs::rename(source, target)?;
             Ok(())
@@ -2054,7 +2123,7 @@ mod tests {
         assert_eq!(protocol::read_device(&done.root_hint).unwrap().len(), 2);
     }
     #[test]
-    fn repeated_io_errors_pause_after_bounded_attempts_without_touching_old_library() {
+    fn repeated_connection_errors_pause_after_bounded_attempts_without_touching_old_library() {
         let f = fixture(1);
         let s = create(&f.data, &f.root, f.selected.clone(), true).unwrap();
         let mut ops = Ops {
@@ -2296,6 +2365,69 @@ mod tests {
         ));
         assert_eq!(ops.copies, 1);
         assert_eq!(manifest(&f.root.join("OMGAUDIO")).unwrap(), f.original);
+    }
+    #[test]
+    fn storage_io_failure_stops_on_first_attempt_and_never_auto_resumes() {
+        let f = fixture(1);
+        let s = create(&f.data, &f.root, f.selected.clone(), true).unwrap();
+        let mut ops = Ops {
+            storage_failure: true,
+            ..Default::default()
+        };
+        let out = execute(&f, &s, &mut ops, true);
+        assert!(matches!(
+            out,
+            Outcome::Paused(Session {
+                status: Status::NeedsReview,
+                ..
+            })
+        ));
+        assert_eq!(ops.copies, 1);
+        assert_eq!(ops.waits, 0);
+        assert_eq!(manifest(&f.root.join("OMGAUDIO")).unwrap(), f.original);
+        let mut automatic = Ops::default();
+        assert!(matches!(
+            execute(&f, &s, &mut automatic, false),
+            Outcome::Paused(_)
+        ));
+        assert_eq!(automatic.copies, 0);
+    }
+    #[test]
+    fn storage_failure_during_commit_retains_recovery_state_without_retry() {
+        let f = fixture(1);
+        let s = create(&f.data, &f.root, f.selected.clone(), false).unwrap();
+        staged_fixture(&f.data, &s).unwrap();
+        let mut ops = Ops {
+            storage_rename_failure: true,
+            ..Default::default()
+        };
+        assert!(matches!(
+            execute(&f, &s, &mut ops, true),
+            Outcome::Paused(Session {
+                status: Status::NeedsReview,
+                phase: Phase::Committing,
+                ..
+            })
+        ));
+        assert_eq!(ops.renames, 1);
+        assert_eq!(ops.waits, 0);
+        assert!(discard(&f.data, &s.id).is_err());
+        complete(execute(&f, &s, &mut Ops::default(), true));
+        assert_eq!(protocol::read_device(&f.root).unwrap().len(), 2);
+    }
+    #[test]
+    fn storage_errors_remain_fatal_through_context_wrappers() {
+        #[cfg(windows)]
+        let codes = [23, 29, 30, 121, 1117, 1392, 1393];
+        #[cfg(not(windows))]
+        let codes = [5, 110];
+        for code in codes {
+            let error = anyhow::Error::new(std::io::Error::from_raw_os_error(code))
+                .context("device file operation failed");
+            assert!(storage_io_failure(&error));
+            assert!(!transient(&error));
+        }
+        assert!(transient(&connection_error()));
     }
     #[test]
     fn unindexed_audio_and_case_insensitive_reserved_names_are_not_overwritten() {

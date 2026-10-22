@@ -2,9 +2,121 @@
 
 All notable changes are recorded here. Versions follow Semantic Versioning. Unreleased entries describe development state, not a published release.
 
-## [Unreleased]
+## [0.4.0-alpha.8] - 2026-10-22
+
+Public prerelease. A918 music-transfer I/O errors remain unresolved; this is not a verified scan-and-repair fix. Firmware flashing remains unavailable.
 
 ### Added
+
+- Application library with bundled Tetris and color iD emulator, local publisher catalogs, validated installation and save-preserving updates.
+- Read-only device-storage browser and honest capacity reporting for the exposed data volume; hidden Linux partitions remain unavailable.
+- Version consistency checks across native/backend/frontend packages and prerelease publishing without replacing the stable updater feed.
+
+### Fixed
+
+- Include the alpha.7 transfer error-handling improvements: stop automatic storage-error retries and retain the journal for review.
+- Bundle the CFW alpha.3 application executables and matching sources. The English CFW launcher and apps have a successful A918 user test report; this is not desktop transfer qualification.
+
+### Distribution
+
+- Exclude commercial ROMs and initialization saves from the built-in catalog, executable and public source. Color iD requires compatible user-supplied `rom.bin` and `new.sav` in its device application directory.
+- Retain earlier private candidates locally. During later app-copy testing, storage errors also occurred outside the music path before a retry succeeded; app installation is not a guarantee against the storage issue.
+
+## [0.4.0-alpha.7] - 2026-10-21
+
+Local safety candidate; the A918 write-timeout/repair-prompt root cause is not resolved or hardware-qualified.
+
+### Fixed
+
+- Stop the resumable transfer on the first reported storage I/O/CRC/read/write/timeout/corruption failure instead of automatically retrying it as a connection interruption. Retain the journal and require explicit review, including when the volume also disappears.
+- Avoid additional device-resolution reads in the storage-failure handler. Genuine connection-interruption recovery remains separate.
+- Cover first-copy failure, commit failure/recovery and context-wrapped error classification with fault-injection regressions. Tests model connection interruptions separately from storage failures.
+
+### Investigation
+
+- The installed color-app package includes a 4MiB ROM and totals 5,139,454 bytes. Successful app installation is therefore a meaningful control against a simple file-size explanation; it does not isolate write granularity, metadata operations, placement, or commit behavior.
+- Keep application installation behavior unchanged while comparing it with music transfer. No new firmware or physical-device writes are part of this change.
+
+## [0.4.0-alpha.6] - 2026-10-20
+
+Local diagnostic candidate; no publication or verified A918 transfer fix.
+
+### Fixed
+
+- Pass the selected device-I/O profile into the active resumable transfer path. Compatible mode now uses paced 32KiB writes, explicit file synchronization and readback checks instead of bypassing that mode through CopyFileW.
+- Explicitly synchronize files copied by the Windows standard profile before transaction verification. This is a file-level barrier, not automatic volume ejection or proof of power-loss safety.
+
+### Investigation
+
+- The preserved 0.4.0-alpha.1 executable's real transfer stopped at 23/72 files with Windows I/O error 1117 and a readback mismatch, before library commit. A separate CopyFileW-only replay into an isolated folder reproduced error 1117 on a freshly formatted A918 volume. Hardware compatibility of this candidate remains unverified.
+
+## [Unreleased]
+
+### Security review
+
+- Complete all 758 records in the bounded Sony firmware/recovery/backup catalog query, proving coverage of the remaining 558 with distinct identifiers and saved-response hashes. Review ambiguous item file catalogs and reject other-model/text false positives. Add offline pagination-integrity regression tests; resident firmware and persistent flag-clear callers remain unrecovered, and flashing stays unavailable.
+
+- Retain a bounded A910 resident-image candidate search ledger covering public catalogs, historical Sony downloads, additional official source archives and local image triage. Exclude application discs, other-model material and generated rootfs capacity fixtures from factory-image evidence; the resident installer, fwpup and persistent flag-clear caller remain unrecovered.
+
+- Complete the offline original 1.02/1.03 rootfs comparison; bind wrldr resident-image table construction and nvpflag FUP access to pinned ELF bytes. Record table-search and control-block failure limits without treating wrldr as fwpup or claiming recovery safety. Add synthetic archive-reader regression coverage; no device access or flashing route is introduced.
+
+- Recover Sony's explicitly shared A916/A918/A919 U-Boot and kernel source distributions; retain verified archive provenance and source-level boot-selection/failure evidence. Distinguish the RAM BoOt clear from persistent NVP fWUp clearing. Resident images and fwpup remain missing; no device access or firmware execution is added.
+
+## [0.4.0-alpha.5] - 2026-10-19
+
+Local development candidate; no hardware flashing or release publication.
+
+### Fixed
+
+- Restore the shared A916/A918/A919 firmware profile interface required by the existing decoder/session/inspection modules after an inconsistent device configuration prevented compilation. No firmware executor is added.
+
+### Security review
+
+- Reconstruct device-side NVP flag persistence, normal initrd/startup contents and NAND error boundaries from pinned local inputs; add static inventories, 21 device-side tests and 55 offline power-loss/failure scenarios. Boot-time flag consumption/clearing, resident installer and fwpup erase/program/verify order remain unverified; native flashing stays unavailable.
+
+### Security review
+
+- Extend offline FWUpdater analysis with hash-pinned COM interface binding, configured MSC copy/activation and cleanup routes, exact timer/error branches, static version-prompt resources, 23 symbolic replay tests and 28 retained fault traces. No application firmware executor or live device access is added.
+
+- Audit firmware updater parity against pinned Sony binaries and stock/R14 components; retain a no-flash verdict and explicit implementation/recovery gaps. Add authenticated HTTP regression coverage proving music-write authorization and force fields cannot expose firmware mutation routes. No firmware executor or activation capability is added.
+
+## [0.4.0-alpha.4] - 2026-10-19
+
+Local development candidate; hardware validation remains pending.
+
+### Added
+
+- Reserve and decode IWnn custom firmware subrevision declarations separately from Sony base versions in capture/Windows diagnostic reports. Legacy 1.03/00 remains unidentified; no exact build, launcher ABI or authenticity is inferred. Firmware-side emission and live app-install identity gating remain pending; existing firmware packages are unchanged.
+
+
+## [0.4.0-alpha.3] - 2026-10-19
+
+Local development candidate; hardware validation remains pending.
+
+### Fixed
+
+- Model A916/A918/A919 as sharing one firmware profile and package signature. Separate fixture provenance from compatibility; accept all three in offline firmware sessions while retaining exact device identity binding.
+
+
+## [0.4.0-alpha.2] - 2026-10-19
+
+Local development candidate; hardware validation remains pending.
+
+### Changed
+
+- Centralize device-family discovery and per-model offline firmware validation in device profiles; remove fixed A918 branding from the device UI. USB candidates never imply exact model verification.
+- Serialize music transfers and firmware device diagnostics with a shared host lock, including separate application instances; future flash executors must retain this guard through reconnect/readback. Live firmware writing remains disabled.
+
+
+## [0.4.0-alpha.1] - 2026-10-19
+
+Local prerelease only; not published to GitHub or the stable updater feed. Adds application/storage features to 0.3.0; actual-device app installation and R14 firmware remain unverified.
+
+### Added
+
+- Synchronized application SemVer, build/tag consistency gates and metadata-driven UI version labels. Prereleases cannot become the stable GitHub latest release.
+- Add local and publisher-directory disk-app catalogs, staged/hash-verified installs that retain saves and previous app folders, and dynamic R14 launcher compatibility checks.
+- Add a read-only device directory browser and live data-volume space overview; inaccessible Linux partitions remain explicitly unknown.
 
 - Local installation/recovery evidence and host-only pipeline fault tests that demonstrate a potentially masked producer failure in the stock script's ordinary pipeline semantics. Resident recovery and hardware power-loss behavior remain unverified; firmware activation stays disabled.
 

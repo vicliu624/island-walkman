@@ -1,0 +1,205 @@
+{
+  "regular_members_scanned": 17773,
+  "matches": [
+    {
+      "path": "./include/asm-arm/arch-mp200/icx1087_nvp.h",
+      "sha256": "55ab643db50ac1dd340177f4e45e2edf74514a78e26560d6198a993ba5116b64",
+      "hits": [
+        {
+          "line": 49,
+          "text": "int icx1087_nvp_read_data(int zn, unsigned char *buf, int size);"
+        },
+        {
+          "line": 52,
+          "text": "#define icx1087_nvp_read_cng(_a,_b)  icx1087_nvp_read_data(3,(_a),(_b))"
+        },
+        {
+          "line": 55,
+          "text": "#define icx1087_nvp_read_ser(_a,_b)  icx1087_nvp_read_data(4,(_a),(_b))"
+        },
+        {
+          "line": 58,
+          "text": "#define icx1087_nvp_read_dcc(_a,_b)  icx1087_nvp_read_data(7,(_a),(_b))"
+        },
+        {
+          "line": 61,
+          "text": "#define icx1087_nvp_read_dba(_a,_b)  icx1087_nvp_read_data(12,(_a),(_b))"
+        },
+        {
+          "line": 64,
+          "text": "#define icx1087_nvp_read_dbv(_a,_b)  icx1087_nvp_read_data(13,(_a),(_b))"
+        },
+        {
+          "line": 67,
+          "text": "#define icx1087_nvp_read_tr0(_a,_b)  icx1087_nvp_read_data(14,(_a),(_b))"
+        },
+        {
+          "line": 70,
+          "text": "#define icx1087_nvp_read_tr1(_a,_b)  icx1087_nvp_read_data(15,(_a),(_b))"
+        },
+        {
+          "line": 73,
+          "text": "#define icx1087_nvp_read_mid(_a,_b)  icx1087_nvp_read_data(16,(_a),(_b))"
+        },
+        {
+          "line": 76,
+          "text": "#define icx1087_nvp_read_dor(_a,_b)  icx1087_nvp_read_data(21,(_a),(_b))"
+        },
+        {
+          "line": 79,
+          "text": "#define icx1087_nvp_read_syi(_a,_b)  icx1087_nvp_read_data(24,(_a),(_b))"
+        },
+        {
+          "line": 82,
+          "text": "#define icx1087_nvp_read_var(_a,_b)  icx1087_nvp_read_data(25,(_a),(_b))"
+        },
+        {
+          "line": 85,
+          "text": "#define icx1087_nvp_read_pcd(_a,_b)  icx1087_nvp_read_data(26,(_a),(_b))"
+        },
+        {
+          "line": 88,
+          "text": "#define icx1087_nvp_read_dbs(_a,_b)  icx1087_nvp_read_data(27,(_a),(_b))"
+        },
+        {
+          "line": 91,
+          "text": "#define icx1087_nvp_read_rnd(_a,_b)  icx1087_nvp_read_data(28,(_a),(_b))"
+        },
+        {
+          "line": 94,
+          "text": "#define icx1087_nvp_read_sdp(_a,_b)  icx1087_nvp_read_data(30,(_a),(_b))"
+        },
+        {
+          "line": 97,
+          "text": "#define icx1087_nvp_read_ncp(_a,_b)  icx1087_nvp_read_data(31,(_a),(_b))"
+        },
+        {
+          "line": 100,
+          "text": "#define icx1087_nvp_read_rtc(_a,_b)  icx1087_nvp_read_data(34,(_a),(_b))"
+        }
+      ]
+    },
+    {
+      "path": "./include/asm-arm/arch-mp200/icx1101_led.h",
+      "sha256": "d2963eda024557cfec3730e357ea473ec9adf8f367a2da9e1656662dd9f28ed6",
+      "hits": [
+        {
+          "line": 20,
+          "text": "#ifndef _ICX1101_LED_H_"
+        },
+        {
+          "line": 21,
+          "text": "#define _ICX1101_LED_H_"
+        },
+        {
+          "line": 23,
+          "text": "#define ICX1101_LED_MAX_PATTERN 128"
+        },
+        {
+          "line": 47,
+          "text": "#define ICX1101_LED_IOC_MAGIC 'l'"
+        },
+        {
+          "line": 49,
+          "text": "#define ICX1101_LED_RESET                _IO  (ICX1101_LED_IOC_MAGIC, 0)"
+        },
+        {
+          "line": 50,
+          "text": "#define ICX1101_LED_GET                  _IOWR(ICX1101_LED_IOC_MAGIC, 1, icx1101_led_parameter_t *)"
+        },
+        {
+          "line": 51,
+          "text": "#define ICX1101_LED_SET                  _IOW (ICX1101_LED_IOC_MAGIC, 2, icx1101_led_parameter_t *)"
+        },
+        {
+          "line": 52,
+          "text": "#define ICX1101_LED_ON                   _IO  (ICX1101_LED_IOC_MAGIC, 3)"
+        },
+        {
+          "line": 53,
+          "text": "#define ICX1101_LED_OFF                  _IO  (ICX1101_LED_IOC_MAGIC, 4)"
+        },
+        {
+          "line": 54,
+          "text": "#define ICX1101_LED_SET_EXTERNAL_FUNC    _IO  (ICX1101_LED_IOC_MAGIC, 5 /*parameter_t power_off*/)"
+        },
+        {
+          "line": 55,
+          "text": "#define ICX1101_LED_RESET_EXTERNAL_FUNC  _IO  (ICX1101_LED_IOC_MAGIC, 6)"
+        },
+        {
+          "line": 57,
+          "text": "#define ICX1101_LED_IOC_MAXNR 7"
+        },
+        {
+          "line": 60,
+          "text": "#define ICX1101_LED_NODE \"/dev/icx1101_led\""
+        }
+      ]
+    },
+    {
+      "path": "./drivers/char/Makefile",
+      "sha256": "9d28cf301ef92385ac4075dc2ad52170a106e366b1a959f98c150bb18a9f1121",
+      "hits": [
+        {
+          "line": 89,
+          "text": "obj-$(CONFIG_ICX1101_LED_BASE) += icx1101_led_base.o"
+        }
+      ]
+    },
+    {
+      "path": "./drivers/char/icx1101_led_base.c",
+      "sha256": "83aa6d5ff51f79dffed9258b48ca256ad6af42c215293b274f6114ac7cf228b9",
+      "hits": [
+        {
+          "line": 54,
+          "text": "static struct platform_device ICX1101_LED_Device = {"
+        },
+        {
+          "line": 59,
+          "text": "static struct device_driver ICX1101_LED_Driver = {"
+        },
+        {
+          "line": 82,
+          "text": "\trv = driver_register(&ICX1101_LED_Driver);"
+        },
+        {
+          "line": 90,
+          "text": "\trv = platform_device_register(&ICX1101_LED_Device);"
+        },
+        {
+          "line": 109,
+          "text": "\t\tdriver_unregister(&ICX1101_LED_Driver);"
+        },
+        {
+          "line": 112,
+          "text": "\t\tplatform_device_unregister(&ICX1101_LED_Device);"
+        }
+      ]
+    },
+    {
+      "path": "./drivers/char/Kconfig",
+      "sha256": "37e91b71ce913e19d9da40c1c42ec726a49f8426c53bc86639ddb70961c066ba",
+      "hits": [
+        {
+          "line": 980,
+          "text": "config ICX1101_LED_BASE"
+        },
+        {
+          "line": 981,
+          "text": "    tristate \"ICX1101 LED base support\""
+        }
+      ]
+    },
+    {
+      "path": "./init/version.c",
+      "sha256": "56a36ff2138c94ddd36197ebd384c1488f40b883057e22de0c19cd019ebac494",
+      "hits": [
+        {
+          "line": 32,
+          "text": "\t\"Linux version \" UTS_RELEASE \"-20070928A for ICX1101 (\" LINUX_COMPILE_BY \"@\""
+        }
+      ]
+    }
+  ]
+}

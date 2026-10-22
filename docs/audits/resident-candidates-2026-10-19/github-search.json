@@ -1,0 +1,627 @@
+{
+  "scope": "Read-only bounded GitHub searches. Unrelated substring hits and this project's own repository do not qualify as independent resident-image evidence.",
+  "named_initial_queries": [
+    "linuxrc_fwup",
+    "FUKERNEL_FILE",
+    "NW-A918"
+  ],
+  "named_deeper_queries": [
+    "wrldr",
+    "fwpup A910",
+    "ICX1101"
+  ],
+  "searches": [
+    {
+      "batch": "initial",
+      "index": 0,
+      "status": "fulfilled",
+      "results": []
+    },
+    {
+      "batch": "initial",
+      "index": 1,
+      "status": "fulfilled",
+      "results": []
+    },
+    {
+      "batch": "initial",
+      "index": 2,
+      "status": "fulfilled",
+      "repositories": []
+    },
+    {
+      "batch": "deeper",
+      "index": 0,
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/public/WRLDRoute.h",
+          "path": "src/public/WRLDRoute.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRoute.mm",
+          "path": "src/private/WRLDRoute.mm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/public/WRLDRouteStep.h",
+          "path": "src/public/WRLDRouteStep.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/public/WRLDRouteView.h",
+          "path": "src/public/WRLDRouteView.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRouteView.mm",
+          "path": "src/private/WRLDRouteView.mm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRouteSection.mm",
+          "path": "src/private/WRLDRouteSection.mm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/public/WRLDRouteDirections.h",
+          "path": "src/public/WRLDRouteDirections.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRouteViewHelper.h",
+          "path": "src/private/WRLDRouteViewHelper.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRoutingService.mm",
+          "path": "src/private/WRLDRoutingService.mm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRouteViewOptions.m",
+          "path": "src/private/WRLDRouteViewOptions.m"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRouteDirections.mm",
+          "path": "src/private/WRLDRouteDirections.mm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/public/WRLDRoutingQueryOptions.h",
+          "path": "src/public/WRLDRoutingQueryOptions.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRoutingQuery+Private.h",
+          "path": "src/private/WRLDRoutingQuery+Private.h"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRoutingQueryOptions.mm",
+          "path": "src/private/WRLDRoutingQueryOptions.mm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/private/WRLDRoutingServiceHelpers.h",
+          "path": "src/private/WRLDRoutingServiceHelpers.h"
+        },
+        {
+          "url": "https://github.com/tomctomc/coco_roms/blob/3bce10f67d77c81ce00f09ec3e8578c2e5f4f250/bas.asm",
+          "path": "bas.asm"
+        },
+        {
+          "url": "https://github.com/pcxod/olex2/blob/2d1b2687262e5bebf4d0858d5cec0bb8b9e3657d/glib/wrldraw.h",
+          "path": "glib/wrldraw.h"
+        },
+        {
+          "url": "https://github.com/tomctomc/coco_roms/blob/3bce10f67d77c81ce00f09ec3e8578c2e5f4f250/extbas.asm",
+          "path": "extbas.asm"
+        },
+        {
+          "url": "https://github.com/dkrikun/rename/blob/107f83e89ad40177cfbfc48ccb6babec6258e7d4/rename.py",
+          "path": "rename.py"
+        },
+        {
+          "url": "https://github.com/pcxod/olex2/blob/2d1b2687262e5bebf4d0858d5cec0bb8b9e3657d/glib/wrldraw.cpp",
+          "path": "glib/wrldraw.cpp"
+        },
+        {
+          "url": "https://github.com/wallscavesurvey/walls/blob/8428c2ba8ecde662753e4437b3f6d8ee1e783467/walls3d/wrldraw.cpp",
+          "path": "walls3d/wrldraw.cpp"
+        },
+        {
+          "url": "https://github.com/nitros9project/toolshed/blob/9b8ac74f3c3f4afa039c1dbf94fd64e3a76c2928/cocoroms/bas.asm",
+          "path": "cocoroms/bas.asm"
+        },
+        {
+          "url": "https://github.com/nitros9project/toolshed/blob/9b8ac74f3c3f4afa039c1dbf94fd64e3a76c2928/cocoroms/extbas.asm",
+          "path": "cocoroms/extbas.asm"
+        },
+        {
+          "url": "https://github.com/wrld3d/ios-api/blob/8ff7104f351807bb30ff5bdb6d2bc91f4419d61a/src/Wrld.h",
+          "path": "src/Wrld.h"
+        },
+        {
+          "url": "https://github.com/n6il/toolshed/blob/ab6fef5d98faa12ddaaa3bdecb77bbed33d36134/cocoroms/cb_equates.asm",
+          "path": "cocoroms/cb_equates.asm"
+        },
+        {
+          "url": "https://github.com/Ethatron/CBash/blob/774ace4b30f1ffed935711314b48f295958198d3/Skyrim/Records/WRLDRecord.h",
+          "path": "Skyrim/Records/WRLDRecord.h"
+        },
+        {
+          "url": "https://github.com/Ethatron/CBash/blob/774ace4b30f1ffed935711314b48f295958198d3/Oblivion/Records/WRLDRecord.h",
+          "path": "Oblivion/Records/WRLDRecord.h"
+        },
+        {
+          "url": "https://github.com/Ethatron/CBash/blob/774ace4b30f1ffed935711314b48f295958198d3/Skyrim/Records/WRLDRecord.cpp",
+          "path": "Skyrim/Records/WRLDRecord.cpp"
+        },
+        {
+          "url": "https://github.com/n6il/toolshed/blob/ab6fef5d98faa12ddaaa3bdecb77bbed33d36134/cocoroms/ecb_equates.asm",
+          "path": "cocoroms/ecb_equates.asm"
+        },
+        {
+          "url": "https://github.com/frankischilling/bcc/blob/c16e24a6013a5e84d71b1aacfea5f43aab3fddd0/pdp-11/bcc-pdp/src/b00drv.c",
+          "path": "pdp-11/bcc-pdp/src/b00drv.c"
+        }
+      ]
+    },
+    {
+      "batch": "deeper",
+      "index": 1,
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/nick-neely/homescout/blob/6b2a521fde88a9b32d6919aef3856f54dc6336c2/pkg/scanner/oui.go",
+          "path": "pkg/scanner/oui.go"
+        },
+        {
+          "url": "https://github.com/mittrees/Treepedia_Public/blob/34d925c1f85e44c061a3ecae5ce93e6bd4d94c2a/sample-spatialdata/TRANS_Centerlines.shp.xml",
+          "path": "sample-spatialdata/TRANS_Centerlines.shp.xml"
+        },
+        {
+          "url": "https://github.com/Egoluback/aiijc2021_transport/blob/38bda12c42a0d5a64378bf8821a3dea50b23c3d3/Analysis.ipynb",
+          "path": "Analysis.ipynb"
+        },
+        {
+          "url": "https://github.com/mika-lia/spherehosting/blob/19c4eade63359852a0316cd4417ecc71e3819fde/modules/gateways/tco.php",
+          "path": "modules/gateways/tco.php"
+        },
+        {
+          "url": "https://github.com/franckdura/Job_Scraper/blob/a27070c4d27869c7d840c4ee95c34d6cba26a414/Scraper/logs/indeed2/2020-01-17T150544.928672.log",
+          "path": "Scraper/logs/indeed2/2020-01-17T150544.928672.log"
+        },
+        {
+          "url": "https://github.com/bio-guoda/preston-brit-2022/blob/8611128dc74f8dcc7d0272b363083473b386c5ad/data/a4/e9/a4e9cfa17684451160fa0cda178e5a6175ccd8944ee8b9708c17d2c08be9cf90",
+          "path": "data/a4/e9/a4e9cfa17684451160fa0cda178e5a6175ccd8944ee8b9708c17d2c08be9cf90"
+        },
+        {
+          "url": "https://github.com/votaminh/cdn.template.graphic/blob/25c2a003e18aa272af7af39489af5dde34df31a7/encode_render/EAFRXec4U20.txt",
+          "path": "encode_render/EAFRXec4U20.txt"
+        },
+        {
+          "url": "https://github.com/VENOMDRMSUPPORT/venom-codes-platform/blob/056187354e0e41284a2338df8d201f9c5447f8ef/modules/servers/wpsquared/wpsquared.php",
+          "path": "modules/servers/wpsquared/wpsquared.php"
+        },
+        {
+          "url": "https://github.com/VanderploegAttila/Gerstein-Club/blob/e6e9f1fb4063dc681e37b0db95dc8fada6d928bf/Flask/app/static/images/Rosebrugh/rsGround.svg",
+          "path": "Flask/app/static/images/Rosebrugh/rsGround.svg"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_49/dir_2/file_0.txt",
+          "path": "generated_tree/dir_49/dir_2/file_0.txt"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_4/dir_40/file_1.txt",
+          "path": "generated_tree/dir_4/dir_40/file_1.txt"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_48/dir_40/file_0.txt",
+          "path": "generated_tree/dir_48/dir_40/file_0.txt"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_57/dir_41/file_0.txt",
+          "path": "generated_tree/dir_57/dir_41/file_0.txt"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_41/dir_75/file_3.txt",
+          "path": "generated_tree/dir_41/dir_75/file_3.txt"
+        },
+        {
+          "url": "https://github.com/NaroaCS/FoodDeliveries/blob/b5c6865a032032da3b72d60f2df8b712fadda2aa/includes/City/Cambridge/Roads.xml",
+          "path": "includes/City/Cambridge/Roads.xml"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_79/dir_2/file_2.py",
+          "path": "generated_tree/dir_79/dir_2/file_2.py"
+        },
+        {
+          "url": "https://github.com/NaroaCS/FoodDeliveries/blob/b5c6865a032032da3b72d60f2df8b712fadda2aa/includes/City/Cambridge_Draft/Roads.xml",
+          "path": "includes/City/Cambridge_Draft/Roads.xml"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_12/dir_26/file_1.py",
+          "path": "generated_tree/dir_12/dir_26/file_1.py"
+        },
+        {
+          "url": "https://github.com/jengler/bench_ds_projects/blob/5871b8fd7d57d29b387403f845713063c4c47abe/generated_tree/dir_67/dir_81/file_2.py",
+          "path": "generated_tree/dir_67/dir_81/file_2.py"
+        },
+        {
+          "url": "https://github.com/Kyle-Falconer/Court-Scheduler/blob/371c3c13ae1935b2d13c099df6d01a9f540465ea/optaplanner-docs/src/main/docbook/en-US/images/Chapter-Planner_introduction/distributionZip.svg",
+          "path": "optaplanner-docs/src/main/docbook/en-US/images/Chapter-Planner_introduction/distributionZip.svg"
+        },
+        {
+          "url": "https://github.com/fernandodenitto/instagram-profilechecker/blob/12c61e64ae23b617f4a37587d8019bf770160cde/data/users_posts/fake_posts/citta_del_monte.json",
+          "path": "data/users_posts/fake_posts/citta_del_monte.json"
+        },
+        {
+          "url": "https://github.com/numbleroot/from-onion-not-found-to-guard-discovery/blob/624a91e19d873901017fa32a46c733809c6b4284/4_attack-tuning/3_data_injection-rate_victim-setting/2020-09-23-05-25-24_MAX_HSDESC_RATE_doclient-fra1-client-slow_2.0-v2-js-60s_COMPLETED/events_hs_desc.csv",
+          "path": "4_attack-tuning/3_data_injection-rate_victim-setting/2020-09-23-05-25-24_MAX_HSDESC_RATE_doclient-fra1-client-slow_2.0-v2-js-60s_COMPLETED/events_hs_desc.csv"
+        },
+        {
+          "url": "https://github.com/josederosa/REPO1/blob/218e91348cd676e5cc03324127f307770d19aadc/Concurrencia/Concurrencia/Form1.resx",
+          "path": "Concurrencia/Concurrencia/Form1.resx"
+        },
+        {
+          "url": "https://github.com/igork2kta/TaxZone/blob/a0fcd2c4c459576e942946befa2767371fb114b6/TaxZone/Forms/F_Relatorio_Importacao.resx",
+          "path": "TaxZone/Forms/F_Relatorio_Importacao.resx"
+        },
+        {
+          "url": "https://github.com/igork2kta/TaxZone/blob/a0fcd2c4c459576e942946befa2767371fb114b6/TaxZone/Forms/F_Relatorios_Executados.resx",
+          "path": "TaxZone/Forms/F_Relatorios_Executados.resx"
+        },
+        {
+          "url": "https://github.com/MikeCastellon/medanalytica/blob/c5b47359f0d07dd5e4f2a26259eeef1408bb09f3/FrontEndHQG/web-main/src/Common/icons/designedIcons/Cardio.svg",
+          "path": "FrontEndHQG/web-main/src/Common/icons/designedIcons/Cardio.svg"
+        },
+        {
+          "url": "https://github.com/NaroaCS/Snowstorm-Deliveries/blob/67a8cb7cd7aacbf8ac54d260abe5327636a7db32/GAMA_project/includes/City/Cambridge/Roads.xml",
+          "path": "GAMA_project/includes/City/Cambridge/Roads.xml"
+        },
+        {
+          "url": "https://github.com/BobbiliSreejaReddy/Coke_Studio/blob/9d316bc12d3aee5c1801ff85ef46c0482ef86c0b/CodeForMadhav/VideoComments/IndiaComments/7FKEy_RWwQk/7FKEy_RWwQk13.json",
+          "path": "CodeForMadhav/VideoComments/IndiaComments/7FKEy_RWwQk/7FKEy_RWwQk13.json"
+        },
+        {
+          "url": "https://github.com/numbleroot/from-onion-not-found-to-guard-discovery/blob/624a91e19d873901017fa32a46c733809c6b4284/4_attack-tuning/2_data_onion-version_victim-setting/2020-08-30-17-54-17_PARAM_SWEEP_GUARD_PROB_lenny-tree_3.0-v2-js-60s_COMPLETED/events_hs_desc.csv",
+          "path": "4_attack-tuning/2_data_onion-version_victim-setting/2020-08-30-17-54-17_PARAM_SWEEP_GUARD_PROB_lenny-tree_3.0-v2-js-60s_COMPLETED/events_hs_desc.csv"
+        },
+        {
+          "url": "https://github.com/ajaygunalan/Compressive-OCT/blob/7c2b28d4646df816500fae25f80d0953a4f29546/data/getDepthFromSparse3Doct/FastOCTpaper/chickenBreatInside/9/ScanNum_1_TrueDataNoisy.svg",
+          "path": "data/getDepthFromSparse3Doct/FastOCTpaper/chickenBreatInside/9/ScanNum_1_TrueDataNoisy.svg"
+        }
+      ]
+    },
+    {
+      "batch": "deeper",
+      "index": 2,
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/research/firmware/global-table-headers.md",
+          "path": "docs/research/firmware/global-table-headers.md"
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/research/firmware/artwork-reader-chain.md",
+          "path": "docs/research/firmware/artwork-reader-chain.md"
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/FIRMWARE_PROTOCOL_PHASE2.md",
+          "path": "docs/FIRMWARE_PROTOCOL_PHASE2.md"
+        }
+      ]
+    },
+    {
+      "query": "filename:fwpup",
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/vinceright3/WarriorRPG/blob/7062ede375518365ab633f8150f96a3a10915874/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/magao-x/config/blob/72704a00779922a070888814d85466b87645fdd7/fwpupil.conf",
+          "path": "fwpupil.conf"
+        },
+        {
+          "url": "https://github.com/ISET/isetlens-eye/blob/803c2ea2b2b0e5d45dcfccc330341f7526e8351f/onaxis_mtf/MTFwPupilDiameters.m",
+          "path": "onaxis_mtf/MTFwPupilDiameters.m"
+        },
+        {
+          "url": "https://github.com/Coding-Web-Community/code4bytes/blob/2ebd376eb14eee61ccb6ded9eaebf345fe77cb6e/008-directories/dir/ncxqhicpio/zobdeyagvo/hjxsfyedlq/emyhqmpyik/kpbwrimqcy/fwpupxptmc.txt",
+          "path": "008-directories/dir/ncxqhicpio/zobdeyagvo/hjxsfyedlq/emyhqmpyik/kpbwrimqcy/fwpupxptmc.txt"
+        },
+        {
+          "url": "https://github.com/Linxuan-MY/UE5-RPGDemo/blob/bd69625196a26b06bf8b08ff14e33443952c302f/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/DimaelVertigo/Jumpdesign/blob/f25e7948c514682de09f9c423b4cc702b420b3e1/wp-content/plugins/fresh-framework/framework/updater/class.ffWPUpgrader.php",
+          "path": "wp-content/plugins/fresh-framework/framework/updater/class.ffWPUpgrader.php"
+        },
+        {
+          "url": "https://github.com/MarmonDesigns/cloud.ky/blob/c6416dfc47696d0af3d355e3533025834d151110/wp-content/themes/milo/install/fresh-framework/framework/updater/class.ffWPUpgrader.php",
+          "path": "wp-content/themes/milo/install/fresh-framework/framework/updater/class.ffWPUpgrader.php"
+        },
+        {
+          "url": "https://github.com/DimaelVertigo/Jumpdesign/blob/f25e7948c514682de09f9c423b4cc702b420b3e1/wp-content/themes/wien/install/fresh-framework/framework/updater/class.ffWPUpgrader.php",
+          "path": "wp-content/themes/wien/install/fresh-framework/framework/updater/class.ffWPUpgrader.php"
+        },
+        {
+          "url": "https://github.com/Hyosang-An/Warrior/blob/165da4b39d860869b909aeb202f932dcd594b271/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/Kethers/KratosRPG/blob/666e3066aa4a5ba40163d0e3a566c824e5c10668/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/PhArObiS/GodOfWar/blob/41d584c85585c6c6041c9b0fdad20c2230fccff3/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/DennyWanye/warriorGameDemo/blob/5d030215fc3cae2e57d6394e657dabb3d9937478/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/denys-ivchenko/XIP/blob/b47cc2e34719487f3742cc1de3f83fb8702f8ea8/Controls/obj/Debug/net6.0-windows/Controls_uwfwpupa_wpftmp.AssemblyInfo.cs",
+          "path": "Controls/obj/Debug/net6.0-windows/Controls_uwfwpupa_wpftmp.AssemblyInfo.cs"
+        },
+        {
+          "url": "https://github.com/WildWestWorld/jk-god-of-warrior-ue/blob/91a94806be0300b35f0253a2ce425ae00bed05ac/Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset",
+          "path": "Content/__ExternalObjects__/Maps/CombatTestMap/7/F8/45OGFWPUP3F0S4YWQ42R7Q.uasset"
+        },
+        {
+          "url": "https://github.com/denys-ivchenko/XIP/blob/b47cc2e34719487f3742cc1de3f83fb8702f8ea8/Controls/obj/Debug/net6.0-windows/Controls_uwfwpupa_wpftmp.AssemblyInfoInputs.cache",
+          "path": "Controls/obj/Debug/net6.0-windows/Controls_uwfwpupa_wpftmp.AssemblyInfoInputs.cache"
+        },
+        {
+          "url": "https://github.com/denys-ivchenko/XIP/blob/b47cc2e34719487f3742cc1de3f83fb8702f8ea8/Controls/obj/Controls_uwfwpupa_wpftmp.csproj.nuget.g.props",
+          "path": "Controls/obj/Controls_uwfwpupa_wpftmp.csproj.nuget.g.props"
+        },
+        {
+          "url": "https://github.com/denys-ivchenko/XIP/blob/b47cc2e34719487f3742cc1de3f83fb8702f8ea8/Controls/obj/Controls_uwfwpupa_wpftmp.csproj.nuget.g.targets",
+          "path": "Controls/obj/Controls_uwfwpupa_wpftmp.csproj.nuget.g.targets"
+        },
+        {
+          "url": "https://github.com/denys-ivchenko/XIP/blob/b47cc2e34719487f3742cc1de3f83fb8702f8ea8/Controls/obj/Controls_uwfwpupa_wpftmp.csproj.nuget.dgspec.json",
+          "path": "Controls/obj/Controls_uwfwpupa_wpftmp.csproj.nuget.dgspec.json"
+        },
+        {
+          "url": "https://github.com/denys-ivchenko/XIP/blob/b47cc2e34719487f3742cc1de3f83fb8702f8ea8/Controls/obj/Debug/net6.0-windows/Controls_uwfwpupa_wpftmp.GeneratedMSBuildEditorConfig.editorconfig",
+          "path": "Controls/obj/Debug/net6.0-windows/Controls_uwfwpupa_wpftmp.GeneratedMSBuildEditorConfig.editorconfig"
+        }
+      ]
+    },
+    {
+      "query": "\"fURt\" sony",
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/Gabriella439/post-rfc/blob/36e5c949d319b91aa28643ff6a1c17fabc3bc1f7/NFTs.md",
+          "path": "NFTs.md"
+        },
+        {
+          "url": "https://github.com/pu108/IR-assignment2/blob/6dedba309ef7d5445af861eddfb0ab614f223a71/sony.txt",
+          "path": "sony.txt"
+        },
+        {
+          "url": "https://github.com/aiff22/DPED/blob/d1fbb62e63011f6ba1066880d064665e4411e225/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/seydx/homebridge-bravia-tvos/blob/867219ab68286f5eb2ebcf935474a679f712932b/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/AlienVault-OTX/yabin/blob/6741940cdb00794934e2f6bde924167d6470fc14/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/yitu-opensource/ConvBert/blob/32ef0678180cee2dcfe5debe98cd268d5aea2426/vocab.txt",
+          "path": "vocab.txt"
+        },
+        {
+          "url": "https://github.com/KhronosGroup/DataFormat/blob/8020b6258d969562e82d3005cba24bd8e6633940/df.txt",
+          "path": "df.txt"
+        },
+        {
+          "url": "https://github.com/seznam/small-e-czech/blob/8f69d2d5bf4b7ada6cabc40b090094d0dcb1e0c7/vocab.txt",
+          "path": "vocab.txt"
+        },
+        {
+          "url": "https://github.com/FreeRDP/Remmina/blob/bb33690d870e9121379ad86e8dec019e06695c96/po/hu.po",
+          "path": "po/hu.po"
+        },
+        {
+          "url": "https://github.com/iwatake2222/InferenceHelper/blob/7c975cf9d32016aa6bfceabf6922fe6d808dc5eb/NOTICE.md",
+          "path": "NOTICE.md"
+        },
+        {
+          "url": "https://github.com/Debvt/Wm/blob/22f867bd07f34b185a89f48b185c49bfda9bb54f/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/MiSTer-devel/Presets_MiSTer/blob/0b6571ec123b3b700d18d5e17fe4e9185c60c078/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/spyysalo/annodoc/blob/8cbd68a46dad453a440af3edcca69a165d38f4d0/index.md",
+          "path": "index.md"
+        },
+        {
+          "url": "https://github.com/1979139113/0day-today-exploits/blob/8b2194688e3c722fe9369b045e37382e7f45e12b/26487.txt",
+          "path": "26487.txt"
+        },
+        {
+          "url": "https://github.com/aws-samples/load-test-llm-with-locust/blob/72854d749cf8d88dc1f625969df1351e526a1321/doc.txt",
+          "path": "doc.txt"
+        },
+        {
+          "url": "https://github.com/LibraryOfCongress/citizen-dj/blob/216bda2dc80b4ec53b3d279d67923eea020dcce7/retro.md",
+          "path": "retro.md"
+        },
+        {
+          "url": "https://github.com/secretGeek/devShop/blob/e2d27ef11f82e3f4ab0f5b469669426984c3c29a/todo.md",
+          "path": "todo.md"
+        },
+        {
+          "url": "https://github.com/theblacklotus/suicide-barbie/blob/bd14844c74a82655f22115e7b0cb130dbb1adce7/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/ddennedy/dvgrab/blob/34637fe633f03e4767ff5179749df2fb000c863f/NEWS",
+          "path": "NEWS"
+        },
+        {
+          "url": "https://github.com/alroe19/YOLO_model_training_and_IMX500_export/blob/7f7faf2b58a04da2a777f30e12dfc076c77205c0/README.md",
+          "path": "README.md"
+        }
+      ]
+    },
+    {
+      "query": "\"FUINITRD_FILE\"",
+      "status": "fulfilled",
+      "results": []
+    },
+    {
+      "query": "\"wrldr\" sony",
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/citizenlab/test-lists/blob/804afa8cda713cbb72ecf7a4e2c356dfdff7d475/lists/ir.csv",
+          "path": "lists/ir.csv"
+        },
+        {
+          "url": "https://github.com/tech234a/annotation-urls/blob/5c0300471b87c6a5f3dd8883484f8155b5ff33d7/vn_urls.txt",
+          "path": "vn_urls.txt"
+        },
+        {
+          "url": "https://github.com/cirosantilli/expired-domain-names-by-day-2020/blob/b25dbd97f52600063d217ad953f7a0f8f8fab9a2/10/05/39",
+          "path": "10/05/39"
+        },
+        {
+          "url": "https://github.com/cirosantilli/expired-domain-names-by-day-2020/blob/b25dbd97f52600063d217ad953f7a0f8f8fab9a2/10/05/9004",
+          "path": "10/05/9004"
+        },
+        {
+          "url": "https://github.com/roycewilliams/kens-salty-rainbow/blob/36b0da7cb784024ec8670d8aaf7a2916c13f0305/lists/S/descrypt-S1gn@g3-allsalts.txt",
+          "path": "lists/S/descrypt-S1gn@g3-allsalts.txt"
+        },
+        {
+          "url": "https://github.com/JPCERTCC/phishurl-list/blob/e19b194b2d23f6c6ab532cf880c99b306992473e/2026/202603.csv",
+          "path": "2026/202603.csv"
+        },
+        {
+          "url": "https://github.com/ruy1su/DataMining-Project/blob/d4dc2258dd4aa8fe9ccea5ba6c18144c026f160b/data-set/tweets/MSFT/MSFT-2016-05-23.csv",
+          "path": "data-set/tweets/MSFT/MSFT-2016-05-23.csv"
+        },
+        {
+          "url": "https://github.com/hal3/ciml/blob/6de93c61976209a09d35b6113172fbba53b0bb15/book/figs/prac_imagepix.svg",
+          "path": "book/figs/prac_imagepix.svg"
+        },
+        {
+          "url": "https://github.com/cirosantilli/expired-domain-names-by-day-2022/blob/36fb5eee7e0a11c9a1d227f86d4eb508fd7e7223/04/14/84",
+          "path": "04/14/84"
+        },
+        {
+          "url": "https://github.com/cirosantilli/expired-domain-names-by-day-2022/blob/36fb5eee7e0a11c9a1d227f86d4eb508fd7e7223/04/14/31",
+          "path": "04/14/31"
+        },
+        {
+          "url": "https://github.com/cirosantilli/expired-domain-names-by-day-2022/blob/36fb5eee7e0a11c9a1d227f86d4eb508fd7e7223/10/18/37",
+          "path": "10/18/37"
+        },
+        {
+          "url": "https://github.com/mssturgeon/HDTVMagazine-Legacy/blob/32a72bac3a13f75b90b2e7087bca88486f0bf14a/archives/Image/history.html",
+          "path": "archives/Image/history.html"
+        },
+        {
+          "url": "https://github.com/mssturgeon/HDTVMagazine-Legacy/blob/32a72bac3a13f75b90b2e7087bca88486f0bf14a/archives/Images/history.html",
+          "path": "archives/Images/history.html"
+        },
+        {
+          "url": "https://github.com/swrdfgd/RandomWebsite/blob/7c7b8891a55305fa1fed11fa24b2a6992b3d459f/site340.js",
+          "path": "site340.js"
+        },
+        {
+          "url": "https://github.com/ibm-datapalooza/cscc-tutorial/blob/37849efd89a8feebd7221654827f794ab73d7d4f/sample-tweets/1467122340190.txt",
+          "path": "sample-tweets/1467122340190.txt"
+        },
+        {
+          "url": "https://github.com/cirosantilli/expired-domain-names-by-day-2020/blob/b25dbd97f52600063d217ad953f7a0f8f8fab9a2/08/01/9009",
+          "path": "08/01/9009"
+        },
+        {
+          "url": "https://github.com/Bowie-State-University/CS-Courses/blob/22312abda5ff6e2e27ff2f7fb05c8abca21b7c05/research/variables/varNameAll/unigram/xcz.txt",
+          "path": "research/variables/varNameAll/unigram/xcz.txt"
+        },
+        {
+          "url": "https://github.com/hosungseo/ai-readable-gazette-kr/blob/7c224756c0d80de489f0260f710c4466b16d8d78/derived/readable-corrected/2024-05-24/068_여성가족부_여성가족부고시제2024_20호_청소년유해매체물_음반_및_음악파일_고시.md",
+          "path": "derived/readable-corrected/2024-05-24/068_여성가족부_여성가족부고시제2024_20호_청소년유해매체물_음반_및_음악파일_고시.md"
+        },
+        {
+          "url": "https://github.com/keszod/news_and_langs/blob/2006b91bf92d08fa44e7ae72e8642d2e19237690/sites.txt",
+          "path": "sites.txt"
+        },
+        {
+          "url": "https://github.com/kalyanch8/piholeList/blob/dd672355cd12ffc7474019bc2b9cbcff9f5c0444/blocklist_9701.txt",
+          "path": "blocklist_9701.txt"
+        }
+      ]
+    },
+    {
+      "query": "\"NW-A91X\"",
+      "status": "fulfilled",
+      "results": [
+        {
+          "url": "https://github.com/thegecko/mp3-manager/blob/421b0ab9d46e8fe783cf537306c9b459374ea3c2/README.md",
+          "path": "README.md"
+        },
+        {
+          "url": "https://github.com/thegecko/mp3-manager/blob/421b0ab9d46e8fe783cf537306c9b459374ea3c2/src/database/omg-database.ts",
+          "path": "src/database/omg-database.ts"
+        },
+        {
+          "url": "https://github.com/brianpipa/jsymphonic/blob/0b5929691fdcb5506500638e2db851bd3472dd3a/src/main/resources/localization/jsymphonicprofilesdialog.properties",
+          "path": "src/main/resources/localization/jsymphonicprofilesdialog.properties"
+        },
+        {
+          "url": "https://github.com/brianpipa/jsymphonic/blob/0b5929691fdcb5506500638e2db851bd3472dd3a/src/main/resources/localization/jsymphonicprofilesdialog_sv_SV.properties",
+          "path": "src/main/resources/localization/jsymphonicprofilesdialog_sv_SV.properties"
+        },
+        {
+          "url": "https://github.com/brianpipa/jsymphonic/blob/0b5929691fdcb5506500638e2db851bd3472dd3a/src/main/resources/localization/jsymphonicprofilesdialog_es_ES.properties",
+          "path": "src/main/resources/localization/jsymphonicprofilesdialog_es_ES.properties"
+        },
+        {
+          "url": "https://github.com/brianpipa/jsymphonic/blob/0b5929691fdcb5506500638e2db851bd3472dd3a/src/main/resources/localization/jsymphonicprofilesdialog_ru_RU.properties",
+          "path": "src/main/resources/localization/jsymphonicprofilesdialog_ru_RU.properties"
+        }
+      ]
+    },
+    {
+      "query": "sony walkman firmware dump",
+      "status": "fulfilled",
+      "result": {
+        "archive_filter_applied": null,
+        "repositories": []
+      }
+    },
+    {
+      "query": "NW-A910",
+      "status": "fulfilled",
+      "result": {
+        "archive_filter_applied": null,
+        "repositories": []
+      }
+    },
+    {
+      "query": "NW-A919",
+      "status": "fulfilled",
+      "result": {
+        "archive_filter_applied": null,
+        "repositories": []
+      }
+    },
+    {
+      "query": "walkman firmware backup",
+      "status": "fulfilled",
+      "result": {
+        "archive_filter_applied": null,
+        "repositories": []
+      }
+    }
+  ]
+}

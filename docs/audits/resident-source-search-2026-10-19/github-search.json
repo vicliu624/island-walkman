@@ -1,0 +1,339 @@
+{
+  "scope": "Read-only GitHub code search; returned result limits are not exhaustive repository coverage.",
+  "queries": [
+    {
+      "query": "NW-A918",
+      "returned_count": 30,
+      "results": [
+        {
+          "url": "https://github.com/Rockbox/rockbox/blob/f684d3ba6adabc109911bb0e3e9f1cf2b6849019/utils/nwztools/database/models.txt",
+          "path": "utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        },
+        {
+          "url": "https://github.com/Rockbox/rockbox/blob/f684d3ba6adabc109911bb0e3e9f1cf2b6849019/firmware/target/hosted/sonynwz/nwz-db.c",
+          "path": "firmware/target/hosted/sonynwz/nwz-db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/Rockbox-Chinese-Community/Rockbox-RCC/blob/a701aefe45f03ca391a8e2f1a6e3da1b8774b2f2/utils/nwztools/database/models.txt",
+          "path": "utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        },
+        {
+          "url": "https://github.com/Rockbox-Chinese-Community/Rockbox-RCC/blob/a701aefe45f03ca391a8e2f1a6e3da1b8774b2f2/utils/nwztools/database/nwz_db.c",
+          "path": "utils/nwztools/database/nwz_db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/OneSegCast/blob/073c72d07c58c97132b52ca23849cd47e1c3b96b/docs/SOURCES.md",
+          "path": "docs/SOURCES.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "|---|---|\n|[Sony NW-A910 产品页](https://www.sony.jp/walkman/products/archive/NW-A910_series/)|确认 NW-A918 系列内建日本 1seg 接收功能|\n|[Sony 使用说明书](https://www.sony.jp/ServiceArea/impdf/pdf/3275158041.pdf)|频道 13–62；广播接收与本地视频播放规格要分开|",
+            "|[ADI 性能说明](https://wiki.analog.com/university/tools/pluto/devs/performance)|主机 USB 吞吐必须测量，完整 13 段数据流存在瓶颈|\n|[git-artes/gr-isdbt](https://github.com/git-artes/gr-isdbt)|经作者验证的 ISDB-T 发射/接收实现，GNU Radio>=3.9 master、Ubuntu22.04/24.04；不能据此声称 NW-A918 已测试|\n|[上游 tx_demo.grc](https://github.com/git-artes/gr-isdbt/blob/master/examples/tx_demo.grc)|离线适配器块连接与参数依据；去掉所有 SDR sink，仅本地 file_sink|"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/OneSegCast/blob/073c72d07c58c97132b52ca23849cd47e1c3b96b/docs/HARDWARE_ACCEPTANCE.md",
+          "path": "docs/HARDWARE_ACCEPTANCE.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "\n使用已有 95 秒合成测试视频对应 TS 的前 30 秒，准备有限、无重复约 31.98 秒中心段波形；离线自主同步/FEC 完整恢复 8787 个参考 TS 包。波形位于 WSL `/home/vic/.local/share/OneSegCast/rx-window/window.cf32`，校验报告 `recovered.ts.json`；约 768MB 的该 IQ 文件是接收验收专用离线缓冲，常规 station 流程仍不保存 IQ。\n\n建议协调 32 秒接收窗口；固定 13 频道、473.142857MHz、3MS/s、-89.75dB。用户先在 NW-A918 打开ワンセグ功能，进入频道搜索/设置，若支持手动频道选择则选13频道。确认已就绪后再启动；最低输出可能不足以锁定，不将搜不到频道直接归因于编码。后续提高输出或改变耦合需另行协调。\n\n以下命令仅供协调后执行，本轮没有执行：\n"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/tools/firmware-smoke.py",
+          "path": "tools/firmware-smoke.py",
+          "independent_of_current_project": false,
+          "matches": [
+            "        info[16:24] = b'SONY    '\n        info[24:40] = b'NW-A918         '\n        info[40:48] = b'1.0300  '",
+            "        assert decoded['source'] == 'supplied_capture_not_live_device'\n        assert decoded['decoded']['model'] == 'NW-A918'\n        assert decoded['decoded']['version'] == {'major': 1, 'minor': 3}"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/README.md",
+          "path": "README.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "# Island Walkman\n\nA native desktop music library and transfer application for Sony NW-A918, built with Tauri 2, Rust, React and Animal Island UI. No Java runtime or cloud music service is required.\n\n**Development preview:** an eight-song append was confirmed on a physical A918, bringing its library to nine playable songs. Version 0.3.0 integrates that append strategy with durable recovery. Restart and reconnection paths are tested on simulated de"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/src/firmware/responses.rs",
+          "path": "src/firmware/responses.rs",
+          "independent_of_current_project": false,
+          "matches": [
+            "        b[16..24].copy_from_slice(b\"SONY    \");\n        b[24..40].copy_from_slice(b\"NW-A918         \");\n        b[40..44].copy_from_slice(b\"1.03\");",
+            "        let r = device_info(&info_fixture()).unwrap();\n        assert_eq!(r.model, \"NW-A918\");\n        assert_eq!(r.vendor, \"SONY\");"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/OneSegCast/blob/073c72d07c58c97132b52ca23849cd47e1c3b96b/docs/DEPENDENCIES.md",
+          "path": "docs/DEPENDENCIES.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "\n源码确认 `tmcc_encoder_impl.cc` 对 partial-reception flag 写入 one_seg_present；`frequency_interleaver_impl.cc` 在 oneseg 模式将第0逻辑段保留，排除于跨段交织；`pilot_signals_impl.cc` 将逻辑段0映射到物理中心。CMake要求 GNU Radio3.10，当前已安装版本符合。\n\nPHY 可用于 ARIB STD-B31 的日本部分接收，不应将上游默认的 ISDB-Tb 音视频/服务流直接当作日本广播。OneSegCast 自己负责日式 AVC/AAC/PMT/NIT，Sony NW-A918 尚未验证；源码检查不能代替软件解调或硬件接收结果。\n\n证据：[作者项目](https://github.com/git-artes/gr-isdbt)、[固定版 TMCC 源码](https://github.com/git-artes/gr-isdbt/blob/56b2"
+          ]
+        },
+        {
+          "url": "https://github.com/built1n/rockbox/blob/3083abeb95e95dd1d12e78f1973546d93c3e12ab/utils/nwztools/database/models.txt",
+          "path": "utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        },
+        {
+          "url": "https://github.com/angsanley/classicOS/blob/781ce5894a969ba187ec805ad3e17aee4a60e43b/system/utils/nwztools/database/models.txt",
+          "path": "system/utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/research/native-transfer-validation.md",
+          "path": "docs/research/native-transfer-validation.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "# Native transfer validation\n\n2026-10-17, Windows 11, connected Sony NW-A918 on F:.\n\nThe third artwork probe succeeded according to the user's physical test: artwork displays and playback is normal. This validates the thumbnail tree marker and the tested four-field hierarchy combination. See `firmware/artwork-reader-chain.md`.\n\nThe updated Rust program passed 15 tests and locally prepared the purchased Hey Ya! source with OMA audio, JPEGs, four-f"
+          ]
+        },
+        {
+          "url": "https://github.com/doriangironde/rockbox-shanling-m3x/blob/818eec9a7fdff0fcd30528b652f1471ab1527996/rockbox/utils/nwztools/database/models.txt",
+          "path": "rockbox/utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/FIRMWARE_RESEARCH.md",
+          "path": "docs/FIRMWARE_RESEARCH.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "\n## Reverse-engineering evidence\n\nThe existing `sony-nw-a918` project is an immutable input. Its original updater,\nextracted DLLs, package reports and root filesystem were read without running\nthe updater or installing a driver. Working copies and retained analysis are\nunder this application's ignored `data/firmware-analysis` and"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/src/firmware/session.rs",
+          "path": "src/firmware/session.rs",
+          "independent_of_current_project": false,
+          "matches": [
+            "    if device.is_none_or(|d| {\n        d.vendor != \"SONY\" || d.model != \"NW-A918\" || d.device_serial_hex.bytes().all(|b| b == b'0')\n    }) {",
+            "        ensure!(\n            identity.vendor == \"SONY\" && identity.model == \"NW-A918\",\n            \"Exact A918 identity required\""
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/OneSegCast/blob/073c72d07c58c97132b52ca23849cd47e1c3b96b/onesegcast.py",
+          "path": "onesegcast.py",
+          "independent_of_current_project": false,
+          "matches": [
+            "        cfg['tx_gain_db']=-a.tx_attenuation\n    if a.encoder_preset:cfg['encoder_preset']=a.encoder_preset\n    output_size(cfg)\n    if not 13<=cfg['channel']<=62: raise ValueError('NW-A918 channel must be 13..62')\n    if cfg['service_id']&7: raise ValueError('PMT 0x1FC8 requires primary service number 0 (service_id low three bits zero)')\n    if cfg['mode']!=3 or cfg['guard']!='1/16' or cfg['layer_a']!={'segments':1,'constellation':'QPSK','code_ra"
+          ]
+        },
+        {
+          "url": "https://github.com/wangyu-/rockbox-modified/blob/3886b6dc34c452bd1101de1c61d5d78b3f7b054f/utils/nwztools/database/nwz_db.c",
+          "path": "utils/nwztools/database/nwz_db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/ui/src/main.tsx",
+          "path": "ui/src/main.tsx",
+          "independent_of_current_project": false,
+          "matches": [
+            "  <div className=\"side-label\">{tr(\"\\u6211\\u7684\\u97F3\\u4E50\\u4E16\\u754C\")}</div><nav>{nav().map(([id, label, Icon], i) => <React.Fragment key={id}>{i === 3 && <div className=\"side-label spaced\">{tr(\"\\u968F\\u8EAB\\u542C\\u4E0E\\u4F20\\u8F93\")}</div>}<Button type={page === id ? 'primary' : 'text'} aria-label={label} aria-current={page === id ? 'page' : undefined} className={page === id ? 'nav-item active' : 'nav-item'} icon={<Icon size={21}/>} disabled",
+            " {(page === 'library' || page === 'albums' || page === 'artists') && <section className=\"stats\"><Card><span className=\"stat-icon\"><MusicIcon size={25}/></span><div><strong>{s.tracks.length}<small>{tr(\"\\u9996\")}</small></strong><p>{tr(\"\\u5C0F\\u5C9B\\u6536\\u85CF\")}</p></div></Card><Card><span className=\"stat-icon peach\"><GridIcon size={25}/></span><div><strong>{new Set(s.tracks.map(t => `${t.album_artist || t.artist}\\0${t.album}`)).size}<small>{tr(\""
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/FIRMWARE_PROTOCOL_PHASE2.md",
+          "path": "docs/FIRMWARE_PROTOCOL_PHASE2.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "   is DATA_IN, CDB length 12, at most 128 response bytes, with a five-second SCSI\n   timeout. The aligned buffer, x64 structure offsets, SCSI status and returned\n   lengths are validated. No retry loop or arbitrary CDB argument exists.\n6. The decoded information must identify SONY / NW-A918 before power is queried.\n   A power-query failure is reported as unknown, never as a ready battery.\n\nWindows SPTI requires read/write **handle access** for th"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/src/firmware/windows_readonly.rs",
+          "path": "src/firmware/windows_readonly.rs",
+          "independent_of_current_project": false,
+          "matches": [
+            "    let info_bytes = read_query(&file, ReadQuery::DeviceInfo, &address)?;\n    let info = responses::device_info(&info_bytes)?;\n    ensure!(\n        info.vendor == \"SONY\" && info.model == \"NW-A918\",\n        \"Information response does not identify the requested A918\"\n    );\n    verify_binding(&file, usb_serial)?;"
+          ]
+        },
+        {
+          "url": "https://github.com/unknown321/nw-installer/blob/98d919ac985b6108e03f60a30bcec6b86a4858a0/tools/upgtool/scsitools/nwz-db.c",
+          "path": "tools/upgtool/scsitools/nwz-db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/built1n/rockbox/blob/3083abeb95e95dd1d12e78f1973546d93c3e12ab/firmware/target/hosted/sonynwz/nwz-db.c",
+          "path": "firmware/target/hosted/sonynwz/nwz-db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/angsanley/classicOS/blob/781ce5894a969ba187ec805ad3e17aee4a60e43b/system/firmware/target/hosted/sonynwz/nwz-db.c",
+          "path": "system/firmware/target/hosted/sonynwz/nwz-db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/doriangironde/rockbox-shanling-m3x/blob/818eec9a7fdff0fcd30528b652f1471ab1527996/rockbox/firmware/target/hosted/sonynwz/nwz-db.c",
+          "path": "rockbox/firmware/target/hosted/sonynwz/nwz-db.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "    { 0x1040001, \"NWZ-S716F\" },\n    { 0x1040002, \"NWZ-S718F\" },\n    { 0x2000001, \"NW-A916\" },\n    { 0x2000002, \"NW-A918\" },\n    { 0x2000004, \"NW-A919\" },\n    { 0x3000001, \"NWZ-A826\" },\n    { 0x3000002, \"NWZ-A828\" },"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/OneSegCast/blob/073c72d07c58c97132b52ca23849cd47e1c3b96b/docs/PERFORMANCE.md",
+          "path": "docs/PERFORMANCE.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "## 连续背压模型\n\n额外将合成视频裁到30秒，完整转换后连续DSP连接12MB/s paced mock（3MS/s ×4字节）。这是软件背压模型，非硬件欠载证明。\n\n实测95940104样本，31.98秒波形；连续处理31.91秒，约3.0066MS/s。峰值RSS88240KiB（86.17MiB），输出侧最大待处理块28668字节；GNU Radio内部有固定有界环形缓冲。无IQ中间文件、无削波，正常关闭。transport_wall_seconds包含约28.82秒模拟等待，不能作为Python计算热点。原始报告位于validation-desktop/paced-30.json。\n\n先前3秒真实TX只证明预生成合成IQ的有限IIO提交，不证明持续生成或无欠载。本轮保持RF关闭。USB/网络长期吞吐、真实欠载与Sony NW-A918互通仍未验收。不同分辨率、长GOP、损坏文件及不同机器的视频转换速度需要另测。"
+          ]
+        },
+        {
+          "url": "https://github.com/tsukasaoishi/tsukasaoishi.github.io/blob/f48447fd3bab42d059cc7172282d1e90f0460589/_posts/2008-07-14-articles-535.md",
+          "path": "_posts/2008-07-14-articles-535.md",
+          "independent_of_current_project": true,
+          "matches": [
+            "---\n\n\n [![SONY ウォークマン Aシリーズ ワンセグ内蔵 8GB ブラック NW-A918B](https://images-na.ssl-images-amazon.com/images/I/41eGSo5ZUTL._SL160_.jpg \"SONY ウォークマン Aシリーズ ワンセグ内蔵 8GB ブラック NW-A918B\")](http://www.amazon.co.jp/SONY-%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%83%9E%E3%83%B3-A%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA-%E3%83%AF%E3%83%B3%E3%82%BB%E3%82%B0%E5%86%85%E8%94%B5-NW-A918B/dp/B000WIJLR8%3FSubscriptionId%3DAKIAIKJECTBTL3JTYTKA%26tag%3Dkaeruspoon-22%26linkCode%3Dx"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/OneSegCast/blob/073c72d07c58c97132b52ca23849cd47e1c3b96b/docs/LONG_AND_AUTONOMOUS.md",
+          "path": "docs/LONG_AND_AUTONOMOUS.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "- 裁去11573个样本，注入+150Hz频偏、0.75幅度和每实/虚分量sigma0.0003的固定种子噪声：CP相关0.9662，估计150.887Hz，完整855包连续匹配。\n- 独立纯数值测试覆盖初始导频相位2和-90Hz频偏，判别正确。\n- 项目10项单元测试在Windows通过，保留原先SI/SPS/IQ/模拟Pluto回归。\n\n边界：固定Mode3/GI1/16/QPSK2/3/3MS/s，初始CP足够强、频偏在约±496Hz分数频偏无歧义范围内、采样钟为标称值。没有整数载波频偏搜索、盲模式检测、长时间采样率偏差跟踪、多径/移动信道自适应测试。不能把这些离线结果升级为NW-A918互通或真实RF稳定性。\n\n复现操作见README，报告见validation-rf-offline下的long-stream、autonomous和cropped-noisy系列。RF保持关闭，未确认Pluto连接，也未创建任何真实TX缓冲。"
+          ]
+        },
+        {
+          "url": "https://github.com/WillNHT/rockbox-hiby-r1/blob/9ce5646786598dd45f21436e19ff99722b2403b1/utils/nwztools/database/models.txt",
+          "path": "utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        },
+        {
+          "url": "https://github.com/nuxcodes/rockpod/blob/951d17c0575fbb61f3c585b5f0c3a0a941dcb10f/utils/nwztools/database/models.txt",
+          "path": "utils/nwztools/database/models.txt",
+          "independent_of_current_project": true,
+          "matches": [
+            "0x1040001,NWZ-S716F\n0x1040002,NWZ-S718F\n0x2000001,NW-A916\n0x2000002,NW-A918\n0x2000004,NW-A919\n0x3000001,NWZ-A826\n0x3000002,NWZ-A828"
+          ]
+        }
+      ]
+    },
+    {
+      "query": "ICX1101",
+      "returned_count": 3,
+      "results": [
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/research/firmware/global-table-headers.md",
+          "path": "docs/research/firmware/global-table-headers.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "\n## Firmware reader evidence\n\nREA/Ghidra analysis of original `gemini-ICX1101` (SHA-256 `a5c94ce492fb7ec9cd7a740d30cb79a1c2b43ee782e2da036a72f57dabdcd177`) shows:\n\n- `0x213924` opens the two-section global table and reads section index 1 (GTLB) in read mode. Evidence: `ev_a6038ae91b5847ee31995d9280deec66c130aafbcd633072ae17a5ae57a85756`.\n- `0x2131f0` reads the file header and directory and decodes directory offsets and lengths."
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/research/firmware/artwork-reader-chain.md",
+          "path": "docs/research/firmware/artwork-reader-chain.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "# Firmware artwork reader and thumbnail tree selection\n\nSource: immutable original `gemini-ICX1101`, SHA-256 `a5c94ce492fb7ec9cd7a740d30cb79a1c2b43ee782e2da036a72f57dabdcd177`. REA/Ghidra 12.1.4 evidence is retained in `rea/`. Names below are analytical labels; pseudocode is not Sony source.\n\n## Observed chain\n\n- `0x11d608` requests metadata for a track ID with filter `0x1001` on the jacket page. `0x93d7c` allocates the metadata command; `0x18931"
+          ]
+        },
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/FIRMWARE_PROTOCOL_PHASE2.md",
+          "path": "docs/FIRMWARE_PROTOCOL_PHASE2.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "| --- | --- |\n| icx1087_usbconn.ko | `26b57aad0efd8e0fb4653421be4025a497f3e645b9262cb9c0bff250636323e2` |\n| apl_conn | `37580d0393de4f548718a7b5fdb1b58dc3310edde37582dace172e9b54de5af7` |\n| gemini-ICX1101 | `a5c94ce492fb7ec9cd7a740d30cb79a1c2b43ee782e2da036a72f57dabdcd177` |\n| Normal initrd component | `4c11d0c396dff18465ae1d24aa0692edd5ecb14ca5790232f7fdba92c8ae4252` |\n\nThe stripped Gemini application's `FWUPDATE` string alone did not resolve th"
+          ]
+        }
+      ]
+    },
+    {
+      "query": "NW_A91X.UPG",
+      "returned_count": 1,
+      "results": [
+        {
+          "url": "https://github.com/vicliu624/island-walkman/blob/ec8df3af66c924da486a35750826ccfdcd0f2e1b/docs/FIRMWARE_RESEARCH.md",
+          "path": "docs/FIRMWARE_RESEARCH.md",
+          "independent_of_current_project": false,
+          "matches": [
+            "island-walkman.exe --firmware-probe\nisland-walkman.exe --inspect-firmware \"C:\\path\\NW_A91X.UPG\"\n```",
+            "island-walkman --firmware-probe\nisland-walkman --inspect-firmware /path/to/NW_A91X.UPG\n```"
+          ]
+        }
+      ]
+    },
+    {
+      "query": "fwpup scoped unknown321/nw-installer",
+      "returned_count": 4,
+      "results": [
+        {
+          "url": "https://github.com/unknown321/nw-installer/blob/98d919ac985b6108e03f60a30bcec6b86a4858a0/installer/update.sh",
+          "path": "installer/update.sh",
+          "independent_of_current_project": true,
+          "matches": [
+            "            exit 1\n        fi\n\n        log \"fwpup -f $FWUP_FILE_PATH -$ORDER_PARTITION $OUT_PARTITION\"\n        fwpup -f $FWUP_FILE_PATH -$ORDER_PARTITION $OUT_PARTITION\n        if [ \"$?\" != 0 ]; then\n            log \"fwpup($OUT_PARTITION) error\""
+          ]
+        },
+        {
+          "url": "https://github.com/unknown321/nw-installer/blob/98d919ac985b6108e03f60a30bcec6b86a4858a0/tools/upgtool/upgtools/upg.h",
+          "path": "tools/upgtool/upgtools/upg.h",
+          "independent_of_current_project": true,
+          "matches": [
+            " * newer devices (and hence corrolates exactly with V2 usage). On these devices, the\n * update script will first extract the first file (the bash script) and the second file\n * which is called \"md5.txt\". At this point it then runs the script. Hence it is not\n * important what the content of the second file is, it is not checked unless fwpup is\n * called. For the records, here is an exerct of such a file:\n *   838860800 eae2acabcd6523a750f61f5ea3e"
+          ]
+        },
+        {
+          "url": "https://github.com/unknown321/nw-installer/blob/98d919ac985b6108e03f60a30bcec6b86a4858a0/tools/upgtool/upgtools/upg.c",
+          "path": "tools/upgtool/upgtools/upg.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "        }\n\n        /* in V2 of the format, some entries can be compressed using zlib but there is no marker for\n         * that; instead the OF has the fwpup program that can extract the nth entry of the archive\n         * and takes an optional -z flag to specify whether to uncompress(). Hence we don't support\n         * that at the moment. */\n        memset(&file->files[i], 0, sizeof(struct upg_file_entry_t));"
+          ]
+        },
+        {
+          "url": "https://github.com/unknown321/nw-installer/blob/98d919ac985b6108e03f60a30bcec6b86a4858a0/tools/upgtool/upgtools/upgtool.c",
+          "path": "tools/upgtool/upgtools/upgtool.c",
+          "independent_of_current_project": true,
+          "matches": [
+            "            void *buf = file->files[i].data;\n            int size = file->files[i].size;\n            int pos = 0;\n            /* the fwpup tool seems to assume that every block decompresses to less than 4096 bytes,\n             * so I guess the encoder splits the input in chunks */\n            int max_chunk_size = 4096;\n            void *chunk = malloc(max_chunk_size);"
+          ]
+        }
+      ]
+    }
+  ]
+}

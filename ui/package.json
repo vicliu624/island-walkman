@@ -1,10 +1,10 @@
 {
   "name": "island-walkman-ui",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0-alpha.8",
   "type": "module",
   "scripts": {
-    "build": "node ../tools/check-ui.mjs && tsc --noEmit && vite build",
+    "build": "node ../tools/check-version.mjs && node ../tools/check-ui.mjs && tsc --noEmit && vite build",
     "dev": "vite --host 127.0.0.1",
     "test": "node ../tools/check-ui.mjs",
     "tauri": "tauri"

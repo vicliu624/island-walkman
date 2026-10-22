@@ -1,0 +1,16 @@
+{
+  "offline_only": true,
+  "physical_device_access": false,
+  "sony_target_code_executed": false,
+  "firmware_write_enabled": false,
+  "python_tests_passed": 65,
+  "new_synthetic_archive_tests": 5,
+  "version": "0.4.0-alpha.5",
+  "version_check": "passed",
+  "tracked_documentation_check": "passed",
+  "new_documents_links_and_language": "passed",
+  "rootfs_counts_and_missing_terms": "verified against retained comparison",
+  "layout_header": "exact upstream tar-member bytes verified",
+  "static_helper_bindings": "main entry, table signatures and shared loader-bound globals checked",
+  "limits": "No resident installer or fwpup execution, no power-loss emulation of wrldr, and no installed-binary qualification."
+}

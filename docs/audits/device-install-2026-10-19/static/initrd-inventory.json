@@ -1,0 +1,190 @@
+[
+  {
+    "path": "/",
+    "inode": 2,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/lost+found",
+    "inode": 11,
+    "mode": "0o40700",
+    "kind": 16384,
+    "size": 12288
+  },
+  {
+    "path": "/bin",
+    "inode": 12,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/bin/busybox",
+    "inode": 13,
+    "mode": "0o100755",
+    "kind": 32768,
+    "size": 502328,
+    "sha256": "f2ac2ac63ac891cc582dd5549077fec66c4b4cae3334f02415f0ebdbb9fa8946"
+  },
+  {
+    "path": "/bin/-sh",
+    "inode": 14,
+    "mode": "0o120777",
+    "kind": 40960,
+    "size": 4,
+    "target": "bash"
+  },
+  {
+    "path": "/bin/sh",
+    "inode": 15,
+    "mode": "0o120777",
+    "kind": 40960,
+    "size": 7,
+    "target": "busybox"
+  },
+  {
+    "path": "/dev",
+    "inode": 16,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/etc",
+    "inode": 17,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/lib",
+    "inode": 18,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/lib/modules",
+    "inode": 19,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/lib/modules/icx1087_power.ko",
+    "inode": 20,
+    "mode": "0o100644",
+    "kind": 32768,
+    "size": 14756,
+    "sha256": "d801254c74db49331b1adaaebbfcdfcce8be0dab0790d129b93ca961d177f140"
+  },
+  {
+    "path": "/lib/modules/icx1087_key.ko",
+    "inode": 21,
+    "mode": "0o100644",
+    "kind": 32768,
+    "size": 9528,
+    "sha256": "12f1b3a7ff63ae27f0a3d3a808c71121da7ae7673048b43dd57628e25252a920"
+  },
+  {
+    "path": "/lib/modules/icx1087-nand-p.ko",
+    "inode": 22,
+    "mode": "0o100644",
+    "kind": 32768,
+    "size": 57080,
+    "sha256": "eb19680b9b45e374b32d4084bccf4153b0fed97ce0e4dd9a3d342d268d636f8a"
+  },
+  {
+    "path": "/lib/modules/icx1087_nvp.ko",
+    "inode": 23,
+    "mode": "0o100644",
+    "kind": 32768,
+    "size": 22688,
+    "sha256": "c0639bc1f31c0208ee71381c11777950d5af157baf23bde6ecde6cbd148ab377"
+  },
+  {
+    "path": "/lib/modules/icx1087-nand-i.ko",
+    "inode": 24,
+    "mode": "0o100644",
+    "kind": 32768,
+    "size": 65032,
+    "sha256": "b1b718a5c993d24a07ca60ff99a038fdf23c1614abfb5daffce81c8043379892"
+  },
+  {
+    "path": "/linuxrc",
+    "inode": 25,
+    "mode": "0o100755",
+    "kind": 32768,
+    "size": 200,
+    "sha256": "bf3d54dc4619b9d0eddb10b59bb76605a280c43e793b2cb881cab12e7709de02"
+  },
+  {
+    "path": "/mnt",
+    "inode": 26,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/proc",
+    "inode": 27,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/sbin",
+    "inode": 28,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/sbin/insmod",
+    "inode": 29,
+    "mode": "0o120777",
+    "kind": 40960,
+    "size": 14,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "/sbin/lsmod",
+    "inode": 30,
+    "mode": "0o120777",
+    "kind": 40960,
+    "size": 14,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "/sbin/rmmod",
+    "inode": 31,
+    "mode": "0o120777",
+    "kind": 40960,
+    "size": 14,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "/sbin/modprobe",
+    "inode": 32,
+    "mode": "0o120777",
+    "kind": 40960,
+    "size": 14,
+    "target": "../bin/busybox"
+  },
+  {
+    "path": "/tmp",
+    "inode": 33,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  },
+  {
+    "path": "/var",
+    "inode": 34,
+    "mode": "0o40755",
+    "kind": 16384,
+    "size": 1024
+  }
+]

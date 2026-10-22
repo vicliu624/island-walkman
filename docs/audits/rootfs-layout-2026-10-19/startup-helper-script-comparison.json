@@ -1,0 +1,14 @@
+[
+  {
+    "path": "./etc/init.d/gemini",
+    "equal": true
+  },
+  {
+    "path": "./etc/init.d/rc.sysinfo",
+    "equal": true
+  },
+  {
+    "path": "./etc/init.d/consstart",
+    "equal": true
+  }
+]

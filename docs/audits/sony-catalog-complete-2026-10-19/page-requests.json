@@ -1,0 +1,46 @@
+[
+  {
+    "name": "page-1",
+    "url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=1&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=1&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "bytes": 100687,
+    "sha256": "6593b186685ca10794b24e6faa773b852c89cf9adee844ed9a334ec531b40d15",
+    "num_found": 758,
+    "returned": 200
+  },
+  {
+    "name": "page-2",
+    "url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=2&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=2&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "bytes": 131632,
+    "sha256": "fc806b4b4ed1bf1dcab8c2bf1ad47b0cc8fb752847f292c41307f5b58d1d98ab",
+    "num_found": 758,
+    "returned": 200
+  },
+  {
+    "name": "page-3",
+    "url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=3&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=3&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "bytes": 97574,
+    "sha256": "25f74179890a11c92316f2919cdc49931fb0dc9e211c11fdcabd1b4db966839e",
+    "num_found": 758,
+    "returned": 200
+  },
+  {
+    "name": "page-4",
+    "url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=4&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "method": "GET",
+    "status": 200,
+    "final_url": "https://archive.org/advancedsearch.php?q=%28title%3Asony+OR+creator%3Asony%29+AND+%28title%3Afirmware+OR+title%3Arecovery+OR+title%3Abackup%29&output=json&rows=200&page=4&sort%5B%5D=identifier+asc&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=mediatype&fl%5B%5D=description&fl%5B%5D=subject",
+    "bytes": 88430,
+    "sha256": "be43892091f74a5e8900a9a244cb33867b6526d791993efe2dba79557c74b8f5",
+    "num_found": 758,
+    "returned": 158
+  }
+]

@@ -12,12 +12,14 @@ DEB installation integrates with the Linux applications menu. AppImage runs with
 
 ## Publishing
 
-1. Set the same semantic version in Cargo.toml, tauri.conf.json and ui/package.json; refresh both lockfiles.
+1. Choose the release intent first. Backward-compatible fixes increment PATCH; new backward-compatible capabilities increment MINOR; incompatible public-contract changes require an explicit migration/version decision (during 0.x, do not assume compatibility across MINOR). Unverified development builds use a SemVer prerelease such as `0.4.0-alpha.1`. Run `python tools/version.py --set <version>` to update Cargo.toml, the root Cargo.lock entry, tauri.conf.json, ui/package.json and both npm root-version fields without upgrading dependencies. Add the matching CHANGELOG section, then run `python tools/version.py --check`. Frontend builds, build scripts and CI reject inconsistent versions; tag builds must exactly match `v<version>`. UI labels use package metadata, and desktop smoke verifies native/backend/frontend version equality. Prerelease builds stay local unless explicitly authorized for publication; never replace a published stable version's assets with different code.
 2. Update the English changelog and run checks.
 3. Configure the repository Actions secret `TAURI_SIGNING_PRIVATE_KEY`. The initial key has an empty password.
 4. Push the commit to main and wait for the Windows x86-64, Debian x86-64, macOS Apple Silicon and macOS Intel package jobs to pass.
 5. Push a `v<version>` tag. The release workflow first looks for a successful main-branch build of that SHA. If only the release workflow, manifest generator, its tests or this distribution guide changed afterwards, it may reuse the last successful ancestor build. Every other changed path rejects reuse. Thus application code, UI, versions, icons, dependencies, installer templates and build configuration must match the tested build.
 6. The publisher records both commits in build-provenance.json, normalizes filenames before generating URLs and checksums, and validates five updater targets (including separate DEB and AppImage entries). Assets upload into a draft; the Release becomes public and latest only after uploads finish. GitHub's upload filename rewriting cannot invalidate the generated URLs.
+
+Prerelease tags are published with GitHub prerelease status and `latest=false`; stable tags alone can become latest. Local prereleases are not published automatically.
 
 A partial build cannot publish a partial feed. Publish a new version for changes instead of replacing existing assets. Pull requests without the signing secret build unsigned installers and never publish releases. For local unsigned packages, pass `--config '{"bundle":{"createUpdaterArtifacts":false}}'` to the Tauri build command.
 

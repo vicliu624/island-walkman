@@ -1,0 +1,296 @@
+{
+  "evidence_kind": "static_file_content_not_device_state",
+  "physical_device_access": false,
+  "sony_code_executed": false,
+  "input_sha256": {
+    "decrypted-0.bin": "60aedd9213cd6178edcc92a1f168d3e9efda3d7af21292c7d3ea8bbceae713d4",
+    "decrypted-1.bin": "680bf2c4cae6be0d7d3f7028c150f45a3648a82feb0231772a9e60b33262faf4",
+    "decrypted-2.bin": "4c11d0c396dff18465ae1d24aa0692edd5ecb14ca5790232f7fdba92c8ae4252",
+    "decrypted-3.bin": "f5ad4b2991ebece66abe6d26ec1f726c56dcd9469ed5888de1e7fd07b11c0557",
+    "kernel-recovered.elf": "fe5e012f08f3df51bcf0cf0503d0345658225e151f9922612a05f7d8bbcf5752"
+  },
+  "rootfs_members": 613,
+  "initrd_entries": 25,
+  "initrd_geometry": {
+    "block_size": 1024,
+    "filesystem_blocks": 752,
+    "image_bytes": 786432
+  },
+  "initrd_linuxrc_text": "#!/bin/sh\ninsmod /lib/modules/icx1087_key.ko\ninsmod /lib/modules/icx1087_power.ko\ninsmod /lib/modules/icx1087_nvp.ko\ninsmod /lib/modules/icx1087-nand-i.ko\ninsmod /lib/modules/icx1087-nand-p.ko\nexit 0\n",
+  "rootfs_keyword_hits": [
+    {
+      "path": "./usr/local/bin/apl_conn",
+      "hits": {
+        "fWUp": [
+          3712
+        ],
+        "/dev/icx1087_nvp/9": [
+          4740
+        ]
+      },
+      "sha256": "37580d0393de4f548718a7b5fdb1b58dc3310edde37582dace172e9b54de5af7"
+    },
+    {
+      "path": "./usr/local/bin/nvpflag",
+      "hits": {
+        "/dev/icx1087_nvp/9": [
+          4444
+        ]
+      },
+      "sha256": "90aa0b11ef01c0997a1db28faf664d3eed931675e7c272b7232d74ed3591e7ac"
+    },
+    {
+      "path": "./usr/local/bin/gemini-ICX1101",
+      "hits": {
+        "fWUp": [
+          1691812
+        ],
+        "/dev/icx1087_nvp/9": [
+          4715228
+        ]
+      },
+      "sha256": "a5c94ce492fb7ec9cd7a740d30cb79a1c2b43ee782e2da036a72f57dabdcd177"
+    }
+  ],
+  "nvp_symbol_importers": [
+    {
+      "path": "./lib/modules/mgscsi.ko",
+      "imports": [
+        "icx1087_nvp_read_data"
+      ]
+    },
+    {
+      "path": "./lib/modules/icx1087-nand-i.ko",
+      "imports": [
+        "icx1087_nvp_read_data"
+      ]
+    },
+    {
+      "path": "./lib/modules/icx1087-nand-p.ko",
+      "imports": [
+        "icx1087_nvp_read_data"
+      ]
+    },
+    {
+      "path": "./lib/modules/icx1101_rtc_extend.ko",
+      "imports": [
+        "icx1087_nvp_write_data"
+      ]
+    },
+    {
+      "path": "./lib/modules/g_nwm.ko",
+      "imports": [
+        "icx1087_nvp_read_data"
+      ]
+    },
+    {
+      "path": "./lib/modules/mg.ko",
+      "imports": [
+        "icx1087_nvp_read_data",
+        "icx1087_nvp_write_data"
+      ]
+    },
+    {
+      "path": "./lib/modules/mgscc.ko",
+      "imports": [
+        "icx1087_nvp_read_data",
+        "icx1087_nvp_write_data"
+      ]
+    }
+  ],
+  "elf_inputs_not_parsed": [],
+  "named_fwpup_in_rootfs": [],
+  "named_fwpup_in_initrd": [],
+  "raw_kernel_literal_hits": {},
+  "kernel_embedded_initramfs": {
+    "offset": "0x17ca0",
+    "compressed_bytes": 134,
+    "expanded_bytes": 512,
+    "compressed_sha256": "421c536aca88afa69befa39bbb88b0c29020769e0d1a404df0d7f1d8766de429",
+    "expanded_sha256": "d7e1f5009215c48da1765b3cb94c85404ca3167a1e4e7d059a0b00aa98108346",
+    "entries": [
+      {
+        "path": "/dev",
+        "mode": "0o40755",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/dev/console",
+        "mode": "0o20600",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/root",
+        "mode": "0o40700",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "nvp_flag_mapping": {
+    "driver_sha256": "c0639bc1f31c0208ee71381c11777950d5af157baf23bde6ecde6cbd148ab377",
+    "minor_index": 9,
+    "zone": 0,
+    "node": 8,
+    "logical_zone_tag": "0x70",
+    "logical_zone_bytes": 2048,
+    "node_table": "MSCZone",
+    "table_section": ".rodata",
+    "table_section_offset": 192,
+    "relocation_kind": "R_ARM_ABS32",
+    "logical_field_offset": 2044,
+    "field_bytes": 4,
+    "physical_nand_address_unknown": true
+  },
+  "kernel_code_bound_to_raw_input": [
+    {
+      "start_va": "0xc0145544",
+      "end_va_exclusive": "0xc01459f4",
+      "raw_image_offset": "0x13d544",
+      "sha256": "bb6614b93010026bf8e4c590a7ca5fe6c4ff4c7baa7341742aa6cfae478d50e8"
+    },
+    {
+      "start_va": "0xc01459f4",
+      "end_va_exclusive": "0xc0145eb4",
+      "raw_image_offset": "0x13d9f4",
+      "sha256": "274ac4679f80846ee50b0d060254053c36d1fccd3d50b3e4d97e6c4f8dc8ddcc"
+    },
+    {
+      "start_va": "0xc0145eb4",
+      "end_va_exclusive": "0xc01462ac",
+      "raw_image_offset": "0x13deb4",
+      "sha256": "53763eee066da535a720d67a7da0d2a3629537032b638d9613063547d99a5563"
+    },
+    {
+      "start_va": "0xc014756c",
+      "end_va_exclusive": "0xc0147b98",
+      "raw_image_offset": "0x13f56c",
+      "sha256": "bdf3f92dba08555b6cf02846780c81d3e488e7e29bc8e8e353c5a2069ae67002"
+    }
+  ],
+  "stock_script": {
+    "sha256": "60aedd9213cd6178edcc92a1f168d3e9efda3d7af21292c7d3ea8bbceae713d4",
+    "anchors_1_based": {
+      "format_root": 23,
+      "mount_root": 30,
+      "read_update_filename": 47,
+      "check_package_exists": 54,
+      "opaque_fwpup_tar_pipeline": 60,
+      "sync": 77,
+      "unmount": 84
+    },
+    "explicit_fup_clear_commands_found": false,
+    "fwpup_internal_write_order": "unknown"
+  },
+  "startup_symlinks": [
+    {
+      "path": "./etc/rc2.d/S60consstart",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/consstart"
+    },
+    {
+      "path": "./etc/rc2.d/S42gemini",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/gemini"
+    },
+    {
+      "path": "./etc/rc2.d/S70netstart",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/netstart"
+    },
+    {
+      "path": "./etc/rc2.d/S20hwclock",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/hwclock"
+    },
+    {
+      "path": "./etc/rc2.d/S80telnetd",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/telnetd"
+    },
+    {
+      "path": "./etc/rc2.d/S90icx1087helper",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/icx1087helper"
+    },
+    {
+      "path": "./etc/rc2.d/S10icx1087driver",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/icx1087driver"
+    },
+    {
+      "path": "./etc/rcS.d/S30mount",
+      "type": "2",
+      "size": 0,
+      "target": "../init.d/mount"
+    }
+  ],
+  "powerfail_script_in_rootfs": false,
+  "powerfail_references": [
+    "pf::powerwait:/etc/init.d/powerfail start",
+    "pn::powerfailnow:/etc/init.d/powerfail now",
+    "po::powerokwait:/etc/init.d/powerfail stop"
+  ],
+  "limitations": [
+    "Negative searches cover these pinned inputs only, not all device storage",
+    "No resident boot selector or fwpup executable recovered",
+    "NVP metadata recovery is not full-system rollback",
+    "Actual geometry, flags, NAND state, power-loss behavior and rescue access not measured"
+  ],
+  "static_exports": [
+    {
+      "file": "apl-flag.txt",
+      "sha256": "56dc627be632027113a20294eb4c06c631e0f3017a237ffc7004df49d3e2bc15",
+      "input_sha256": "37580d0393de4f548718a7b5fdb1b58dc3310edde37582dace172e9b54de5af7"
+    },
+    {
+      "file": "apl-flag-caller.txt",
+      "sha256": "e46089ace948fe29fbcd7e9b94e005d8daa36108dffd46863fbff1be6f4a5eda",
+      "input_sha256": "37580d0393de4f548718a7b5fdb1b58dc3310edde37582dace172e9b54de5af7"
+    },
+    {
+      "file": "gemini-flag.txt",
+      "sha256": "3e939c34f4b2313bcfc4ba0816c2b1cb16afa3a57382e23bee6e64a561ad45bc",
+      "input_sha256": "a5c94ce492fb7ec9cd7a740d30cb79a1c2b43ee782e2da036a72f57dabdcd177"
+    },
+    {
+      "file": "nvp-module.txt",
+      "sha256": "7da40a1b5eeb94c906fce08df195d323a293e2690d3072e5a0b2c0a315bb14bf",
+      "input_sha256": "c0639bc1f31c0208ee71381c11777950d5af157baf23bde6ecde6cbd148ab377"
+    },
+    {
+      "file": "nand-i-module.txt",
+      "sha256": "457ee3e351e655e759d0fac534d391ffcf321cf9c8bd20e99a90658f6b67d946",
+      "input_sha256": "b1b718a5c993d24a07ca60ff99a038fdf23c1614abfb5daffce81c8043379892"
+    },
+    {
+      "file": "nand-p-module.txt",
+      "sha256": "16ae4b4891796b5c64ffb4261d01702def477aa88e96f5dfd649c8af8bd311ee",
+      "input_sha256": "eb19680b9b45e374b32d4084bccf4153b0fed97ce0e4dd9a3d342d268d636f8a"
+    },
+    {
+      "file": "kernel-write.txt",
+      "sha256": "5894fce2f0e78296018b7379e95aa63b4d63b5212c0191286cca2648016378dc",
+      "input_sha256": "fe5e012f08f3df51bcf0cf0503d0345658225e151f9922612a05f7d8bbcf5752"
+    },
+    {
+      "file": "kernel-erase.txt",
+      "sha256": "03f55a4176b847294b4e216d5c2e8a846917f84046a7ebb7ba498b4ff963d4e2",
+      "input_sha256": "fe5e012f08f3df51bcf0cf0503d0345658225e151f9922612a05f7d8bbcf5752"
+    }
+  ],
+  "outer_archive": {
+    "sha256": "6f745a8ff3c90b7abcd5ea185e6f51e4598492f6de5bdb3256599c6f43e39701",
+    "listing_sha256": "3e7ed782c83daec926caad5b462ff2128042a78b860116d2eac1593983ede50f",
+    "listing_only": true
+  }
+}

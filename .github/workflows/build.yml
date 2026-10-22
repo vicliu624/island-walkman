@@ -38,6 +38,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+      - name: Check application version consistency
+        run: python tools/version.py --check
       - name: Install Rust toolchain
         shell: bash
         run: |

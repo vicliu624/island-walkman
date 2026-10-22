@@ -16,6 +16,10 @@ A native desktop music library and transfer application for Sony NW-A918, built 
 - Pause, resume verified files, recover interrupted commits and automatically reconnect to the same identified player.
 - English, Simplified Chinese and Japanese interface. **English is the default**, independent of OS language. The language picker saves your choice locally. Song metadata is never translated.
 
+## Local disk-app development preview
+
+The current local prerelease, **0.4.0-alpha.1**, adds a dynamic application library, verified installs to WALKMAN storage, external publisher catalogs and a read-only storage browser. Requires separate R14 launcher firmware; neither firmware nor app installs have been hardware-qualified. See [disk applications and storage](docs/DISK_APPS.md). Normal USB does not expose the complete Linux filesystem.
+
 ## Installation
 
 The **Build and package** GitHub Actions workflow produces these artifacts on pushes, pull requests and manual runs:

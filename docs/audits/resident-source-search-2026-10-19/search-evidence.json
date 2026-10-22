@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-19",
+  "scope": "Offline local materials plus read-only public source search; no device access",
+  "official_page": "https://oss.sony.net/Products/Linux/Audio/NW-A916.html",
+  "models": [
+    "NW-A916",
+    "NW-A918",
+    "NW-A919"
+  ],
+  "download_responses": [
+    {
+      "cache_file": "archive-model-search.response",
+      "bytes": 3103,
+      "sha256": "57eb4af2962be5779e268f6f4727531f18e2b3df77904b9a366e49021d4d12ec"
+    },
+    {
+      "cache_file": "archive-software-search.response",
+      "bytes": 988,
+      "sha256": "ba71d843306dc28456a4689452822ed4d213b147e48ae1b447bb8ab998581c52"
+    },
+    {
+      "cache_file": "official-history.response",
+      "bytes": 6784,
+      "sha256": "f5ecd7c562e430ce97b5ce084d58f6ffc57b1d7233a320878154e1c7c3bf4197"
+    },
+    {
+      "cache_file": "oss-a916.response",
+      "bytes": 8275,
+      "sha256": "3c2303e05e15439f9064b66f0411a33351bc2c8f5596dafc55a5ae5d101984e2"
+    },
+    {
+      "cache_file": "oss-index.response",
+      "bytes": 54465,
+      "sha256": "50281abbc4807081056a534a3e5c7ce1ca0627e3d56209ee181ce27c42268672"
+    },
+    {
+      "cache_file": "sony-oss-notice.response",
+      "bytes": 4812,
+      "sha256": "df62a79ccdc4144ecc5f9e002314d1084274ddc4ed6de007908c15ad84a5cfd0"
+    },
+    {
+      "cache_file": "wayback-a910-distribution.response",
+      "bytes": 512,
+      "sha256": "41a77e3561bbf737253387cfbcd9394deaad76ee3db2eadfc9c7fc623df6fa12"
+    },
+    {
+      "cache_file": "wayback-official-page.response",
+      "bytes": 307,
+      "sha256": "516ca7c494ab66c1f1349f655a5f14b8d8f8603b215c70c765d2ee0ea93c2eef"
+    },
+    {
+      "cache_file": "wayback-oss-cdx.response",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "updater_102": {
+    "url": "https://walkman.update.sony.net/fw/pc/A910/NW-A910_V1_02.exe",
+    "bytes": 13625952,
+    "sha256": "36ced901e23aef73f69c09b4cbb431de861d97093bfbddc0a89608c6fc5ec1da",
+    "windows_authenticode_status": "Valid at inspection",
+    "signer": "SONY Corporation",
+    "signer_thumbprint": "4FD9992EDE35215F4DED496DBE6CDBA16EA67FE5",
+    "executed": false
+  },
+  "kernel_header": {
+    "file": "official-source/kernel/include/asm-arm/arch-mp200/icx1087_nvp.h.txt",
+    "sha256": "55ab643db50ac1dd340177f4e45e2edf74514a78e26560d6198a993ba5116b64",
+    "upstream_member": "./include/asm-arm/arch-mp200/icx1087_nvp.h",
+    "license": "GPL-2.0-or-later; original Sony notice retained"
+  },
+  "search_limits": [
+    "Public searches are bounded, not proof of global absence.",
+    "Other-model tools are excluded as A910 recovery evidence.",
+    "Differing 1.02 rootfs has not been fully inventoried.",
+    "Interrupted source downloads are excluded; only pinned complete files admitted."
+  ],
+  "complete_resident_image_found": false,
+  "fwpup_executable_found": false,
+  "flashing_enabled": false
+}

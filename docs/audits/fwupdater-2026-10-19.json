@@ -1,0 +1,165 @@
+{
+  "audit_date": "2026-10-19",
+  "scope": "Current dirty workspace; static analysis and offline/local loopback tests only. Not a hardware or historical release certification.",
+  "application_version": "0.4.0-alpha.4",
+  "base_commit": "6e9c06f6cbf3956c4def738a25c4c4ffadcbda23",
+  "native_binary_sha256": "6174f15f40e65565443aa24e5834f376e5f3e30c12a0d3e105ae907257e12b40",
+  "official_binary_inputs": [
+    {
+      "path": "C:\\Users\\VicLi\\Documents\\Projects\\island-walkman\\data\\firmware-analysis\\FWUpdater.exe",
+      "sha256": "3cf7eb2e354d2e6d3f0cddd06ab67755696579a0d2cc85b68672ecc44ccb3c1c",
+      "matches_original_package": true
+    },
+    {
+      "path": "C:\\Users\\VicLi\\Documents\\Projects\\island-walkman\\data\\firmware-analysis\\FWUpdaterCom.dll",
+      "sha256": "2b7550cd945a8d71d139063fce0ce006bfa6b59ee940f17e5151bdb6e35ebe2f",
+      "matches_original_package": true
+    },
+    {
+      "path": "C:\\Users\\VicLi\\Documents\\Projects\\island-walkman\\data\\firmware-analysis\\FWUpdaterRes.dll",
+      "sha256": "0536de4cc4373f2f1391fbb52f11edf47af28fa52551959d569b6488c639b243",
+      "matches_original_package": true
+    }
+  ],
+  "workspace_evidence_hashes": {
+    "src/main.rs": "4f1575ecc61b1341bfeba4b1163bde05fa6dde16e8755c836614bb05872b222c",
+    "src/firmware.rs": "28364515d5d70c246143c09821f3aeedf31dfff7971edf99a92f0f40d07a7c7e",
+    "src/firmware/responses.rs": "f91455e48bbcd4e6eb05d1da80b66111a1949b1feab6023f71c0bdcb812f600c",
+    "src/firmware/session.rs": "cedfd8d5e66843042bd0483394f92d050dc6f0e9a5790221bd917421e7837ab4",
+    "src/firmware/windows_readonly.rs": "441109f5826e8b8cef14e23d193fdbf50a589c90a2a30a5192c57b8a83d277fc",
+    "src/firmware/identity.rs": "8d3d4b20765364a642b2537969637822e7255b06def0b1bdffee6b94a0a55d9f",
+    "src/device_operation.rs": "4a79ac4cefb5c8eabe045eb72afe2e88ab0e25d76e7f3f88124abd1e12eb5f1b",
+    "src/service.rs": "6ae3a39682bc08555942c4b65ac4765e0521c9cf985bf2fc5203e275450f0047",
+    "src/desktop.rs": "edcf97927f80ed247de7b068a79838cb0de5cb2efa4f38baf406865eb5d40055",
+    "ui/src/firmware.tsx": "478632fb8d71b4df61f98317843696cd10efa0781937af8f4818914f6035997c",
+    "data/firmware-analysis/phase2-native-updater-worker.c": "dd0fcaaaa51085b30d250d8a1333cac3636ddde92a3280e6af600a8999c083d5",
+    "data/firmware-analysis/phase2-post-version-read.c": "b85c2e4379618fd93c3990b784d1128c8da4df21cf41d7dc8684a84e33b23be6",
+    "docs/research/firmware-updater/rea/com-update-worker.json": "c49041511eee1a00a07d6cc069749294b402a54643bca4e8bad85f035a520c86",
+    "docs/research/firmware-updater/rea/com-firmware-copy.json": "26e53bdbac20acf74cbbe6e96e4f5b50c496a408d2b371a81a40beaa675451b3"
+  },
+  "stock_package": {
+    "path": "C:\\Users\\VicLi\\Documents\\Projects\\sony-nw-a918\\work\\updater-1.03\\NW_A91X.UPG",
+    "report": {
+      "bytes": 13734432,
+      "sha256": "cfbcc372e2a18f11c12a080c9e5f039333e09175f5db03ac841a4227d3896b32",
+      "outer_md5_valid": true,
+      "family_signature": "5dfeff3c",
+      "stock_103_exact_match": true,
+      "components": [
+        {
+          "index": 0,
+          "offset": 64,
+          "bytes": 1578,
+          "sha256": "60aedd9213cd6178edcc92a1f168d3e9efda3d7af21292c7d3ea8bbceae713d4"
+        },
+        {
+          "index": 1,
+          "offset": 1648,
+          "bytes": 2523136,
+          "sha256": "680bf2c4cae6be0d7d3f7028c150f45a3648a82feb0231772a9e60b33262faf4"
+        },
+        {
+          "index": 2,
+          "offset": 2524784,
+          "bytes": 786432,
+          "sha256": "4c11d0c396dff18465ae1d24aa0692edd5ecb14ca5790232f7fdba92c8ae4252"
+        },
+        {
+          "index": 3,
+          "offset": 3311216,
+          "bytes": 10423215,
+          "sha256": "f5ad4b2991ebece66abe6d26ec1f726c56dcd9469ed5888de1e7fd07b11c0557"
+        }
+      ],
+      "authenticity_verified": false,
+      "device_compatibility_verified": false,
+      "firmware_write_enabled": false
+    }
+  },
+  "candidate_package": {
+    "path": "C:\\Users\\VicLi\\Documents\\Projects\\sony-nw-a918\\releases\\R14-Disk-Apps-LOCAL1\\firmware\\NW_A91X.UPG",
+    "report": {
+      "bytes": 13683040,
+      "sha256": "7c545418f6b231eb926d1d75742c953f5f9f4abd6a1042069a00b9ae631563a9",
+      "outer_md5_valid": true,
+      "family_signature": "5dfeff3c",
+      "stock_103_exact_match": false,
+      "components": [
+        {
+          "index": 0,
+          "offset": 64,
+          "bytes": 1578,
+          "sha256": "60aedd9213cd6178edcc92a1f168d3e9efda3d7af21292c7d3ea8bbceae713d4"
+        },
+        {
+          "index": 1,
+          "offset": 1648,
+          "bytes": 2523136,
+          "sha256": "680bf2c4cae6be0d7d3f7028c150f45a3648a82feb0231772a9e60b33262faf4"
+        },
+        {
+          "index": 2,
+          "offset": 2524784,
+          "bytes": 786432,
+          "sha256": "4c11d0c396dff18465ae1d24aa0692edd5ecb14ca5790232f7fdba92c8ae4252"
+        },
+        {
+          "index": 3,
+          "offset": 3311216,
+          "bytes": 10371817,
+          "sha256": "dd849a2aa8e94f48646399925b9b0cf9378302f1ad7fe2e86e33ab0633054e32"
+        }
+      ],
+      "authenticity_verified": false,
+      "device_compatibility_verified": false,
+      "firmware_write_enabled": false
+    }
+  },
+  "same_script_kernel_initrd_different_rootfs": [
+    true,
+    true,
+    true,
+    false
+  ],
+  "retained_capacity_report_verified_against_candidate_rootfs": true,
+  "retained_capacity_report_not_rerun": {
+    "archive_sha256": "dd849a2aa8e94f48646399925b9b0cf9378302f1ad7fe2e86e33ab0633054e32",
+    "root_partition_model_bytes": 50331648,
+    "block_size": 4096,
+    "minimum_free_bytes": 4194304,
+    "free_blocks": 1286,
+    "free_bytes": 5267456,
+    "allocation_errors": [],
+    "passed": true,
+    "mke2fs_stdout": "mke2fs 1.37 (21-Mar-2005)\nFilesystem label=\nOS type: Linux\nBlock size=4096 (log=2)\nFragment size=4096 (log=2)\n12288 inodes, 12288 blocks\n614 blocks (5.00%) reserved for the super user\nFirst data block=0\n1 block group\n32768 blocks per group, 32768 fragments per group\n12288 inodes per group\n\nWriting inode tables: 0/1\b\b\bdone                        \nWriting superblocks and filesystem accounting information: done\nThis filesystem will be automatically checked every 39 mounts or\n180 days, whichever comes first.  Use tune2fs -c or -i to override.\n",
+    "mke2fs_stderr": "",
+    "Sony_busybox_sha256": "3c9d2ddd7fd6649cccca6feb4e7008a369cf5963dda807c02927e84f43eca980",
+    "actual_device_geometry_read": false,
+    "device_accessed": false
+  },
+  "safety": {
+    "blockers": [
+      "firmware upload and activation transport not validated",
+      "live response semantics not validated",
+      "resident installer and recovery path not verified",
+      "hardware flashing not authorized",
+      "model-specific battery threshold and status policy not established",
+      "candidate model and version metadata not authenticated",
+      "supported model identity and serial binding not verified",
+      "battery percentage unavailable"
+    ],
+    "firmware_write_enabled": false,
+    "fixed_read_only_queries_available_on_windows": true,
+    "raw_vendor_queries_enabled": false
+  },
+  "validation": {
+    "rust_tests_passed": 107,
+    "rust_tests_ignored": 1,
+    "host_pipeline_fault_tests_passed": 3,
+    "authenticated_loopback_flash_route_rejection_test_passed": true,
+    "sony_code_executed": false,
+    "player_vendor_queries_sent": false,
+    "flash_attempted": false
+  },
+  "verdict": "No live firmware executor in this source. NOT equivalent to Sony FWUpdater; NOT approved for flashing."
+}

@@ -1,0 +1,11 @@
+{
+  "reason": "Restore shared firmware interface used by existing firmware modules; old config no longer exported firmware_profile or A910_FIRMWARE.",
+  "before_sha256": "2120355ba04a3f3004034d11338ddaf525d4fc819abb773b3cc189ceb9d04aec",
+  "after_sha256_before_format": "36ca1cb699d9a1451276d9e9606fb1aded5242c929f3fe10004625381f176c31",
+  "firmware_execution_added": false,
+  "models_share_firmware": [
+    "NW-A916",
+    "NW-A918",
+    "NW-A919"
+  ]
+}
