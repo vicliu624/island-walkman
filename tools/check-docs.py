@@ -8,13 +8,17 @@ import importlib.util
 root = Path(__file__).resolve().parents[1]
 for name in ['README.md','CHANGELOG.md','LICENSE','THIRD_PARTY_NOTICES.md','docs/PROTOCOL.md']:
     assert (root/name).is_file(), f'Missing required document: {name}'
-for name in subprocess.check_output(['git','ls-files','--','*.md'],cwd=root,text=True).splitlines():
+tracked=set(subprocess.check_output(['git','ls-files'],cwd=root,text=True).splitlines())
+for name in sorted(n for n in tracked if n.endswith('.md')):
     text=(root/name).read_text(encoding='utf-8-sig')
     assert not re.search('[\u3040-\u30ff\u3400-\u9fff]',text), f'Non-English maintained documentation: {name}'
     for target in re.findall(r'\]\(([^)]+)\)',text):
         if '://' in target or target.startswith('#'):
             continue
-        assert (root/name).parent.joinpath(target.split('#')[0]).exists(), f'Broken relative link in {name}: {target}'
+        dest=(root/name).parent.joinpath(target.split('#')[0]).resolve()
+        assert dest.exists(), f'Broken relative link in {name}: {target}'
+        rel=dest.relative_to(root).as_posix()
+        assert rel in tracked or any(n.startswith(rel+'/') for n in tracked), f'Link points to unpublished local evidence in {name}: {target}'
 assert '[Unreleased]' in (root/'CHANGELOG.md').read_text()
 assert tomllib.loads((root/'Cargo.toml').read_text())['package']['license']=='MIT'
 assert (root/'LICENSE').read_text(encoding='utf-8-sig').startswith('MIT License')

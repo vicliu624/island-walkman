@@ -37,7 +37,7 @@ No `fwpup` literal or file was found in the decompressed rootfs inputs, and no `
 
 ## Upgrade flag: write side and clear-side limits
 
-The original Gemini setter at VA `0x001a4ffc` opens the NVP path, submits four bytes and requires the returned count to equal 4 before setting its request state. The known path string and magic-value references in the preserved analysis lead back to that setter. [Static reference record](audits/device-install-2026-10-19/decompilation/gemini-flag-refs.txt) does not establish a boot-time reader or a clear operation.
+The original Gemini setter at VA `0x001a4ffc` opens the NVP path, submits four bytes and requires the returned count to equal 4 before setting its request state. The known path string and magic-value references in the preserved analysis lead back to that setter. Static reference record (`audits/device-install-2026-10-19/decompilation/gemini-flag-refs.txt`, retained locally; not distributed) does not establish a boot-time reader or a clear operation.
 
 The separate MSC emergency helper `apl_conn` handles connection state 2 by calling `setfuflag(1)`, then sleeping two seconds, syncing and requesting reboot if the helper reports success. Fresh static decompilation and original ARM instructions confirm:
 
